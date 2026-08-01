@@ -8,3 +8,4 @@ Authorized testing only. Two starting docs:
 | [pentesting-mcp.md](./pentesting-mcp.md) | Model Context Protocol: trust boundaries, tools, tokens, injection |
 
 Read **system prompt leakage** first when the target is any LLM product, copilot, or agent host.
+| [ai-pentest-resources.md](./ai-pentest-resources.md) | Resource checklist + copy/paste probes |
