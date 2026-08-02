@@ -1,0 +1,264 @@
+{
+  "x-generator": "NSwag v14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Inlanefreight E-Commerce Marketplace",
+    "description": "Inlanefreight E-Commerce Marketplace API Specification.<br />Need to delete this version. Not maintained anymore... We will keep it to retrieve legacy/deleted data whenever needed.",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://154.57.164.65:31687"
+    }
+  ],
+  "paths": {
+    "/api/v0/supplier-companies/yearly-reports/deleted": {
+      "get": {
+        "tags": [
+          "Api"
+        ],
+        "operationId": "API_AttacksFeaturesSupplierCompaniesGetDeletedYearlyReportsEndpoint",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/API_AttacksEntitiesDTOsSupplierCompanyYearlyReportDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v0/supplier-companies/deleted": {
+      "get": {
+        "tags": [
+          "Api"
+        ],
+        "operationId": "API_AttacksFeaturesSupplierCompaniesGetDeletedEndpoint",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/API_AttacksEntitiesDTOsSupplierCompanyDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v0/suppliers/quarterly-reports/deleted": {
+      "get": {
+        "tags": [
+          "Api"
+        ],
+        "operationId": "API_AttacksFeaturesSuppliersGetDeletedQuarterlyReportsEndpoint",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/API_AttacksEntitiesDTOsSupplierQuarterlyReportDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v0/suppliers/deleted": {
+      "get": {
+        "tags": [
+          "Api"
+        ],
+        "operationId": "API_AttacksFeaturesSuppliersGetDeletedEndpoint",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/API_AttacksEntitiesDomainModelsSupplier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v0/customers/deleted": {
+      "get": {
+        "tags": [
+          "Api"
+        ],
+        "operationId": "API_AttacksFeaturesCustomersGetDeletedEndpoint",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/API_AttacksEntitiesDomainModelsCustomer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "API_AttacksEntitiesDTOsSupplierCompanyYearlyReportDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CompanyID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Revenue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CommentsFromCLevel": {
+            "type": "string"
+          }
+        }
+      },
+      "API_AttacksEntitiesDTOsSupplierCompanyDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "IsExemptedFromMarketplaceFee": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CertificateOfIncorporationPDFFileURI": {
+            "type": "string"
+          }
+        }
+      },
+      "API_AttacksEntitiesDTOsSupplierQuarterlyReportDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupplierID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Quarter": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AmountSold": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CommentsFromManager": {
+            "type": "string"
+          }
+        }
+      },
+      "API_AttacksEntitiesDomainModelsSupplier": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "CompanyID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "PasswordHash": {
+            "type": "string"
+          }
+        }
+      },
+      "API_AttacksEntitiesDomainModelsCustomer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "BirthDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "PasswordHash": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

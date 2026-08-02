@@ -1,0 +1,17 @@
+{
+  "n": 151,
+  "sample_keys": [
+    "id",
+    "companyID",
+    "name",
+    "email",
+    "phoneNumber"
+  ],
+  "first": {
+    "id": "00ac3d74-6c7d-4ef0-bf15-00851bf353ba",
+    "companyID": "f9e58492-b594-4d82-a4de-16e4f230fce1",
+    "name": "James Allen",
+    "email": "J.Allen1607@globalsolutions.com",
+    "phoneNumber": "+49 1532 9939993"
+  }
+}

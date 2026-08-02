@@ -1,0 +1,12 @@
+{
+  "count": 125,
+  "sample": {
+    "ID": "c86afef7-9d90-45c8-8c83-3538553d8cca",
+    "CompanyID": "761d3da2-9a38-4949-9832-a05ef78a7b2b",
+    "Name": "Ayanna Nadar",
+    "Email": "A.Nadar1996@zenithindustries.com",
+    "PhoneNumber": "+27 93 518 4119",
+    "PasswordHash": "FE9A85E19658454BDBDED848A92C7C86"
+  },
+  "has_password_hash": true
+}

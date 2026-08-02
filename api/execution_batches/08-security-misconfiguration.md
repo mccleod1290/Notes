@@ -242,8 +242,9 @@ Fix: explicit origin allowlist; never * with credentials.
 | Also missing authz on same endpoint | Separate BFLA |
 
 ## NEXT
-→ Improper Inventory Management (shadow/old API versions)  
-→ SSRF batch if internal DB host reachable  
+→ [09-improper-inventory-management.md](./09-improper-inventory-management.md)  
+→ [10-unsafe-consumption-of-apis.md](./10-unsafe-consumption-of-apis.md)  
+→ [owasp-2019/](../owasp-2019/) for 2019-only Injection / Logging drills  
 
 ---
 
