@@ -1,0 +1,1 @@
+{"roles":["CustomerOrders_GetByID","CustomerOrders_Create","CustomerOrderItems_Get","CustomerOrderItems_Create"]}

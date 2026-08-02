@@ -7,10 +7,12 @@
 |---|--------|------|
 | **01** | Broken Object Level Authorization (BOLA / IDOR) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
 | **02** | Broken Authentication (weak policy + brute / OTP) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
+| **03** | BOPLA — Excessive Data Exposure + Mass Assignment | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
 
 ```text
 [ ] 01 BOLA / IDOR
 [ ] 02 Broken Authentication
+[ ] 03 BOPLA (EDE + Mass Assignment)
 ```
 
 ## Lab engagement (this workspace)
@@ -21,6 +23,7 @@
 | Swagger | `/swagger/index.html` · OAS `/swagger/v1/swagger.json` |
 | BOLA evidence | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) |
 | Broken auth evidence | [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) |
+| BOPLA evidence | [notes/inlanefreight-bopla/](./notes/inlanefreight-bopla/) |
 
 **Do not commit live JWTs or production secrets.**
 

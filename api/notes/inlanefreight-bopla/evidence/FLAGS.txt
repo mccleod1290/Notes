@@ -1,0 +1,4 @@
+EDE supplier-companies (p5): HTB{d759c70b5a9f6a392af78cc1eca9cdf0}
+EDE billing-addresses street (p5): HTB{1e2095c564baf0d2d316080217040dae}
+Mass Assignment NetSum order items (p7): HTB{4d86794f82046e465ca29d91bdbe5bca}
+Mass Assignment isExemptedFromMarketplaceFee (p6): success isExemptedFromMarketplaceFee=1
