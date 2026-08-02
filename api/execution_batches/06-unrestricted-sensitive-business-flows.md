@@ -279,7 +279,7 @@ Not only BFLA: impact is the business process, not solely the missing role check
 | Can buy unlimited on sale open | URC + API6 |
 
 ## NEXT
-→ SSRF  
+→ [07-ssrf.md](./07-ssrf.md)  
 → Re-read [05-bfla-broken-function-level-authz.md](./05-bfla-broken-function-level-authz.md) and [04-unrestricted-resource-consumption.md](./04-unrestricted-resource-consumption.md) for chains  
 
 ---
