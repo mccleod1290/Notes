@@ -1,51 +1,66 @@
-# Batch 04 — VIEWSTATE + machineKey → RCE path
+# Batch 04 — Config keys → VIEWSTATE RCE
 
-## objective
+## GOAL
+Use `machineKey` from `web.config` to forge VIEWSTATE and prove code run (OOB).
 
-With `validationKey` / `decryptionKey` from `web.config`, confirm VIEWSTATE usage and generate/forge a payload path (viewgen / ysoserial.net). Prefer OOB proof.
+## TIME
+~1–2 hours
 
-## estimated_time
+## YOU NEED
+- Keys from batch 03  
+- RCE allowed  
+- OAST  
 
-60–120 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- machineKey values (batch 03)
-- RCE in scope
-- OAST
+ASP.NET WebForms stores page state in a blob called **VIEWSTATE**.  
+The server **signs** (and sometimes encrypts) it with secrets from `web.config` called **machineKey**.  
 
-## testing_workflow
+If you have those secrets, you can build a VIEWSTATE that deserializes into **your code** (classic insecure deserialize).  
 
-### 1) Technique A — extract keys
+No keys → almost no forge. Keys → often game over on old ASP.NET.
+
+---
+
+## DO THIS
+
+### 1) Copy keys
 
 ```bash
 grep -i machineKey web.config
-# validationKey, decryptionKey, validation, decryption algs
+# validationKey=...
+# decryptionKey=...
+# validation= / decryption=
 ```
 
-### 2) Technique B — find VIEWSTATE
+### 2) Confirm page has VIEWSTATE
 
 ```bash
-curl -sk "https://TARGET/SomePage.aspx" | grep -o '__VIEWSTATE[^"]*' | head
+curl -sk "https://TARGET/SomePage.aspx" | grep -o '__VIEWSTATE' | head
 ```
 
-### 3) Technique C — forge + send
+### 3) Forge payload
 
-Use [viewgen](https://github.com/0xacb/viewgen) or ysoserial.net per current CLI.  
-Send forged `__VIEWSTATE` on a page that accepts it. Prove with OOB (`nslookup`/`curl` to collab), not destructive commands.
+Use [viewgen](https://github.com/0xacb/viewgen) or ysoserial.net (check `--help` on your install).  
+Prefer command that only hits OAST (`nslookup your.oast`).
 
-## decision_points
+### 4) Send forged `__VIEWSTATE` in a normal POST to that page
 
-| If… | Then… |
-|-----|--------|
-| RCE/OOB works | Document; optional post-ex out of this kit |
-| Encryption mode blocks you | Re-check decryptionKey/alg; sticky sessions on LB |
-| No WebForms VIEWSTATE | Close this batch; → **05** |
+Watch OAST. Save request/response.
 
-## expected_findings
+---
 
-- Insecure deserialization RCE via known keys
+## IF / THEN
 
-## next_batch_to_continue_with
+| What you saw | What you do |
+|--------------|-------------|
+| OOB hit | Critical finding |
+| Encrypted VIEWSTATE fails | Re-check decryptionKey + sticky session on load balancer |
+| No VIEWSTATE on site | Close card → **05** |
 
-→ **[05-dnspy-dependencies.md](./05-dnspy-dependencies.md)**
+---
+
+## NEXT
+→ [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)

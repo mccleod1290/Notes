@@ -1,61 +1,85 @@
-# Batch 02 — VHost hopping
+# Batch 02 — Find other apps on same IP (VHost)
 
-## objective
+## GOAL
+Discover **other Host names** on this IIS (internal tools) and open them.
 
-Find **other Hostnames** on the same IIS IP (internal apps) and set a stable way to browse them (ffuf + Burp match-replace).
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- One working public hostname on IIS (batch 01)
+- Subdomain wordlist
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Working public hostname on IIS (batch 01)
-- Wordlist of subdomains
+Same idea as batch 01, on purpose:  
+IIS often has **public** site + **internal** site (`mssql.`, `admin.`, `intranet.`) on one IP.  
 
-## testing_workflow
+Public DNS may not list the internal name.  
+You still send `Host: secret.company.com` to the public IP.  
+If IIS has that binding, the internal app answers. That is **VHost hopping**.
 
-### 1) Technique A — Host brute
+---
+
+## DO THIS
 
 ```bash
-IP=x.x.x.x
-# Capture baseline size
-curl -sk -o /tmp/base -w "%{size_download}\n" -H "Host: no-such-xyz.company.com" "http://$IP/"
-BASE=...
-
-ffuf -u "http://$IP/" -H "Host: FUZZ.company.com" \
-  -w subdomains.txt -mc all -fs $BASE -t 40
+IP="x.x.x.x"
+DOMAIN="company.com"
 ```
 
-### 2) Technique B — Burp match-replace
+### 1) Baseline size (wrong host)
 
-| Type | Request header |
-|------|----------------|
-| Match | `^Host: apply\.company\.com$` |
+```bash
+curl -sk -o /tmp/base -w "%{size_download}\n" \
+  -H "Host: no-such-xyz.$DOMAIN" "http://$IP/"
+# put that number in BASE below
+```
+
+### 2) Brute Host header
+
+```bash
+ffuf -u "http://$IP/" -H "Host: FUZZ.$DOMAIN" \
+  -w subdomains.txt -mc all -fs BASE -t 40
+```
+
+### 3) Pin a hit in Burp (optional but easy)
+
+Match/Replace request header:
+
+| Field | Value |
+|-------|--------|
+| Match | `^Host: public\.company\.com$` |
 | Replace | `Host: mssql.company.com` |
 | Regex | on |
 
-### 3) Technique C — curl pin
+### 4) curl pin
 
 ```bash
 curl -sk --resolve mssql.company.com:443:$IP "https://mssql.company.com/"
 ```
 
-Map any new app (login, version, product).
+### 5) Write down
 
-## decision_points
+```text
+Extra hosts:
+Interesting apps:
+```
 
-| If… | Then… |
-|-----|--------|
-| Internal admin/db panel | Test carefully; product CVEs |
-| No extra Hosts | → **03** when you see file download params; else **07** shortnames on known host |
-| File download features | → **03** |
+---
 
-## expected_findings
+## IF / THEN
 
-- Hidden vhosts, internal tools exposed via Host header
+| What you saw | What you do |
+|--------------|-------------|
+| New admin/db app | Soft test (version, default creds if allowed) |
+| File download params | → **03** |
+| No extra hosts | → **03** if file features, else **07** shortnames |
 
-## next_batch_to_continue_with
+---
 
-→ **[03-lfi-webconfig-dll.md](./03-lfi-webconfig-dll.md)** if file params exist  
-else → **[07-shortname-fuzz.md](./07-shortname-fuzz.md)** in parallel track, then return to 03 when LFI found
+## NEXT
+→ [03-lfi-webconfig-dll.md](./03-lfi-webconfig-dll.md)  
+(or [07-shortname-fuzz.md](./07-shortname-fuzz.md) if no file features yet)

@@ -1,41 +1,28 @@
-# IIS — Execution batches
+# IIS — Operator board (good-guy Conti speed)
 
-**How to work:** open **one batch**, finish it in 1–2 hours, follow **next_batch**.  
-Do not open the long reference doc mid-session unless stuck.
+**Rule:** open **one batch**. Read **WHY** (30 sec). Run **DO THIS**. Follow **NEXT**.
 
-**Authorized targets only.**
+**Only test systems you are allowed to test.**
 
 ---
 
-## Board (order)
+## Board (in order)
 
-| Batch | Session focus | Time | File |
-|-------|---------------|------|------|
-| **01** | Fingerprint IIS + HTTPAPI host rescue | 60–90 min | [execution_batches/01-fingerprint-httpapi.md](./execution_batches/01-fingerprint-httpapi.md) |
-| **02** | VHost hopping (Host brute + proxy rewrite) | 60–90 min | [execution_batches/02-vhost-hopping.md](./execution_batches/02-vhost-hopping.md) |
-| **03** | LFI → `web.config` → DLL pull | 60–90 min | [execution_batches/03-lfi-webconfig-dll.md](./execution_batches/03-lfi-webconfig-dll.md) |
-| **04** | VIEWSTATE / machineKey → RCE path | 60–120 min | [execution_batches/04-viewstate-rce.md](./execution_batches/04-viewstate-rce.md) |
-| **05** | Vendor deps + DNSpy workflow | 60–90 min | [execution_batches/05-dnspy-dependencies.md](./execution_batches/05-dnspy-dependencies.md) |
-| **06** | Blind XXE local DTD + fragment leak | 60–90 min | [execution_batches/06-xxe-fragment.md](./execution_batches/06-xxe-fragment.md) |
-| **07** | Shortname enum + logical ffuf completion | 60–120 min | [execution_batches/07-shortname-fuzz.md](./execution_batches/07-shortname-fuzz.md) |
+| # | Card | Time | Open this |
+|---|------|------|-----------|
+| 01 | Spot IIS + fix wrong Host name | ~1 h | [01](./execution_batches/01-fingerprint-httpapi.md) |
+| 02 | Find other apps on same IP (VHost) | ~1 h | [02](./execution_batches/02-vhost-hopping.md) |
+| 03 | Read files → web.config → DLLs | ~1 h | [03](./execution_batches/03-lfi-webconfig-dll.md) |
+| 04 | Keys from config → VIEWSTATE RCE | ~1–2 h | [04](./execution_batches/04-viewstate-rce.md) |
+| 05 | Break vendor plugins (DNSpy) | ~1 h | [05](./execution_batches/05-dnspy-dependencies.md) |
+| 06 | Blind XXE + partial file leak | ~1 h | [06](./execution_batches/06-xxe-fragment.md) |
+| 07 | Short names → finish the name with fuzz | ~1–2 h | [07](./execution_batches/07-shortname-fuzz.md) |
 
-## Progress
+## Progress ticks
 
 ```text
-[ ] 01 fingerprint-httpapi
-[ ] 02 vhost-hopping
-[ ] 03 lfi-webconfig-dll
-[ ] 04 viewstate-rce
-[ ] 05 dnspy-dependencies
-[ ] 06 xxe-fragment
-[ ] 07 shortname-fuzz
+[ ] 01  [ ] 02  [ ] 03  [ ] 04  [ ] 05  [ ] 06  [ ] 07
 ```
 
-## Reference (not the session path)
-
-| File | Use |
-|------|-----|
-| [OPERATOR-NOTES-hacking-iis-nahamcon.md](./OPERATOR-NOTES-hacking-iis-nahamcon.md) | Full first-principles + paste archive |
-| [pentest-checklist.md](./pentest-checklist.md) | Tick coverage |
-| [resources.md](./resources.md) | Links |
-| [slides-raw/](./slides-raw/) | Deck images |
+Long theory + extra pastes: [OPERATOR-NOTES-hacking-iis-nahamcon.md](./OPERATOR-NOTES-hacking-iis-nahamcon.md)  
+Links: [resources.md](./resources.md) · slides: [slides-raw/](./slides-raw/)

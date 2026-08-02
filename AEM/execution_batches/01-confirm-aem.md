@@ -1,103 +1,90 @@
-# Batch 01 — Confirm AEM + one page path
+# Batch 01 — Is it AEM? Get one page path
 
-## objective
+## GOAL
+Know if this site is Adobe Experience Manager. Save **one** page path for later cards.
 
-Decide if the target is Adobe Experience Manager, and save **one real** `/content/...` (or equivalent) page path you can reuse later. No exploits yet.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- URL you may test
+- Terminal with `curl`
 
-45–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- In-scope URL (`TARGET`)
-- `curl` available
-- Written permission to test
+AEM is a big company website tool. Adobe leaves the same doors on many sites (login page, CSS/JS folders).  
+If those doors answer, it is probably AEM.  
+Later tricks need a real page path like `/content/.../home`. Grab one now so you never hunt for it again mid-fight.
 
-## testing_workflow
+---
 
-### 1) Set target
+## DO THIS
+
+### 0) Set your target (change this once)
 
 ```bash
-T="https://TARGET"   # no trailing slash
+T="https://PUT-THE-SITE-HERE"
 ```
 
-### 2) Hit AEM fingerprints (2–3 techniques only)
+### 1) Knock on three Adobe doors
 
 ```bash
-# Technique A — Granite login
-curl -sk -D- -o /tmp/aem-login.html -w "login:%{http_code}\n" \
-  "$T/libs/granite/core/content/login.html" | head -20
-head -c 400 /tmp/aem-login.html; echo
+curl -sk -o /tmp/aem-login.html -w "login:%{http_code}\n" \
+  "$T/libs/granite/core/content/login.html"
+head -c 300 /tmp/aem-login.html; echo
 
-# Technique B — clientlibs (modern dotted form)
-curl -sk -o /dev/null -w "clientlibs_dot:%{http_code}\n" \
+curl -sk -o /dev/null -w "js1:%{http_code}\n" \
   "$T/etc.clientlibs/clientlibs/granite/jquery.js"
 
-# Technique C — legacy slash clientlibs (extra signal)
-curl -sk -o /dev/null -w "clientlibs_slash:%{http_code}\n" \
+curl -sk -o /dev/null -w "js2:%{http_code}\n" \
   "$T/etc/clientlibs/granite/jquery.js"
 ```
 
-Optional extras only if A/B/C are all 404:
+**Win look:** login shows Adobe/AEM text, or js1/js2 is **200** (not only 404).
 
-```bash
-curl -sk -o /dev/null -w "console:%{http_code}\n" "$T/system/console"
-curl -sk -o /dev/null -w "csrf:%{http_code}\n" "$T/libs/granite/csrf/token.json"
-curl -sk -o /dev/null -w "packmgr:%{http_code}\n" "$T/crx/packmgr/index.jsp"
-```
-
-### 3) Grab one content path from the public site
+### 2) Steal one page path from the homepage
 
 ```bash
 curl -sk "$T/" -o /tmp/home.html
 grep -oE '/content/[^"'\'' <>]+' /tmp/home.html | sort -u | head -40
 ```
 
-Pick **one** path that looks like a real page (not only an asset). Save it:
+Pick **one** line that looks like a page (not a random image). Put it here:
 
 ```bash
-PAGE="/content/site/us/en/home"   # replace with yours
-# Verify it responds
-curl -sk -o /dev/null -w "page_html:%{http_code}\n" "$T${PAGE}.html"
-curl -sk -o /dev/null -w "page_bare:%{http_code}\n" "$T${PAGE}"
+PAGE="/content/something/en/home"
+curl -sk -o /dev/null -w "page:%{http_code}\n" "$T${PAGE}.html"
 ```
 
-### 4) Quick Forms smell (do not deep-dive)
+### 3) Quick Forms check (yes/no only)
 
 ```bash
-curl -sk -o /dev/null -w "forms_login:%{http_code}\n" \
+curl -sk -o /dev/null -w "forms:%{http_code}\n" \
   "$T/lc/libs/livecycle/core/content/login.html"
 curl -sk -o /dev/null -w "FormServer:%{http_code}\n" "$T/FormServer/"
 ```
 
-Note yes/no for Forms. Full Forms work is batch 12+.
-
-### 5) Write session output (3 lines)
+### 4) Write 3 lines in your notes
 
 ```text
-AEM: yes/no/maybe
+AEM: yes / no / maybe
 PAGE=...
-Forms_hint: yes/no
+Forms: yes / no
 ```
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
-| Login or clientlibs clearly AEM | Continue to **batch 02** |
-| Only weak signals (random 403s) | Re-check HTML for `etc.clientlibs`, `cq`, `sling` in source; if still no → **stop AEM track** |
-| Author host found (`author.`, `aem-`) | Record it; still finish this batch on publish first |
-| Forms paths 200 | Flag for batch 12 after batch 02–03 |
+## IF / THEN
 
-## expected_findings
+| What you saw | What you do |
+|--------------|-------------|
+| Login or js = AEM | Go **NEXT** |
+| All 404 | Open homepage HTML, search `etc.clientlibs` or `cq`. Still nothing → **stop AEM board** |
+| Forms = 200 | Write "Forms=yes". Do Forms cards after 02–03 |
 
-- Confirmed AEM (login HTML, clientlibs, CRX, cookies)
-- One reusable `PAGE` path
-- Optional: separate author hostname; Forms presence flag
+---
 
-## next_batch_to_continue_with
-
-→ **[02-json-node-dumps.md](./02-json-node-dumps.md)**
-
-If not AEM → leave this kit; do not force later batches.
+## NEXT
+→ [02-json-node-dumps.md](./02-json-node-dumps.md)

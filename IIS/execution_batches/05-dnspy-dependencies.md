@@ -1,21 +1,30 @@
-# Batch 05 — Vendor dependencies + DNSpy
+# Batch 05 — Break vendor plugins (DNSpy)
 
-## objective
+## GOAL
+Find third-party ASP.NET tools, get their DLLs, reverse, find one bad upload/XML/path sink.
 
-Fingerprint third-party ASP.NET components (e.g. editors/uploaders), acquire DLLs (LFI or vendor zip), reverse with DNSpy/ilspycmd for sinks.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- Paths or DLLs from recon/LFI  
+- DNSpy (Windows) or `ilspycmd`  
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Paths or DLLs from recon/LFI
-- Windows VM or Linux decompiler
+Companies bolt on editors/uploaders (CuteEditor, Telerik, …).  
+Those ship as **DLL files** without source.  
+You download the same product (or steal DLL via LFI) and reverse it like source.  
+Hunt: file path from user, XML parse, process start.  
+One weak plugin beats a hardened main app.
 
-## testing_workflow
+---
 
-### 1) Technique A — path probes
+## DO THIS
+
+### 1) Probe common plugin paths
 
 ```bash
 ffuf -u "https://TARGET/FUZZ" -w - -mc all -fc 404 -t 20 <<'EOF'
@@ -27,26 +36,26 @@ trace.axd
 EOF
 ```
 
-### 2) Technique B — get binaries
+### 2) Get DLL
 
-LFI to `../../bin/Vendor.dll` or download matching vendor package offline.
+- LFI: `../../bin/Something.dll`  
+- or vendor zip offline  
 
-### 3) Technique C — reverse + map HTTP → sink
+### 3) Reverse
 
-DNSpy: open DLL → search Upload/MapPath/Xml/Process/Deserialize → craft one PoC request.
+Open in DNSpy → search `Upload`, `MapPath`, `File.`, `Xml`, `Process` → map URL → method → one PoC request.
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
+## IF / THEN
+
+| What you saw | What you do |
+|--------------|-------------|
 | Sink found | Exploit per scope |
-| No vendor surface | → **06** if XML; else **07** |
+| No plugins | → **06** or **07** |
 
-## expected_findings
+---
 
-- RCE/upload/XXE in third-party handlers
-
-## next_batch_to_continue_with
-
-→ **[06-xxe-fragment.md](./06-xxe-fragment.md)** if XML parsers  
-else → **[07-shortname-fuzz.md](./07-shortname-fuzz.md)**
+## NEXT
+→ [06-xxe-fragment.md](./06-xxe-fragment.md) if XML  
+else → [07-shortname-fuzz.md](./07-shortname-fuzz.md)

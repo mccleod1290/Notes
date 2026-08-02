@@ -1,67 +1,92 @@
-# Batch 01 — Fingerprint IIS + HTTPAPI host rescue
+# Batch 01 — Spot IIS + fix wrong Host name
 
-## objective
+## GOAL
+See if the box is IIS. If you get a useless **HTTPAPI 2.0 404**, find the real website name (Host).
 
-Confirm the host is IIS/ASP.NET-ish, and rescue **Microsoft-HTTPAPI/2.0 404** assets by finding the correct **Host** name (do not skip “dead” IPs).
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- IP or URL in scope
+- `curl` (optional `openssl`)
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- In-scope IP or URL
-- `curl`, optional `openssl` / `nmap`
+IIS can host **many sites on one IP**.  
+It picks the site by the **Host** name in the request (like apartment number).  
 
-## testing_workflow
+If you only hit the IP with the wrong name, Windows answers with:
 
-### 1) Technique A — fingerprint
+`Server: Microsoft-HTTPAPI/2.0` + empty 404  
+
+That is **not** “dead server.” That is “wrong apartment number.”  
+Bad guys skip these IPs. You do not.
+
+---
+
+## DO THIS
 
 ```bash
-IP=x.x.x.x
-curl -skI "http://$IP/"
-curl -skI "https://$IP/"
-# Note: Server, X-AspNet*, cookies, status
+IP="x.x.x.x"
 ```
 
-### 2) Technique B — HTTPAPI signal
+### 1) Fingerprint
 
 ```bash
-# Looking for: Server: Microsoft-HTTPAPI/2.0 + generic 404
 curl -skI "http://$IP/"
 curl -skI "https://$IP/"
 ```
 
-### 3) Technique C — harvest Host candidates + probe
+Write what you see: `Server:`, `X-AspNet`, cookies, status.
+
+### 2) Is it the fake 404?
+
+Look for: `Microsoft-HTTPAPI/2.0` and almost no real website HTML.
+
+### 3) Steal names from the certificate
 
 ```bash
 echo | openssl s_client -connect $IP:443 -servername $IP 2>/dev/null \
   | openssl x509 -noout -text 2>/dev/null | grep -E 'DNS:|Subject:'
+```
 
-# Probe a candidate
+### 4) Try a real name
+
+```bash
+# change app.company.com to a name you found
 curl -skI --resolve app.company.com:443:$IP "https://app.company.com/"
 curl -sI -H "Host: app.company.com" "http://$IP/"
 ```
 
-If name works:
+### 5) If it works — pin the name
 
 ```bash
 echo "$IP app.company.com" | sudo tee -a /etc/hosts
-# Re-run scans against the NAME not the raw IP
 ```
 
-## decision_points
+Use the **name** for all later scans, not only the IP.
 
-| If… | Then… |
-|-----|--------|
-| Real IIS site with hostname | → **02** VHost hop on same IP |
-| Only HTTPAPI, no name yet | Host brute 20–40 min; if found → **02** |
-| Clear IIS app already | Still note version; → **02** then **03** when file features appear |
+### 6) Write 3 lines
 
-## expected_findings
+```text
+IIS: yes/no
+HTTPAPI_fake_404: yes/no
+REAL_HOST=
+```
 
-- Live site behind wrong Host; version headers; hosts file mapping
+---
 
-## next_batch_to_continue_with
+## IF / THEN
 
-→ **[02-vhost-hopping.md](./02-vhost-hopping.md)**
+| What you saw | What you do |
+|--------------|-------------|
+| Real site with host | → **NEXT** |
+| HTTPAPI only, no cert name | Brute Hosts 20–40 min (ffuf Host header), then **NEXT** if found |
+| Clear IIS already | Still note version → **NEXT** |
+
+---
+
+## NEXT
+→ [02-vhost-hopping.md](./02-vhost-hopping.md)

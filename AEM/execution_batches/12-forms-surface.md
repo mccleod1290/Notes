@@ -1,81 +1,85 @@
-# Batch 12 — AEM Forms: surface map only
+# Batch 12 — Is AEM Forms here? (look only)
 
-## objective
+## GOAL
+Map Forms doors. **No exploit payloads** this hour.
 
-Decide if **AEM Forms / LiveCycle-style** surfaces exist and whether they look **standalone JEE** vs co-deployed. **No exploit payloads** in this batch.
+## TIME
+~1 hour
 
-## estimated_time
+## YOU NEED
+- Forms hint from 01, or program lists Forms
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Forms hint from batch 01 or program scope lists Forms
-- RCE may be out of scope — this batch is still safe recon
+**AEM Sites** = the public website CMS.  
+**AEM Forms** = form/workflow product (sometimes on the same host, sometimes alone on JBoss).  
 
-## testing_workflow
+Forms has had **huge** bugs. First you only answer:  
+“Is it here? Standalone or bolted on? Are scary paths open?”
 
-### 1) Technique A — path probe set
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
+```
 
+### 1) Knock every common Forms door
+
+```bash
 for p in \
   "/lc/libs/livecycle/core/content/login.html" \
-  "/lc/" \
   "/edcws/" \
   "/adminui/" \
   "/adminui/login.do" \
   "/FormServer/" \
   "/FormServer/servlet/GetDocumentServlet" \
-  "/content/forms/af/" \
-  "/aem/forms/"
+  "/content/forms/af/"
 do
-  curl -sk -o /tmp/f -w "%{http_code} %{size_download} $p\n" --max-time 10 "$T$p"
+  curl -sk -o /tmp/f -w "%{http_code} %{size_download}  $p\n" --max-time 10 "$T$p"
 done
 ```
 
-### 2) Technique B — classify deployment
+### 2) Sort it (pick one)
 
 ```text
-Standalone JEE smell: /FormServer, /adminui, JBoss-ish errors, /lc login without full Sites chrome
-Co-deployed smell: /content/forms, guideContainers in QB, same host as AEM Sites
+Standalone smell = FormServer / adminui / lc login without normal marketing site
+Together smell   = /content/forms on same AEM site as batch 01
 ```
 
-### 3) Technique C — guideContainer existence (if QB works)
+### 3) If you have QB — count guide containers
 
 ```bash
-# only if you have QB from earlier batches
 curl -sk -G "$QB" \
   --data-urlencode "property=sling:resourceType" \
   --data-urlencode "property.value=fd/af/components/guideContainer" \
-  --data-urlencode "p.limit=15" | head -c 500; echo
+  --data-urlencode "p.limit=10" | head -c 400; echo
 ```
 
-### 4) Session output
+### 4) Write down
 
 ```text
-Forms_present: yes/no
-Deployment: standalone / co-deployed / unknown
-Interesting_paths:
-Write_or_RCE_in_scope: yes/no
+Forms: yes/no
+Kind: standalone / together / unknown
+Open paths:
+RCE allowed in scope: yes/no
 ```
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
+## IF / THEN
+
+| What you saw | What you do |
+|--------------|-------------|
 | No Forms | Skip 13–14 → **15** |
-| Co-deployed + guideContainer + write possible | **13** next |
-| Standalone + RCE in scope | **14** next (criticals) |
-| Standalone but no RCE in scope | Report exposure of adminui/FormServer; skip 14 exploits |
+| Together + guides | → **13** |
+| Standalone + RCE OK | → **14** |
+| Standalone but no RCE in rules | Report open admin doors only; → **15** |
 
-## expected_findings
+---
 
-- Attack surface inventory for Forms; version/login portals exposed to internet
-
-## next_batch_to_continue_with
-
-- Co-deployed classic path → **[13-forms-classic-xxe.md](./13-forms-classic-xxe.md)**  
-- Standalone modern path → **[14-forms-modern-rce.md](./14-forms-modern-rce.md)**  
-- No Forms → **[15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)**
+## NEXT
+→ [13-forms-classic-xxe.md](./13-forms-classic-xxe.md) or [14-forms-modern-rce.md](./14-forms-modern-rce.md) or [15-modern-ssrf-xxe.md](./15-modern-ssrf-xxe.md)

