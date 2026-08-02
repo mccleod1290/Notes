@@ -79,6 +79,14 @@ Lab suite + screenshots: [owasp-2019/notes/inlanefreight-2019-suite/](./owasp-20
 | gori | Repeater |
 | ffuf | Auth spray |
 
+## Evals (3×)
+
+| Scope | File |
+|-------|------|
+| **Full suite (final)** | [FULL-SUITE-EVAL-3x.md](./FULL-SUITE-EVAL-3x.md) |
+| 2019 gap pack | [owasp-2019/EVAL-3x.md](./owasp-2019/EVAL-3x.md) |
+| Per-class | `notes/inlanefreight-*/…-EVAL-3x.md` |
+
 ## Sources
 
 - OWASP API Security Top 10 **2019** and **2023**  
