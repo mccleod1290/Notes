@@ -1,15 +1,17 @@
 # API testing — operator board
 
-**Vibe path:** open batch **01**, fill `BASE=` / creds, copy-paste.  
+**Vibe path:** skim **00** (compare classes) once → run **01–03** on the target.  
 **Only authorized targets.**
 
 | # | Focus | File |
 |---|--------|------|
+| **00** | **Compare** Broken Auth / BOLA / BOPLA / BFLA + evidence comments | [execution_batches/00-authz-authn-compare.md](./execution_batches/00-authz-authn-compare.md) |
 | **01** | Broken Object Level Authorization (BOLA / IDOR) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
 | **02** | Broken Authentication (weak policy + brute / OTP) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
 | **03** | BOPLA — Excessive Data Exposure + Mass Assignment | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
 
 ```text
+[ ] 00 Compare classes (read once)
 [ ] 01 BOLA / IDOR
 [ ] 02 Broken Authentication
 [ ] 03 BOPLA (EDE + Mass Assignment)

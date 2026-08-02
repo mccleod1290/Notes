@@ -13,6 +13,9 @@ PASS="HTBPentester1"
 ## GOAL
 Prove you can read **other tenants’ objects** by changing an ID, while logged in as a low-privilege user (Supplier).
 
+> **Not Broken Auth** (you use a valid JWT). **Not BFLA** (function may be allowed). **Not BOPLA** (wrong *object*, not extra *fields*).  
+> See [00-authz-authn-compare.md](./00-authz-authn-compare.md) for evidence comment templates.
+
 ## TIME
 45–90 min
 

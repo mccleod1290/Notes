@@ -17,6 +17,9 @@ Find **Broken Object Property Level Authorization**:
 1. **Excessive Data Exposure** — response shows fields you should not see  
 2. **Mass Assignment** — request lets you set fields you should not set  
 
+> **Not BOLA** unless you also access another tenant’s object by id. **Not BFLA** if the *function* is allowed but *properties* are wrong.  
+> Full compare + evidence paste blocks: [00-authz-authn-compare.md](./00-authz-authn-compare.md).  
+
 ## TIME
 1–2 hours
 

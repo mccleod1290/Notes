@@ -12,6 +12,9 @@ WL=/usr/share/seclists/Passwords/Common-Credentials/xato-net-10-million-password
 ## GOAL
 Bypass or abuse authentication: weak password policy + **no rate limit** on login / OTP → account takeover.
 
+> **Not BOLA** (you become the victim with their password/OTP, not by swapping ids under your session).  
+> Evidence comment templates: [00-authz-authn-compare.md](./00-authz-authn-compare.md).
+
 ## TIME
 1–2 hours
 
