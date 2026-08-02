@@ -1,0 +1,35 @@
+# API testing — operator board
+
+**Vibe path:** open batch **01**, fill `BASE=` / creds, copy-paste.  
+**Only authorized targets.**
+
+| # | Focus | File |
+|---|--------|------|
+| **01** | Broken Object Level Authorization (BOLA / IDOR) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
+
+```text
+[ ] 01 BOLA / IDOR
+```
+
+## Lab engagement (this workspace)
+
+| Item | Value |
+|------|--------|
+| Target | `http://154.57.164.65:31687` (HTB Academy-style Inlanefreight API) |
+| Swagger | `/swagger/index.html` · OAS `/swagger/v1/swagger.json` |
+| Evidence | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) |
+
+**Do not commit live JWTs or production secrets.**
+
+## Tools (bb agentic)
+
+| Tool | Use |
+|------|-----|
+| **curl** | Login, BOLA loops, edge cases |
+| **pinchtab** | Open Swagger UI, screenshot, click Authorize |
+| **gori** | `gori run` / TUI — capture traffic while browser uses Swagger; repeater for ID swaps |
+
+## Sources
+
+- HTB Academy — API Attacks § Broken Object Level Authorization (CWE-639)  
+- OWASP API Security Top 10 — API1:2023 BOLA

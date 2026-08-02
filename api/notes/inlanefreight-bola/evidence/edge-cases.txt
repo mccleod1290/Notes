@@ -1,0 +1,17 @@
+no_auth	401	
+bola_id1	200	{"supplierCompanyYearlyReport":{"id":1,"companyID":"f9e58492-b594-4d82-a4de-16e4f230fce1","year":2020,"revenue":794425112,"commentsFromCLevel":"Superb work! The Board is over the moon! All employees will enjoy a dream vacation!"}}
+bola_id13	200	{"supplierCompanyYearlyReport":{"id":13,"companyID":"96dcb320-5481-441b-8c36-95a300058bde","year":2020,"revenue":588820631,"commentsFromCLevel":"Exceptional dedication! The Board is incredibly pleased! All staff members will get a special vacation trip!"}}
+id_0	200	{"errorMessage":"Could not find supplier company yearly report"}
+id_-1	200	{"errorMessage":"Could not find supplier company yearly report"}
+id_21	200	{"errorMessage":"Could not find supplier company yearly report"}
+id_100	200	{"errorMessage":"Could not find supplier company yearly report"}
+id_99999	200	{"errorMessage":"Could not find supplier company yearly report"}
+max_sequential_hit	18
+list_/api/v1/supplier-companies/yearly-reports	403	
+list_/api/v1/suppliers	403	
+list_/api/v1/supplier-companies	403	
+probe_/api/v1/suppliers/quarterly-reports/1	403	
+probe_/api/v1/supplier-companies/quarterly-reports/1	404	
+probe_/api/v1/suppliers/1	404	
+probe_/api/v1/supplier-companies/f9e58492-b594-4d82-a4de-16e4f230fce1	403	
+probe_/api/v1/supplier-companies/b75a7c76-e149-4ca7-9c55-d9fc4ffa87be	403	
