@@ -1,43 +1,51 @@
 # API testing — operator board
 
-**Vibe path:** skim **00** (compare classes) once → run **01–03** on the target.  
+**These are operator batches (reusable methodology), not CTF writeups.**
+
+| Layer | What | Where |
+|-------|------|--------|
+| **Runbooks** | Generic HOW TO test any API | `execution_batches/` |
+| **Engagement proofs** | One lab/target evidence, flags, JWTs redacted | `notes/inlanefreight-*/` |
+
+**Vibe path:** read **00** once → run **01–03** with *your* `BASE=` and accounts.  
+Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip on real engagements.
+
 **Only authorized targets.**
 
 | # | Focus | File |
 |---|--------|------|
-| **00** | **Compare** Broken Auth / BOLA / BOPLA / BFLA + evidence comments | [execution_batches/00-authz-authn-compare.md](./execution_batches/00-authz-authn-compare.md) |
-| **01** | Broken Object Level Authorization (BOLA / IDOR) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
-| **02** | Broken Authentication (weak policy + brute / OTP) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
-| **03** | BOPLA — Excessive Data Exposure + Mass Assignment | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
+| **00** | Compare Broken Auth / BOLA / BOPLA / BFLA + evidence comments | [execution_batches/00-authz-authn-compare.md](./execution_batches/00-authz-authn-compare.md) |
+| **01** | BOLA / IDOR (operator) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
+| **02** | Broken Authentication (operator) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
+| **03** | BOPLA — EDE + Mass Assignment (operator) | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
 
 ```text
-[ ] 00 Compare classes (read once)
-[ ] 01 BOLA / IDOR
-[ ] 02 Broken Authentication
-[ ] 03 BOPLA (EDE + Mass Assignment)
+[ ] 00 Compare classes
+[ ] 01 BOLA
+[ ] 02 Broken Auth
+[ ] 03 BOPLA
 ```
 
-## Lab engagement (this workspace)
+## Engagement folders (lab archive — not the runbook)
 
-| Item | Value |
-|------|--------|
-| Target | `http://154.57.164.65:31687` (HTB Academy-style Inlanefreight API) |
-| Swagger | `/swagger/index.html` · OAS `/swagger/v1/swagger.json` |
-| BOLA evidence | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) |
-| Broken auth evidence | [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) |
-| BOPLA evidence | [notes/inlanefreight-bopla/](./notes/inlanefreight-bopla/) |
+| Folder | Class practiced |
+|--------|-----------------|
+| [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) | BOLA |
+| [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) | Broken Auth |
+| [notes/inlanefreight-bopla/](./notes/inlanefreight-bopla/) | BOPLA |
 
-**Do not commit live JWTs or production secrets.**
+Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDINGS as the operator procedure.
 
-## Tools (bb agentic)
+## Tools
 
 | Tool | Use |
 |------|-----|
-| **curl** | Login, BOLA loops, edge cases |
-| **pinchtab** | Open Swagger UI, screenshot, click Authorize |
-| **gori** | `gori run` / TUI — capture traffic while browser uses Swagger; repeater for ID swaps |
+| curl | Primary |
+| pinchtab | Swagger UI / screenshots |
+| gori | Capture + repeater ID/property swaps |
+| ffuf | Login/OTP spray |
 
 ## Sources
 
-- HTB Academy — API Attacks § Broken Object Level Authorization (CWE-639)  
-- OWASP API Security Top 10 — API1:2023 BOLA
+- OWASP API Security Top 10 (API1–3, API5)  
+- HTB Academy API Attacks (practice only; methodology generalized in batches)

