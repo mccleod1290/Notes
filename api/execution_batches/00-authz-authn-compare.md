@@ -300,6 +300,6 @@ Did response contain extra sensitive fields OR request set forbidden fields?
 - Practice: [01-bola-idor.md](./01-bola-idor.md)  
 - Practice: [02-broken-authentication.md](./02-broken-authentication.md)  
 - Practice: [03-bopla-ede-mass-assignment.md](./03-bopla-ede-mass-assignment.md)  
-- Later: BFLA dedicated batch when Academy section is run  
+- [05-bfla-broken-function-level-authz.md](./05-bfla-broken-function-level-authz.md)
 
 **Read this card once per engagement**, then hang evidence comments from the templates above.
