@@ -7,7 +7,7 @@
 | **Runbooks** | Generic HOW TO test any API | `execution_batches/` |
 | **Engagement proofs** | One lab/target evidence, flags, JWTs redacted | `notes/inlanefreight-*/` |
 
-**Vibe path:** read **00** once → run **01–04** with *your* `BASE=` and accounts.  
+**Vibe path:** read **00** once → run **01–05** with *your* `BASE=` and accounts.  
 Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip on real engagements.
 
 **Only authorized targets.**
@@ -19,6 +19,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | **02** | Broken Authentication (operator) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
 | **03** | BOPLA — EDE + Mass Assignment (operator) | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
 | **04** | Unrestricted Resource Consumption (operator) | [execution_batches/04-unrestricted-resource-consumption.md](./execution_batches/04-unrestricted-resource-consumption.md) |
+| **05** | BFLA — Broken Function Level Authorization (operator) | [execution_batches/05-bfla-broken-function-level-authz.md](./execution_batches/05-bfla-broken-function-level-authz.md) |
 
 ```text
 [ ] 00 Compare classes
@@ -26,6 +27,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 [ ] 02 Broken Auth
 [ ] 03 BOPLA
 [ ] 04 Unrestricted Resource Consumption
+[ ] 05 BFLA
 ```
 
 ## Engagement folders (lab archive — not the runbook)
@@ -36,6 +38,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) | Broken Auth |
 | [notes/inlanefreight-bopla/](./notes/inlanefreight-bopla/) | BOPLA |
 | [notes/inlanefreight-resource-consumption/](./notes/inlanefreight-resource-consumption/) | Unrestricted Resource Consumption |
+| [notes/inlanefreight-bfla/](./notes/inlanefreight-bfla/) | BFLA |
 
 Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDINGS as the operator procedure.
 

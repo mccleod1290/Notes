@@ -250,7 +250,7 @@ Impact: financial DoS against stakeholder SMS budget.
 | Also unauth function that should be role-gated | Separate **BFLA** |
 
 ## NEXT
-→ BFLA (function without role)  
+→ [05-bfla-broken-function-level-authz.md](./05-bfla-broken-function-level-authz.md)  
 → Re-read [00-authz-authn-compare.md](./00-authz-authn-compare.md) when classifying reports  
 
 ---

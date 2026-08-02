@@ -1,0 +1,24 @@
+{
+  "productDiscounts": [
+    {
+      "productID": "a923b706-0aaa-49b2-ad8d-21c97ff6fac7",
+      "ratePercentage": 70,
+      "startDate": "2023-03-15",
+      "endDate": "2023-09-15"
+    },
+    {
+      "productID": "a61e2b25-2f6e-468e-9f15-c51864db4133",
+      "ratePercentage": 30,
+      "startDate": "2023-01-20",
+      "endDate": "2023-07-05"
+    },
+    {
+      "productID": "f6ebdcab-fcbf-4121-8be8-dddc427c68e3",
+      "ratePercentage": 50,
+      "startDate": "2023-01-15",
+      "endDate": "2023-08-10"
+    }
+  ],
+  "_total": 720,
+  "_note": "truncated sample; full 720"
+}
