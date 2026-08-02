@@ -1,44 +1,51 @@
-# Batch 06 — Blind XXE + partial file leak
+# Batch 06 — Blind XXE + partial file leak (talk payloads)
+
+## FILL IN
+
+```bash
+# XML URL of the app — change me
+XML_URL="https://TARGET/api/xml-endpoint"
+# save payloads to files then:
+# curl -sk -X POST "$XML_URL" -H "Content-Type: application/xml" --data-binary @payload.xml
+```
 
 ## GOAL
-When XML is parsed with stack traces but no outbound HTTP, leak file bits via **local DTD + `#` fragment**.
+No outbound HTTP, but stack traces ON → leak file pieces via **local DTD** + **`#` fragment** (talk slides 23–28).
 
 ## TIME
 ~1 hour
 
 ## YOU NEED
-- XML endpoint  
-- Errors/stack traces on  
-- Optional OAST  
+- An endpoint that parses XML  
+- Error messages / stack traces visible  
+- Permission to test  
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version) — talk constraints
 
-**XXE** = evil XML says “also load this file/URL.”  
+You cannot:
 
-Hard mode (talk constraints):
+- See the file in a normal happy response  
+- Load your evil DTD over HTTP  
 
-- No outbound HTTP  
-- File content not shown in normal response  
-- But **errors are on**
+You can:
 
-Trick from the deck:
-
-1. Use a **local DTD** already on Windows to redefine entities.  
-2. Put file data in a URL **fragment** (`#...`) so .NET error text prints a **piece** of the file (**@nytr0gen_** / fragment identifier).  
-
-Even partial `web.config` can give keys → batch 04.
+- Use a **DTD already on Windows**  
+- Force an **error** that prints part of the file  
+- Put file bytes after `#` so .NET shows them in the error (**@nytr0gen_** trick)
 
 ---
 
 ## DO THIS
 
-### 1) Prove XML + errors
+### 1) Prove XML errors exist
 
-Send good XML vs broken XML. Save stack trace sample.
+Send broken XML. Confirm you get a **stack trace**, not a blank 500.
 
-### 2) Local DTD attempt 1 (system.ini — baseline)
+### 2) Attempt 1 — local DTD + system.ini (exact talk idea)
+
+Save as `xxe-attempt1.xml`:
 
 ```xml
 <?xml version="1.0" ?>
@@ -55,11 +62,16 @@ Send good XML vs broken XML. Save stack trace sample.
 <message>any text</message>
 ```
 
-POST as the app expects (`Content-Type: application/xml` or field name).  
-**Win:** any file text in error.  
-**Talk failure mode:** `EntityName` parse error with no data → go to step 3.
+```bash
+curl -sk -X POST "$XML_URL" -H "Content-Type: application/xml" --data-binary @xxe-attempt1.xml
+```
 
-### 3) Fragment identifier attempt 2 (partial web.config)
+**Win:** any text from `system.ini` in the error.  
+**Talk “no love”:** parse error, no data → do attempt 2.
+
+### 3) Attempt 2 — add `#` fragment for partial web.config (talk win)
+
+Save as `xxe-attempt2.xml` (path may need changing):
 
 ```xml
 <?xml version="1.0" ?>
@@ -77,35 +89,39 @@ POST as the app expects (`Content-Type: application/xml` or field name).
 <xxx>test</xxx>
 ```
 
-Try other paths if needed:
+Also try talk-style Windows path for the file to read:
 
 ```text
 file:///D:/webserv2/services/web.config
-file:///C:/Windows/Microsoft.NET/Framework64/v4.0.30319/Config/web.config
 ```
 
-### 4) Write down
+```bash
+curl -sk -X POST "$XML_URL" -H "Content-Type: application/xml" --data-binary @xxe-attempt2.xml
+```
+
+**Win:** partial `web.config` / keys in the error → go batch **04**.
+
+### 4) Write 3 lines
 
 ```text
-XXE errors: yes/no
+Stack traces: yes/no
 Partial file: yes/no
-Keys seen: yes/no
+Keys: yes/no
 ```
 
 ---
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| Partial web.config / keys | → **04** |
-| No errors | Stop XXE → **07** |
-| DNS only | Report limited XXE |
+| You see | You do |
+|---------|--------|
+| Keys / machineKey | → **04** |
+| No stack traces | Stop XXE → **07** |
+| Only DNS OOB works | Report limited XXE |
 
 ---
 
 ## NEXT
-→ [07-shortname-fuzz.md](./07-shortname-fuzz.md)  
-or **04** if keys found  
+→ [07-shortname-fuzz.md](./07-shortname-fuzz.md)
 
-**Slide map:** deck slides 23–28 (constraints, local DTD attempts, fragment win).
+**Slides:** 23–28

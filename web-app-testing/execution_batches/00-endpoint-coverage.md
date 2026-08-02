@@ -1,32 +1,36 @@
 # Batch 00 — Cover every endpoint (foundation)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
-Build a **full request list** for the app, then know **how** to retest every URL for later vulns (methods, CORS, params). Without this, later batches miss doors.
+Build a **full request list** for the app. Later batches use this list. Skip this → you miss doors.
 
 ## TIME
 1–2 hours (first day on a target)
 
 ## YOU NEED
 - In-scope target
-- Proxy (Burp Suite Community/Pro, Caido, or gori)
+- Proxy (Burp / Caido / gori)
 - Browser through proxy
-- Optional: `ffuf`, wordlist of paths
+- Optional: `ffuf`
 
 ---
 
 ## WHY (30 seconds)
 
-Bugs hide on **unlinked** APIs and on **wrong HTTP verbs**.  
-If you only click the UI, you test ~20% of the app.  
+Clicking the UI only tests ~20% of the app.  
+Bugs hide on **hidden paths** and **wrong HTTP verbs**.  
 
-**Good coverage =**
+**Four dumb steps = full map:**
 
-1. Catch every request while you walk the app (proxy history).  
-2. Add hidden paths (content discovery).  
-3. Replay each path with **many verbs**.  
-4. For checks like CORS that need a special header on **every** request → use **Match & Replace** so you never forget.
-
-Kid picture: batch 00 draws the map. Batches 01–09 are rooms on that map.
+1. Click everything while proxy records  
+2. Add hidden paths (ffuf)  
+3. Retry each path with many verbs  
+4. For CORS: auto-add `Origin:` on every request (Match & Replace), then filter responses  
 
 ---
 
@@ -34,23 +38,17 @@ Kid picture: batch 00 draws the map. Batches 01–09 are rooms on that map.
 
 ### 1) Create the map (browse + save history)
 
-1. Set browser proxy → Burp/Caido.  
-2. Log in as user A (and later user B if you have two accounts).  
-3. Click **every** menu, form, upload, settings, logout, password reset, API-looking action.  
-4. Export or keep:
-
-```text
-notes/{target}/http-history/   or Burp project file
-```
-
-5. From history, build a flat list (URL + method + interesting params):
+1. Browser proxy → Burp/Caido.  
+2. Log in (user A; later user B if you have two).  
+3. Click **every** menu, form, upload, settings, logout, reset, API action.  
+4. Keep Burp project **or** export history.  
+5. Make a simple list (spreadsheet or text):
 
 ```text
 METHOD  PATH                     NOTES
 GET     /api/users?id=1
 POST    /api/login
 PUT     /api/profile
-...
 ```
 
 ### 2) Add paths you never clicked (forced browsing)

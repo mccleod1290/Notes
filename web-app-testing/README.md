@@ -1,62 +1,45 @@
-# Web application testing — Operator board
+# Web app testing — open this first
 
-**Rule:** open **one batch**. Read **WHY**. Run **DO THIS**. Follow **NEXT**.  
-Do **not** open all 46 checks at once.
+## Vibe path
+
+1. Open **[execution_batches/00-endpoint-coverage.md](./execution_batches/00-endpoint-coverage.md)** first (always)  
+2. Turn on proxy, click the whole app, build a path list  
+3. Then do **01 → 09** one file at a time  
+4. Each file = **WHY** (read 30 sec) + **DO THIS** (paste) + **NEXT**  
 
 **Only test systems you are allowed to test.**
 
 ---
 
-## Card shape (same as AEM / IIS)
+## Board
 
-| Part | Meaning |
-|------|---------|
-| **WHY** | Short theory so you understand |
-| **DO THIS** | Numbered copy-paste |
-| **IF / THEN** | Branch without thinking |
-| **NEXT** | Only card to open after |
-
----
-
-## Board (do in order)
-
-| # | Session focus | Checks | Time | File |
-|---|---------------|--------|------|------|
-| **00** | **Cover every endpoint** (verbs, paths, CORS workflow) | Foundation | 1–2 h | [00](./execution_batches/00-endpoint-coverage.md) |
-| **01** | XSS family + clickjack + old JS + open redirect | 6 | 1–2 h | [01](./execution_batches/01-xss-clickjack-redirect.md) |
-| **02** | CSRF, CORS, methods, caching, headers, TLS | 6 | 1–2 h | [02](./execution_batches/02-cors-csrf-methods-headers.md) |
-| **03** | Sessions + cookie lifetime | 6 | 1–2 h | [03](./execution_batches/03-session-lifecycle.md) |
-| **04** | Cookie flags, lockout, rate limit, IDOR / priv-esc | 6 | 1–2 h | [04](./execution_batches/04-authz-cookies-rate-limit.md) |
-| **05** | Injection core (SQLi, SSTI, cmd, path, XXE, SSRF) | 6 | 2–3 h | [05](./execution_batches/05-injection-core.md) |
-| **06** | Upload, HPP, null byte, CRLF, errors, data leak | 6 | 1–2 h | [06](./execution_batches/06-upload-hpp-errors.md) |
-| **07** | Request smuggling + client-side desync | 2 deep | 1–2 h | [07](./execution_batches/07-smuggling-desync.md) |
-| **08** | WebSockets + XPath / LDAP / CSV injection | 4 | 1–2 h | [08](./execution_batches/08-websocket-xpath-ldap-csv.md) |
-| **09** | JWT + OAuth | 4 | 1–2 h | [09](./execution_batches/09-jwt-oauth.md) |
-
----
-
-## Progress ticks
+| # | Focus | Time | File |
+|---|-------|------|------|
+| **00** | Map every endpoint + verbs + CORS Match&Replace | 1–2 h | [00](./execution_batches/00-endpoint-coverage.md) |
+| **01** | XSS (DOM/reflected/stored), clickjack, old JS, open redirect | 1–2 h | [01](./execution_batches/01-xss-clickjack-redirect.md) |
+| **02** | CSRF, CORS, methods, form cache, headers, TLS | 1–2 h | [02](./execution_batches/02-cors-csrf-methods-headers.md) |
+| **03** | Sessions + cookie lifetime | 1–2 h | [03](./execution_batches/03-session-lifecycle.md) |
+| **04** | Cookie flags, lockout, rate limit, IDOR / priv-esc | 1–2 h | [04](./execution_batches/04-authz-cookies-rate-limit.md) |
+| **05** | SQLi, SSTI, cmd, path, XXE, SSRF | 2–3 h | [05](./execution_batches/05-injection-core.md) |
+| **06** | Upload, HPP, null byte, CRLF, errors, data leak | 1–2 h | [06](./execution_batches/06-upload-hpp-errors.md) |
+| **07** | Request smuggling + client-side desync | 1–2 h | [07](./execution_batches/07-smuggling-desync.md) |
+| **08** | WebSockets, XPath, LDAP, CSV | 1–2 h | [08](./execution_batches/08-websocket-xpath-ldap-csv.md) |
+| **09** | JWT + OAuth | 1–2 h | [09](./execution_batches/09-jwt-oauth.md) |
 
 ```text
-[ ] 00 endpoint-coverage   ← always start here on a new app
-[ ] 01 xss-clickjack-redirect
-[ ] 02 cors-csrf-methods-headers
-[ ] 03 session-lifecycle
-[ ] 04 authz-cookies-rate-limit
-[ ] 05 injection-core
-[ ] 06 upload-hpp-errors
-[ ] 07 smuggling-desync
-[ ] 08 websocket-xpath-ldap-csv
-[ ] 09 jwt-oauth
+[ ] 00  [ ] 01  [ ] 02  [ ] 03  [ ] 04
+[ ] 05  [ ] 06  [ ] 07  [ ] 08  [ ] 09
 ```
+
+Tick sheet: [checklist.md](./checklist.md)
 
 ---
 
-## Full checklist map (where each item lives)
+## All 46 original checks → batch (complete)
 
 | Check | Batch |
 |-------|-------|
-| How to test all endpoints / verbs / CORS filter workflow | **00** |
+| Endpoint / verb / CORS filter workflow | **00** |
 | DOM XSS | 01 |
 | Reflected XSS | 01 |
 | Stored XSS | 01 |
@@ -64,8 +47,8 @@ Do **not** open all 46 checks at once.
 | Javascript libraries outdated | 01 |
 | Open Redirect | 01 |
 | CSRF | 02 |
-| CORS | 02 (+ workflow in 00) |
-| Check HTTP Methods | 02 (+ verb×path in 00) |
+| CORS | 00 + 02 |
+| Check HTTP Methods | 00 + 02 |
 | Form Caching | 02 |
 | HTTP Headers | 02 |
 | TLS 1.2 or more | 02 |
@@ -104,19 +87,18 @@ Do **not** open all 46 checks at once.
 | JWT Config | 09 |
 | OAuth Checks | 09 |
 
-**Original checklist count:** 46 named checks + foundation (endpoint/verb/CORS workflow) = all mapped above.
+**Count:** 46 named checks + foundation **00** = full original prompt.
 
 ---
 
-## Tools you will use often
+## CORS “how do I find the hits?” (short)
 
-| Tool | When |
-|------|------|
-| Burp / Caido / gori | Proxy all traffic (batch 00) |
-| Burp Match & Replace | CORS Origin on **every** request |
-| Logger++ / AutoRepeater / filter by header | Spot `Access-Control-Allow-Origin` |
-| ffuf / turbo intruder | Verb × path matrix |
-| HTTP Request Smuggler (BApp) | Batch 07 |
-| Retire.js / snyk | Outdated JS (batch 01) |
+1. Burp Match & Replace → every request gets `Origin: https://evil-attacker.com`  
+2. Browse the app  
+3. Filter history for `Access-Control-Allow-Origin`  
+4. Bad = evil origin (or reflect) **and** credentials / cookies matter  
+5. Turn Match & Replace **off** when done  
 
-Sources for smuggling pastes: [PayloadsAllTheThings — Request Smuggling](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Request%20Smuggling/README.md)
+Full steps: [00-endpoint-coverage.md](./execution_batches/00-endpoint-coverage.md)
+
+Smuggling pastes: [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Request%20Smuggling/README.md)

@@ -1,36 +1,42 @@
 # Batch 01 — Spot IIS + fix wrong Host name
 
+## FILL IN (once)
+
+```bash
+IP="1.2.3.4"                    # the IP you are testing
+NAME="app.company.com"          # fill after step 3–4 when you know it
+```
+
 ## GOAL
-See if the box is IIS. If you get a useless **HTTPAPI 2.0 404**, find the real website name (Host).
+Is this IIS? If you only see a useless **HTTPAPI 2.0 404**, find the real website **name** (Host). Do not skip the IP.
 
 ## TIME
 ~1 hour
 
 ## YOU NEED
-- IP or URL in scope
-- `curl` (optional `openssl`)
+- Permission to test
+- Terminal with `curl` (optional: `openssl`)
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version)
 
-IIS can host **many sites on one IP**.  
-It picks the site by the **Host** name in the request (like apartment number).  
+One computer can host **many** websites.  
+IIS picks which site by the **name** in the request (`Host:` header) — like an apartment number.
 
-If you only hit the IP with the wrong name, Windows answers with:
+Wrong name → Windows says:
 
-`Server: Microsoft-HTTPAPI/2.0` + empty 404  
-
-That is **not** “dead server.” That is “wrong apartment number.”  
-Bad guys skip these IPs. You do not.
-
----
-
-## DO THIS
-
-```bash
-IP="x.x.x.x"
+```text
+Server: Microsoft-HTTPAPI/2.0
+404 Not Found
 ```
+
+That is **not** “server is dead.” That is “wrong apartment number.”  
+The talk says: put the right Host, then scan again.
+
+---
+
+## DO THIS (copy top to bottom)
 
 ### 1) Fingerprint
 
@@ -39,77 +45,96 @@ curl -skI "http://$IP/"
 curl -skI "https://$IP/"
 ```
 
-Write what you see: `Server:`, `X-AspNet`, cookies, status.
+**Write:** any `Server: Microsoft-IIS` / `X-AspNet` / cookies?
 
-### 2) Is it the fake 404?
+### 2) Is it the fake empty 404?
 
-Look for: `Microsoft-HTTPAPI/2.0` and almost no real website HTML.
+Look for: `Microsoft-HTTPAPI/2.0` and almost no real HTML.
 
-### 3) Steal names from the certificate
+If **yes** → continue. If you already have a real site name → skip to step 5 with that name.
+
+### 3) Steal names from the TLS certificate
 
 ```bash
 echo | openssl s_client -connect $IP:443 -servername $IP 2>/dev/null \
   | openssl x509 -noout -text 2>/dev/null | grep -E 'DNS:|Subject:'
 ```
 
-### 4) Try a real name
+Copy a DNS name into `NAME=...`
+
+### 4) Try that name as Host
 
 ```bash
-# change app.company.com to a name you found
-curl -skI --resolve app.company.com:443:$IP "https://app.company.com/"
-curl -sI -H "Host: app.company.com" "http://$IP/"
+curl -skI --resolve "$NAME:443:$IP" "https://$NAME/"
+curl -sI -H "Host: $NAME" "http://$IP/"
 ```
 
-### 5) If it works — pin the name
+**Win:** real HTML / `Server: Microsoft-IIS` / login page — not empty HTTPAPI page.
+
+### 5) Pin the name (so tools use it)
 
 ```bash
-echo "$IP app.company.com" | sudo tee -a /etc/hosts
+echo "$IP $NAME" | sudo tee -a /etc/hosts
 ```
 
-Use the **name** for all later scans, not only the IP.
-
-### 6) Slide-2 freebies (shubs tweet — 5 minutes)
-
-**Case-insensitive paths** (Windows):
+### 6) Re-run checks on the **name** (slide: after fixing host)
 
 ```bash
-H="https://REAL_HOST"
+curl -skI "https://$NAME/"
+# later batches use https://$NAME/ not only the raw IP
+```
+
+### 7) Freebies from slide 2 (5 minutes)
+
+**Case does not matter on Windows** — try mixed case:
+
+```bash
 for p in /Admin /admin /ADMIN; do
-  curl -sk -o /dev/null -w "%{http_code} $p\n" "$H$p"
+  curl -sk -o /dev/null -w "%{http_code} $p\n" "https://$NAME$p"
 done
 ```
 
-**Debug / leak endpoints often left on IIS:**
+**Debug pages often left open:**
 
 ```bash
-for p in /elmah.axd /trace.axd /Trace.axd /aspnet_client/; do
-  curl -sk -o /dev/null -w "%{http_code} $p\n" "$H$p"
+for p in /elmah.axd /trace.axd /Trace.axd; do
+  curl -sk -o /dev/null -w "%{http_code} $p\n" "https://$NAME$p"
 done
 ```
 
-### 7) Write 3 lines
+**200 on elmah/trace = finding** (leaks errors / paths).
+
+### 8) Write 3 lines
 
 ```text
 IIS: yes/no
-HTTPAPI_fake_404: yes/no
-REAL_HOST=
-elmah/trace:
+HTTPAPI_was_fake: yes/no
+NAME=
+elmah_or_trace:
 ```
 
 ---
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| Real site with host | → **NEXT** |
-| HTTPAPI only, no cert name | Brute Hosts 20–40 min (ffuf Host header), then **NEXT** if found |
-| Clear IIS already | Still note version → **NEXT** |
-| elmah/trace open | Save evidence (info leak) |
+| You see | You do |
+|---------|--------|
+| Real site with NAME | Go **NEXT** |
+| Still HTTPAPI, no cert name | Brute Hosts ~20 min (below), then NEXT if found |
+| No luck at all | Stop IIS board or try more DNS words |
+
+**Host brute (only if step 3–4 failed):**
+
+```bash
+# wordlist = subdomains; hide the “empty” size first
+curl -sk -o /tmp/b -w "%{size_download}\n" -H "Host: no-such-xyz.company.com" "http://$IP/"
+# put that number in -fs
+ffuf -u "http://$IP/" -H "Host: FUZZ.company.com" -w subdomains.txt -mc all -fs SIZE -t 40
+```
 
 ---
 
 ## NEXT
 → [02-vhost-hopping.md](./02-vhost-hopping.md)
 
-**Slide map:** slides 1–7 (title, why IIS, HTTPAPI host rescue) + slide-2 debug endpoints.
+**Slides:** 1–7 (+ tweet checklist on 2)

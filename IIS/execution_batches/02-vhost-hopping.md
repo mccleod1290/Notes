@@ -1,70 +1,82 @@
 # Batch 02 — Find other apps on same IP (VHost)
 
+## FILL IN
+
+```bash
+IP="1.2.3.4"
+DOMAIN="company.com"
+PUBLIC="apply.company.com"     # name that already works
+# after a hit:
+SECRET="mssql.company.com"     # example internal name from talk
+```
+
 ## GOAL
-Discover **other Host names** on this IIS (internal tools) and open them.
+Find **other Host names** on this IIS (internal admin tools) and open them.
 
 ## TIME
 ~1 hour
 
 ## YOU NEED
-- One working public hostname on IIS (batch 01)
-- Subdomain wordlist
+- Batch 01 done (you have a working public name)
+- A subdomain wordlist file: `subdomains.txt`
+- Optional: Burp for Match & Replace
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version)
 
-Same idea as batch 01, on purpose:  
-IIS often has **public** site + **internal** site (`mssql.`, `admin.`, `intranet.`) on one IP.  
+Same IP, **different names** = different apps.  
+Talk example: public `apply.company.com` + hidden `mssql.company.com` only via Host header → database admin panel.
 
-Public DNS may not list the internal name.  
-You still send `Host: secret.company.com` to the public IP.  
-If IIS has that binding, the internal app answers. That is **VHost hopping**.
+Public DNS may not list the secret name. You still send it. That is **VHost hopping**.
 
 ---
 
 ## DO THIS
 
-```bash
-IP="x.x.x.x"
-DOMAIN="company.com"
-```
-
-### 1) Baseline size (wrong host)
+### 1) Measure the “empty” response size
 
 ```bash
 curl -sk -o /tmp/base -w "%{size_download}\n" \
   -H "Host: no-such-xyz.$DOMAIN" "http://$IP/"
-# put that number in BASE below
 ```
+
+Put that number into `BASE` below.
 
 ### 2) Brute Host header
 
 ```bash
+BASE=12345   # paste size from step 1
 ffuf -u "http://$IP/" -H "Host: FUZZ.$DOMAIN" \
-  -w subdomains.txt -mc all -fs BASE -t 40
+  -w subdomains.txt -mc all -fs $BASE -t 40
 ```
 
-### 3) Pin a hit in Burp (optional but easy)
+**Win:** different size/status → real vhost. Set `SECRET=...`
 
-Match/Replace request header:
-
-| Field | Value |
-|-------|--------|
-| Match | `^Host: public\.company\.com$` |
-| Replace | `Host: mssql.company.com` |
-| Regex | on |
-
-### 4) curl pin
+### 3) Open the secret host with curl
 
 ```bash
-curl -sk --resolve mssql.company.com:443:$IP "https://mssql.company.com/"
+curl -skI --resolve "$SECRET:443:$IP" "https://$SECRET/"
+curl -sk --resolve "$SECRET:443:$IP" "https://$SECRET/" | head -c 400
 ```
 
-### 5) Write down
+### 4) Burp Match & Replace (so browser works) — from the slide
+
+In Burp: **Proxy → Match and replace → Add**
+
+| Field | What to type |
+|-------|----------------|
+| Type | Request header |
+| Match | `^Host: apply\.company\.com$` (use your PUBLIC name) |
+| Replace | `Host: mssql.company.com` (use your SECRET name) |
+| Regex match | **checked** |
+
+Browse `https://PUBLIC/` in browser through Burp → traffic rewrites to SECRET.
+
+### 5) Write 3 lines
 
 ```text
-Extra hosts:
+Extra hosts found:
 Interesting apps:
 ```
 
@@ -72,16 +84,15 @@ Interesting apps:
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| New admin/db app | Soft test (version, default creds if allowed) |
-| File download params | → **03** |
-| No extra hosts | → **03** if file features, else **07** shortnames |
+| You see | You do |
+|---------|--------|
+| Admin / DB / internal app | Note product; soft test only |
+| File download params (`fileName=`) | → **03** |
+| No extra hosts | → **03** if downloads exist, else **07** shortnames |
 
 ---
 
 ## NEXT
-→ [03-lfi-webconfig-dll.md](./03-lfi-webconfig-dll.md)  
-(or [07-shortname-fuzz.md](./07-shortname-fuzz.md) if no file features yet)
+→ [03-lfi-webconfig-dll.md](./03-lfi-webconfig-dll.md)
 
-**Slide map:** deck slides 8–12 (VHost hopping, Burp match-replace, internal admin).
+**Slides:** 8–12

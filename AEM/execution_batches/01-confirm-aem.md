@@ -1,5 +1,11 @@
 # Batch 01 — Is it AEM? Get one page path
 
+## FILL IN
+
+```bash
+T="https://PUT-THE-SITE-HERE"    # no slash at end
+```
+
 ## GOAL
 Know if this site is Adobe Experience Manager. Save **one** page path for later cards.
 
@@ -23,12 +29,6 @@ Later tricks need a real page path like `/content/.../home`. Grab one now so you
 ---
 
 ## DO THIS
-
-### 0) Set your target (change this once)
-
-```bash
-T="https://PUT-THE-SITE-HERE"
-```
 
 ### 1) Knock on three Adobe doors
 

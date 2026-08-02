@@ -1,63 +1,98 @@
-# Batch 05 — Break vendor plugins (DNSpy)
+# Batch 05 — Break vendor plugins (DNSpy / Telerik / editors)
+
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
 
 ## GOAL
-Find third-party ASP.NET tools, get their DLLs, reverse, find one bad upload/XML/path sink.
+Find third-party ASP.NET tools (Telerik, CuteEditor, …), get their DLLs, reverse them, find one bad sink.
 
 ## TIME
 ~1 hour
 
 ## YOU NEED
-- Paths or DLLs from recon/LFI  
-- DNSpy (Windows) or `ilspycmd`  
+- Site map / proxy history  
+- DLL from LFI (batch 03) **or** vendor zip offline  
+- DNSpy on Windows **or** `ilspycmd` on Linux  
 
 ---
 
-## WHY (30 seconds)
+## WHY (kid version)
 
-Companies bolt on editors/uploaders (CuteEditor, Telerik, …).  
-Those ship as **DLL files** without source.  
-You download the same product (or steal DLL via LFI) and reverse it like source.  
-Hunt: file path from user, XML parse, process start.  
-One weak plugin beats a hardened main app.
+Talk + tweet: **Telerik RCE** and other vendors are high ROI on IIS.  
+Companies bolt on editors/uploaders. Code ships as **DLL** without source.  
+You reverse the DLL → find “save file from user input” → PoC.
 
 ---
 
 ## DO THIS
 
-### 1) Probe common plugin paths
+### 1) Probe common plugin paths (include Telerik from slide 2)
 
 ```bash
-ffuf -u "https://TARGET/FUZZ" -w - -mc all -fc 404 -t 20 <<'EOF'
+ffuf -u "$T/FUZZ" -w - -mc all -fc 404 -t 20 <<'EOF'
+Telerik.Web.UI.WebResource.axd
+Telerik.Web.UI.DialogHandler.aspx
 admin/cutesoft_client/cuteeditor/uploader.ashx
 CuteSoft_Client/CuteEditor/Load.ashx
-Telerik.Web.UI.WebResource.axd
 elmah.axd
 trace.axd
+ScriptResource.axd
+WebResource.axd
 EOF
 ```
 
-### 2) Get DLL
+**Win:** not 404 → note path for deeper tests / known CVEs.
 
-- LFI: `../../bin/Something.dll`  
-- or vendor zip offline  
+### 2) Get a DLL
 
-### 3) Reverse
+```bash
+# if you still have LFI from batch 03:
+# curl ... fileName=../../bin/Some.Vendor.dll -o vendor.dll
+file vendor.dll
+```
 
-Open in DNSpy → search `Upload`, `MapPath`, `File.`, `Xml`, `Process` → map URL → method → one PoC request.
+Or download matching product zip offline (talk: CuteSoft zip with DLLs, no source).
+
+### 3) Reverse (pick one)
+
+**Windows:** open `vendor.dll` in [DNSpy](https://github.com/dnSpy/dnSpy/releases)  
+**Linux:**
+
+```bash
+ilspycmd -p -o out/ vendor.dll
+grep -RniE 'Upload|MapPath|File\.|Process|Xml|Deserialize' out/ | head -40
+```
+
+### 4) Hunt sinks then one PoC request
+
+Search for: upload, path, filename, XML, process start.  
+Map HTTP path (`.ashx` / `.aspx`) → method → craft **one** request in Burp.
+
+### 5) Write 3 lines
+
+```text
+Plugin paths:
+DLL:
+Sink / PoC:
+```
 
 ---
 
 ## IF / THEN
 
-| What you saw | What you do |
-|--------------|-------------|
-| Sink found | Exploit per scope |
-| No plugins | → **06** or **07** |
+| You see | You do |
+|---------|--------|
+| Known Telerik CVE path | Check version / public PoC carefully in scope |
+| New sink | Document request |
+| Nothing | → **06** or **07** |
 
 ---
 
 ## NEXT
-→ [06-xxe-fragment.md](./06-xxe-fragment.md) if XML  
+→ [06-xxe-fragment.md](./06-xxe-fragment.md) if app takes XML  
 else → [07-shortname-fuzz.md](./07-shortname-fuzz.md)
 
-**Slide map:** deck slides 18–22 (vendor path → zip/DLL → DNSpy).
+**Slides:** 18–22 (+ Telerik on slide 2)
