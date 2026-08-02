@@ -184,7 +184,8 @@ Response DTOs per role; request allowlists; never trust client prices/fees/roles
 | Also wrong tenant id | File **BOLA** separately |
 
 ## NEXT
-→ BFLA / resource consumption (later)  
+→ [04-unrestricted-resource-consumption.md](./04-unrestricted-resource-consumption.md)  
+→ BFLA (later)  
 → Re-read [00-authz-authn-compare.md](./00-authz-authn-compare.md) when writing reports  
 
 ---

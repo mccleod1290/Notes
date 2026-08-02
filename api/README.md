@@ -7,7 +7,7 @@
 | **Runbooks** | Generic HOW TO test any API | `execution_batches/` |
 | **Engagement proofs** | One lab/target evidence, flags, JWTs redacted | `notes/inlanefreight-*/` |
 
-**Vibe path:** read **00** once → run **01–03** with *your* `BASE=` and accounts.  
+**Vibe path:** read **00** once → run **01–04** with *your* `BASE=` and accounts.  
 Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip on real engagements.
 
 **Only authorized targets.**
@@ -18,12 +18,14 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | **01** | BOLA / IDOR (operator) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
 | **02** | Broken Authentication (operator) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
 | **03** | BOPLA — EDE + Mass Assignment (operator) | [execution_batches/03-bopla-ede-mass-assignment.md](./execution_batches/03-bopla-ede-mass-assignment.md) |
+| **04** | Unrestricted Resource Consumption (operator) | [execution_batches/04-unrestricted-resource-consumption.md](./execution_batches/04-unrestricted-resource-consumption.md) |
 
 ```text
 [ ] 00 Compare classes
 [ ] 01 BOLA
 [ ] 02 Broken Auth
 [ ] 03 BOPLA
+[ ] 04 Unrestricted Resource Consumption
 ```
 
 ## Engagement folders (lab archive — not the runbook)
@@ -33,6 +35,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) | BOLA |
 | [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) | Broken Auth |
 | [notes/inlanefreight-bopla/](./notes/inlanefreight-bopla/) | BOPLA |
+| [notes/inlanefreight-resource-consumption/](./notes/inlanefreight-resource-consumption/) | Unrestricted Resource Consumption |
 
 Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDINGS as the operator procedure.
 
@@ -47,5 +50,5 @@ Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDI
 
 ## Sources
 
-- OWASP API Security Top 10 (API1–3, API5)  
+- OWASP API Security Top 10 (API1–4, API5)  
 - HTB Academy API Attacks (practice only; methodology generalized in batches)
