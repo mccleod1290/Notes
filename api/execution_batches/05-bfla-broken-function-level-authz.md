@@ -209,7 +209,7 @@ Not Broken Auth: authentication succeeded; authorization on the function failed.
 | Login/OTP unlimited | **Broken Auth** / URC |
 
 ## NEXT
-→ Unrestricted Access to Sensitive Business Flows  
+→ [06-unrestricted-sensitive-business-flows.md](./06-unrestricted-sensitive-business-flows.md) (impact framing / process abuse on BFLA data)  
 → Re-read [00-authz-authn-compare.md](./00-authz-authn-compare.md)  
 
 ---

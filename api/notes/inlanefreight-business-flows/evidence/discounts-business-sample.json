@@ -1,0 +1,11 @@
+{
+  "target_product_discount": [
+    {
+      "productID": "a923b706-0aaa-49b2-ad8d-21c97ff6fac7",
+      "ratePercentage": 70,
+      "startDate": "2023-03-15",
+      "endDate": "2023-09-15"
+    }
+  ],
+  "total_discounts": 720
+}

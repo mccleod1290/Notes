@@ -1,0 +1,10 @@
+{
+  "target": {
+    "customerID": "daa8c984-ba84-4265-8d88-12d6607e511c",
+    "city": "Glasgow",
+    "country": "UK",
+    "street": "788 Sauchiehall St.",
+    "postalCode": 63103
+  },
+  "total_addresses": 101
+}
