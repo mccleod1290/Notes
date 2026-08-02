@@ -1,5 +1,12 @@
 # Batch 12 — Is AEM Forms here? (look only)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Map Forms doors. **No exploit payloads** this hour.
 

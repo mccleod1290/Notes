@@ -1,5 +1,12 @@
 # Batch 08 — Packages + secret files
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+QB="PASTE_WORKING_QB_URL"
+```
+
 ## GOAL
 Download deployment zips and hunt files that hold passwords/source. Save loot **outside git**.
 

@@ -1,5 +1,12 @@
 # Batch 06 — Trick the bouncer (`form` + secret path after)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Use `.form.css/` (or `.js`/`.png`) so the **real path rides after** as a suffix.
 

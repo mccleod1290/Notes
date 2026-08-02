@@ -1,5 +1,13 @@
 # Batch 16 — Write a node + leak config (EL)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+QB="PASTE_QB_IF_ANY"
+OAST="http://YOUR-OAST"
+```
+
 ## GOAL
 Probe modern write → render → Expression Language chain. Last heavy AEM card.
 

@@ -1,5 +1,12 @@
 # Batch 02 — Dump folders as JSON
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Ask AEM to print folders as data (`.1.json`, `.2.json`, …). Save what works.
 

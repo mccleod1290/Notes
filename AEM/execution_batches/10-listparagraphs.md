@@ -1,5 +1,12 @@
 # Batch 10 — Cheat code `listParagraphs`
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Use `listParagraphs` to run **internal Adobe pages** and check a known XSS param.
 

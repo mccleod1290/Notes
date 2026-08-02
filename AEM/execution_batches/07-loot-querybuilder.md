@@ -1,5 +1,12 @@
 # Batch 07 — Search and loot (QueryBuilder)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+QB="PASTE_WORKING_QB_URL"
+```
+
 ## GOAL
 With a working search door, pull **high-value paths** and secret keywords. Get leads for batch 08.
 

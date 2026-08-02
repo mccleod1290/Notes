@@ -1,5 +1,12 @@
 # Batch 04 — Trick the bouncer (fake file type)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Reach QueryBuilder by making the URL look like a **css/js/png** file.
 

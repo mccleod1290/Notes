@@ -1,5 +1,12 @@
 # Batch 03 — Try the big search door (QueryBuilder)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 See if `/bin/querybuilder.json` answers **without any trick**.
 

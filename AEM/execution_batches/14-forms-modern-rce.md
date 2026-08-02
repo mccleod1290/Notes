@@ -1,5 +1,13 @@
 # Batch 14 — Forms new big bugs (Shah / Assetnote)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+QB="PASTE_QB_IF_ANY"
+OAST="http://YOUR-OAST"
+```
+
 ## GOAL
 On standalone Forms, check modern unauth critical doors. **OOB first.** Only if RCE/XXE allowed.
 

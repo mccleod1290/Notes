@@ -1,5 +1,12 @@
 # Batch 09 — XSS cheat code `rawcontent`
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 See if adding `.rawcontent.html` turns a reflected path into script (XSS).
 

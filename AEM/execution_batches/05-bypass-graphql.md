@@ -1,5 +1,12 @@
 # Batch 05 — Trick the bouncer (GraphQL path)
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Reach QueryBuilder using Adobe’s GraphQL “side door” paths.
 

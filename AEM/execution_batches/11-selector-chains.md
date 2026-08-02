@@ -1,5 +1,12 @@
 # Batch 11 — Stack two cheat codes
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+PAGE="/content/YOUR/PAGE"
+```
+
 ## GOAL
 Put `form` on the outside and `listParagraphs` on the inside so blocked selectors still run.
 

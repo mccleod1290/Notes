@@ -1,5 +1,13 @@
 # Batch 15 — SSRF + package XXE
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+QB="PASTE_QB_IF_ANY"
+OAST="http://YOUR-OAST"
+```
+
 ## GOAL
 1) Make server call **your** URL (SSRF).  
 2) Upload tiny evil zip → blind XXE callback.
