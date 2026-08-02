@@ -22,7 +22,13 @@ If a parameter is a file name, use `../` to read **web.config**, then **bin/*.dl
 
 ## WHY (kid version)
 
-Bad code does: `open(folder + user_input)`.  
+Talk shows bad C#:
+
+```csharp
+// Server.MapPath("~/Content/PDF/" + fileName)  ← user controls fileName
+```
+
+That is: `open(folder + user_input)`.  
 You set user_input to `../../web.config` → climb out of the folder.
 
 **web.config** often has:
@@ -31,7 +37,8 @@ You set user_input to `../../web.config` → climb out of the folder.
 - **machineKey** (needed for RCE in batch 04)  
 - DLL names under `bin/`
 
-Talk order: `web.config` → `global.asax` → `bin/Company.Web.Api.dll`
+Talk order: `web.config` → `global.asax` → `bin/Company.Web.Api.dll`  
+Deep writeup (slide link): https://bit.ly/36D3WQg (Minded Security — path traversal to source)
 
 ---
 

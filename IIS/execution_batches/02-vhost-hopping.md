@@ -26,7 +26,13 @@ Find **other Host names** on this IIS (internal admin tools) and open them.
 ## WHY (kid version)
 
 Same IP, **different names** = different apps.  
-Talk example: public `apply.company.com` + hidden `mssql.company.com` only via Host header → database admin panel.
+Talk **$1900** example:
+
+- Public: `apply.company.com` (IIS)  
+- Brute Host: `%word%.company.com` (Burp Intruder / ffuf)  
+- Hit: `mssql.company.com` — **not** in public DNS  
+- App: ASP.NET Enterprise Manager / MSSQL web UI  
+  https://sourceforge.net/projects/asp-ent-man/
 
 Public DNS may not list the secret name. You still send it. That is **VHost hopping**.
 

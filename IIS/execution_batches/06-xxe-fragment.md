@@ -67,7 +67,17 @@ curl -sk -X POST "$XML_URL" -H "Content-Type: application/xml" --data-binary @xx
 ```
 
 **Win:** any text from `system.ini` in the error.  
-**Talk “no love”:** parse error, no data → do attempt 2.
+
+**Talk “Stack Trace But No Love”:** you may only see:
+
+```text
+System.Xml.XmlException: An error occurred while parsing EntityName
+```
+
+…with **no file data**. That is expected. Go to attempt 2 (add `#`).
+
+XXE payload ideas bank (slide): https://bit.ly/3cF8pWs  
+Local DTD article (slide): https://bit.ly/2LjXoyM
 
 ### 3) Attempt 2 — add `#` fragment for partial web.config (talk win)
 

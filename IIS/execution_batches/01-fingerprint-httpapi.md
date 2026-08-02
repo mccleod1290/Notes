@@ -104,13 +104,19 @@ done
 
 **200 on elmah/trace = finding** (leaks errors / paths).
 
-### 8) Write 3 lines
+### 8) Rinse and repeat (slide 7)
+
+Find **other** IPs/assets that also show HTTPAPI 2.0 404.  
+Do steps 3–6 on each. Do not skip them.
+
+### 9) Write 3 lines
 
 ```text
 IIS: yes/no
 HTTPAPI_was_fake: yes/no
 NAME=
 elmah_or_trace:
+other_HTTPAPI_assets:
 ```
 
 ---
@@ -119,8 +125,9 @@ elmah_or_trace:
 
 | You see | You do |
 |---------|--------|
-| Real site with NAME | Go **NEXT** |
+| Real site with NAME | Go **NEXT** (also re-run shortname later on NAME — slide 7) |
 | Still HTTPAPI, no cert name | Brute Hosts ~20 min (below), then NEXT if found |
+| Cert has only partial name | Still use it in Host; or brute the rest |
 | No luck at all | Stop IIS board or try more DNS words |
 
 **Host brute (only if step 3–4 failed):**
