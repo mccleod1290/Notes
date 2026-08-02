@@ -18,6 +18,8 @@ AEM is a big company website tool. Adobe leaves the same doors on many sites (lo
 If those doors answer, it is probably AEM.  
 Later tricks need a real page path like `/content/.../home`. Grab one now so you never hunt for it again mid-fight.
 
+**Permissions footgun:** unauthenticated visitors are the `anonymous` user, who sits in the `everyone` group. Anything granted to “everyone” is free to the internet.
+
 ---
 
 ## DO THIS

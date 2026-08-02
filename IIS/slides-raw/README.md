@@ -5,8 +5,7 @@
 
 | Path | What |
 |------|------|
-| [`cdn/`](./cdn/) | Clean per-slide JPGs from SlideShare CDN (`slide-01.jpg` … `slide-35.jpg`) |
-| `slide-XX.png` | Full browser viewport captures via pinchtab (UI chrome included) |
+| [`cdn/`](./cdn/) | Clean per-slide JPGs (`slide-01.jpg` … `slide-35.jpg`) |
 
-Operator write-up (copy-paste + first principles):  
-[`../OPERATOR-NOTES-hacking-iis-nahamcon.md`](../OPERATOR-NOTES-hacking-iis-nahamcon.md)
+Operator path: [../README.md](../README.md) (execution batches)  
+Archive pastes: [../OPERATOR-NOTES-hacking-iis-nahamcon.md](../OPERATOR-NOTES-hacking-iis-nahamcon.md)

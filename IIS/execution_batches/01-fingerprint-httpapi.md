@@ -68,12 +68,32 @@ echo "$IP app.company.com" | sudo tee -a /etc/hosts
 
 Use the **name** for all later scans, not only the IP.
 
-### 6) Write 3 lines
+### 6) Slide-2 freebies (shubs tweet — 5 minutes)
+
+**Case-insensitive paths** (Windows):
+
+```bash
+H="https://REAL_HOST"
+for p in /Admin /admin /ADMIN; do
+  curl -sk -o /dev/null -w "%{http_code} $p\n" "$H$p"
+done
+```
+
+**Debug / leak endpoints often left on IIS:**
+
+```bash
+for p in /elmah.axd /trace.axd /Trace.axd /aspnet_client/; do
+  curl -sk -o /dev/null -w "%{http_code} $p\n" "$H$p"
+done
+```
+
+### 7) Write 3 lines
 
 ```text
 IIS: yes/no
 HTTPAPI_fake_404: yes/no
 REAL_HOST=
+elmah/trace:
 ```
 
 ---
@@ -85,8 +105,11 @@ REAL_HOST=
 | Real site with host | → **NEXT** |
 | HTTPAPI only, no cert name | Brute Hosts 20–40 min (ffuf Host header), then **NEXT** if found |
 | Clear IIS already | Still note version → **NEXT** |
+| elmah/trace open | Save evidence (info leak) |
 
 ---
 
 ## NEXT
 → [02-vhost-hopping.md](./02-vhost-hopping.md)
+
+**Slide map:** slides 1–7 (title, why IIS, HTTPAPI host rescue) + slide-2 debug endpoints.

@@ -83,3 +83,5 @@ Interesting apps:
 ## NEXT
 → [03-lfi-webconfig-dll.md](./03-lfi-webconfig-dll.md)  
 (or [07-shortname-fuzz.md](./07-shortname-fuzz.md) if no file features yet)
+
+**Slide map:** deck slides 8–12 (VHost hopping, Burp match-replace, internal admin).

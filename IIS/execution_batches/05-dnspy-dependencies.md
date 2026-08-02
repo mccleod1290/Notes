@@ -59,3 +59,5 @@ Open in DNSpy → search `Upload`, `MapPath`, `File.`, `Xml`, `Process` → map 
 ## NEXT
 → [06-xxe-fragment.md](./06-xxe-fragment.md) if XML  
 else → [07-shortname-fuzz.md](./07-shortname-fuzz.md)
+
+**Slide map:** deck slides 18–22 (vendor path → zip/DLL → DNSpy).

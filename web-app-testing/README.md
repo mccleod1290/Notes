@@ -100,9 +100,11 @@ Do **not** open all 46 checks at once.
 | LDAP Injection | 08 |
 | CSV Injection | 08 |
 | JWT None Algorithm | 09 |
-| JWT Signature Validation / Embedded JWK | 09 |
+| JWT Signature Validation Embedded JWK | 09 |
 | JWT Config | 09 |
 | OAuth Checks | 09 |
+
+**Original checklist count:** 46 named checks + foundation (endpoint/verb/CORS workflow) = all mapped above.
 
 ---
 

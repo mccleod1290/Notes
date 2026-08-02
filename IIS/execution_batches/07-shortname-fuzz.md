@@ -83,3 +83,5 @@ Full paths found:
 ## NEXT
 **Board complete** for shortnames.  
 Loop to **03–06** if new paths open file/XML/vendor doors.
+
+**Slide map:** deck slides 29–33 (shortscan → logical ffuf → crunch). Resources: slides 34–35 → [../resources.md](../resources.md).

@@ -47,4 +47,16 @@ Stop when the timer ends. You do not need the whole board in your head.
 [ ] 12  [ ] 13  [ ] 14  [ ] 15  [ ] 16
 ```
 
-Deep reading only if stuck: [reference/](./reference/) · [resources.md](./resources.md)
+Links / sources: [resources.md](./resources.md)
+
+## Source coverage (what these batches cover)
+
+| Source theme | Batches |
+|--------------|---------|
+| Fingerprint / architecture / JSON dumps | 01–02 |
+| QueryBuilder + dispatcher bypasses (`;` / GraphQL / `form`) | 03–06 |
+| Loot packages + content secrets | 07–08 |
+| Selectors: rawcontent, listParagraphs, chains (Jim Green) | 09–11 |
+| AEM Forms surface + Egorov classic XXE/JS | 12–13 |
+| Forms modern criticals (Shah) | 14 |
+| Modern SSRF / packmgr XXE / write+EL (Assetnote) | 15–16 |

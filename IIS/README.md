@@ -24,5 +24,19 @@
 [ ] 01  [ ] 02  [ ] 03  [ ] 04  [ ] 05  [ ] 06  [ ] 07
 ```
 
-Long theory + extra pastes: [OPERATOR-NOTES-hacking-iis-nahamcon.md](./OPERATOR-NOTES-hacking-iis-nahamcon.md)  
-Links: [resources.md](./resources.md) · slides: [slides-raw/](./slides-raw/)
+## Slide → batch map (NahamCon deck, 35 slides)
+
+| Slides | Topic | Batch |
+|--------|--------|-------|
+| 1–2 | Title + why IIS (case, shortname, VIEWSTATE, debug, vendor) | 01 (+ 07/04/05) |
+| 3–7 | HTTPAPI 2.0 / Host header | **01** |
+| 8–12 | VHost hopping | **02** |
+| 13–15 | LFI → web.config → DLL | **03** |
+| 16–17 | VIEWSTATE / machineKey RCE | **04** |
+| 18–22 | DNSpy / dependencies | **05** |
+| 23–28 | Complex XXE + fragment | **06** |
+| 29–33 | Shortname → ffuf/crunch | **07** |
+| 34–35 | Resources | [resources.md](./resources.md) |
+
+Full paste archive (optional): [OPERATOR-NOTES-hacking-iis-nahamcon.md](./OPERATOR-NOTES-hacking-iis-nahamcon.md)  
+Slide images: [slides-raw/cdn/](./slides-raw/cdn/)

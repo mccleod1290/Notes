@@ -64,3 +64,5 @@ Watch OAST. Save request/response.
 
 ## NEXT
 → [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)
+
+**Slide map:** deck slides 16–17 (machineKey → viewgen → ObjectStateFormatter RCE).

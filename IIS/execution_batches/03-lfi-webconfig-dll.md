@@ -65,12 +65,18 @@ curl -sk -G "$BASE" --data-urlencode "fileName=../../bin/Company.Web.Api.dll" \
 file Company.Web.Api.dll
 ```
 
-### 4) Write down
+### 4) If you have **write/upload** instead of read (slide note)
+
+Sometimes you cannot download `web.config`, but you can **upload** a file named like config or drop under a writable folder.  
+That is a different bug (upload → config/handler). Still: after any write under web root, re-check `web.config` / handlers / `.aspx` shells per program rules.
+
+### 5) Write down
 
 ```text
 LFI: yes/no
 machineKey: yes/no
 DLLs saved:
+upload/write:
 ```
 
 ---
@@ -87,3 +93,5 @@ DLLs saved:
 
 ## NEXT
 → [04-viewstate-rce.md](./04-viewstate-rce.md) or [05-dnspy-dependencies.md](./05-dnspy-dependencies.md)
+
+**Slide map:** deck slides 13–15 (LFI → web.config → bin DLL).
