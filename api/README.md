@@ -6,9 +6,11 @@
 | # | Focus | File |
 |---|--------|------|
 | **01** | Broken Object Level Authorization (BOLA / IDOR) | [execution_batches/01-bola-idor.md](./execution_batches/01-bola-idor.md) |
+| **02** | Broken Authentication (weak policy + brute / OTP) | [execution_batches/02-broken-authentication.md](./execution_batches/02-broken-authentication.md) |
 
 ```text
 [ ] 01 BOLA / IDOR
+[ ] 02 Broken Authentication
 ```
 
 ## Lab engagement (this workspace)
@@ -17,7 +19,8 @@
 |------|--------|
 | Target | `http://154.57.164.65:31687` (HTB Academy-style Inlanefreight API) |
 | Swagger | `/swagger/index.html` · OAS `/swagger/v1/swagger.json` |
-| Evidence | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) |
+| BOLA evidence | [notes/inlanefreight-bola/](./notes/inlanefreight-bola/) |
+| Broken auth evidence | [notes/inlanefreight-broken-auth/](./notes/inlanefreight-broken-auth/) |
 
 **Do not commit live JWTs or production secrets.**
 

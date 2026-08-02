@@ -1,0 +1,1 @@
+{"StatusCode":400,"Message":"One or more errors occurred!","Errors":{"UpdatedCustomer.Password":["Password must be at least 6 characters long"]}}

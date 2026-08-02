@@ -1,0 +1,1 @@
+{"StatusCode":400,"Message":"One or more errors occurred!","Errors":{"SerializerErrors":["JSON deserialization for type 'API_Attacks.Entities.Commands.UpdateCustomerByCurrentUserCommand' was missing required properties, including the following: UpdatedCustomer"]}}
