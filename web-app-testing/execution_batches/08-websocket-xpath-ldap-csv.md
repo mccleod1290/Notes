@@ -1,5 +1,11 @@
 # Batch 08 — WebSockets + XPath / LDAP / CSV injection
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **4 checks**: Web Sockets, XPath Injection, LDAP Injection, CSV Injection.
 

@@ -1,5 +1,11 @@
 # Batch 05 — Injection core
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: SQLi, SSTI, Command Injection, Path Traversal, XXE, SSRF.  
 Use **every interesting param** from batch 00 (not one login box only).

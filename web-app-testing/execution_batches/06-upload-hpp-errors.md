@@ -1,5 +1,11 @@
 # Batch 06 — Upload, HPP, null byte, CRLF, errors, data leak
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: File Upload, HPP, Null Byte Injection, CRLF Injection, Improper Error Handling, Excessive Data Exposure.
 

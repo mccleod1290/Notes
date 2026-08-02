@@ -1,5 +1,12 @@
 # Batch 13 — Forms old XXE / JS (Egorov)
 
+## FILL IN
+
+```bash
+QB="PASTE_QB_URL"
+OAST="http://YOUR-OAST"
+```
+
 ## GOAL
 If old Forms “guide” pieces exist **and** you can write a node, test classic XXE/JS issues with **OOB only** first.
 

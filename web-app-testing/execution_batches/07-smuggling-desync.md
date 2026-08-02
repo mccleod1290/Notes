@@ -1,5 +1,11 @@
 # Batch 07 — HTTP Request Smuggling + Client-Side Desync
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **2 deep checks** with copy-paste payloads from  
 [PayloadsAllTheThings — Request Smuggling](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Request%20Smuggling/README.md).

@@ -1,5 +1,11 @@
 # Batch 01 — XSS family + clickjack + old JS + open redirect
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: DOM XSS, Reflected XSS, Stored XSS, Clickjacking, outdated JS libraries, Open Redirect.
 

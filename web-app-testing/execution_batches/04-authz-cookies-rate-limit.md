@@ -1,5 +1,11 @@
 # Batch 04 — Cookies, lockout, rate limit, IDOR / privilege
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: Cookie Vulnerabilities, Weak Lockout, Rate Limit, Horizontal Priv Esc, Vertical Priv Esc, IDOR.
 

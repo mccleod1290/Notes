@@ -1,5 +1,11 @@
 # Batch 09 — JWT + OAuth
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **4 checks**: JWT None Algorithm, JWT Embedded JWK / signature validation, JWT Config, OAuth Checks.
 

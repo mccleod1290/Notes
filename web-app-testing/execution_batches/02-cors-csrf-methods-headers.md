@@ -1,5 +1,11 @@
 # Batch 02 — CSRF, CORS, methods, caching, headers, TLS
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: CSRF, CORS, HTTP Methods, Form Caching, HTTP Headers, TLS ≥ 1.2.
 

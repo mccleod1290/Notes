@@ -1,5 +1,11 @@
 # Batch 03 — Session lifecycle
 
+## FILL IN
+
+```bash
+T="https://TARGET"
+```
+
 ## GOAL
 Finish **6 checks**: Session Storage / Local Storage, Broken Session Management, Session Fixation, Session Timeout, Back and Refresh Attack, Cookies Expire Time.
 
