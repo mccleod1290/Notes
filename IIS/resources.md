@@ -2,6 +2,11 @@
 
 From training slide “More resources on hacking IIS,” plus a few stable companions.
 
+**Engagement operator notes (first principles + paste kits):**  
+[OPERATOR-NOTES-hacking-iis-nahamcon.md](./OPERATOR-NOTES-hacking-iis-nahamcon.md)  
+**Slide images (1–35):** [slides-raw/cdn/](./slides-raw/cdn/)  
+**Deck:** [SlideShare — Hacking IIS NahamCon](https://www.slideshare.net/slideshow/hacking-iis-nahamconpdf/255244262)
+
 ## Core (from slide)
 
 | Link | What |
