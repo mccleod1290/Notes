@@ -7,7 +7,7 @@
 | **Runbooks** | Generic HOW TO test any API | `execution_batches/` |
 | **Engagement proofs** | One lab/target evidence, flags, JWTs redacted | `notes/inlanefreight-*/` |
 
-**Vibe path:** read **00** once → run **01–07** with *your* `BASE=` and accounts.  
+**Vibe path:** read **00** once → run **01–08** with *your* `BASE=` and accounts.  
 Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip on real engagements.
 
 **Only authorized targets.**
@@ -22,6 +22,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | **05** | BFLA — Broken Function Level Authorization (operator) | [execution_batches/05-bfla-broken-function-level-authz.md](./execution_batches/05-bfla-broken-function-level-authz.md) |
 | **06** | Unrestricted Access to Sensitive Business Flows (operator) | [execution_batches/06-unrestricted-sensitive-business-flows.md](./execution_batches/06-unrestricted-sensitive-business-flows.md) |
 | **07** | Server-Side Request Forgery (operator) | [execution_batches/07-ssrf.md](./execution_batches/07-ssrf.md) |
+| **08** | Security Misconfiguration (operator) | [execution_batches/08-security-misconfiguration.md](./execution_batches/08-security-misconfiguration.md) |
 
 ```text
 [ ] 00 Compare classes
@@ -32,6 +33,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 [ ] 05 BFLA
 [ ] 06 Sensitive Business Flows
 [ ] 07 SSRF
+[ ] 08 Security Misconfiguration
 ```
 
 ## Engagement folders (lab archive — not the runbook)
@@ -45,6 +47,7 @@ Lab “WORKED EXAMPLE” blocks at bottom of batches are **optional** — skip o
 | [notes/inlanefreight-bfla/](./notes/inlanefreight-bfla/) | BFLA |
 | [notes/inlanefreight-business-flows/](./notes/inlanefreight-business-flows/) | Sensitive Business Flows |
 | [notes/inlanefreight-ssrf/](./notes/inlanefreight-ssrf/) | SSRF |
+| [notes/inlanefreight-security-misconfig/](./notes/inlanefreight-security-misconfig/) | Security Misconfiguration |
 
 Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDINGS as the operator procedure.
 
@@ -59,5 +62,5 @@ Each has `FINDINGS.md` + `evidence/` (screenshots, JSON). **Do not** treat FINDI
 
 ## Sources
 
-- OWASP API Security Top 10 (API1–7)  
+- OWASP API Security Top 10 (API1–8)  
 - HTB Academy API Attacks (practice only; methodology generalized in batches)

@@ -1,0 +1,7 @@
+suppliers name=[a] -> {"suppliersCount":125}
+suppliers name=[test] -> {"suppliersCount":7}
+suppliers name=[test'] -> {"errorMessage":"An error has occurred!"}
+suppliers name=[test' OR 1=1 --] -> {"suppliersCount":151}
+suppliers name=[test' OR 1=1 -- -] -> {"suppliersCount":151}
+suppliers name=[x' OR '1'='1] -> {"suppliersCount":1}
+suppliers name=[%] -> {"suppliersCount":151}

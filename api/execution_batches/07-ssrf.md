@@ -196,7 +196,7 @@ Often combined with mass assignment (client-writable URI that should be server-o
 | Can set fee + URI | Mass assign + SSRF separately |
 
 ## NEXT
-→ Security Misconfiguration  
+→ [08-security-misconfiguration.md](./08-security-misconfiguration.md)  
 → Re-read [03-bopla-ede-mass-assignment.md](./03-bopla-ede-mass-assignment.md) when URI is mass-assignable  
 
 ---
