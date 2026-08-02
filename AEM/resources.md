@@ -46,4 +46,5 @@
 
 ## Operator notes index
 
-[README.md](./README.md)
+**Primary path:** [execution_batches via README.md](./README.md)  
+**Deep dive only:** [reference/](./reference/)

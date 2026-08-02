@@ -5,12 +5,16 @@
 **Slide captures:** [`slides-raw/cdn/`](./slides-raw/cdn/) (1–35)  
 **Authorized targets only.**
 
+> **Engagement path:** use timed **[execution_batches/](./execution_batches/)** (1–2 h each).  
+> This file is the **full reference / paste archive**, not the session board.
+
 ---
 
 ## How to use this doc under time pressure
 
 | Goal | Go here |
 |------|---------|
+| Start a focused session | [execution_batches board](./README.md) |
 | 30-second map of the whole talk | [Glance card](#0-glance-card--whole-talk-in-one-screen) |
 | “HTTPAPI 2.0 / 404 — do I skip this IP?” | [§1 Host header rescue](#1-httpapi-20--host-header-rescue) |
 | Internal app behind same IIS IP | [§2 VHost hopping](#2-vhost-hopping) |
