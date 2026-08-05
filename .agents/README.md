@@ -3,6 +3,9 @@
 Canonical agent **YAML** contracts and the **simple-english** skill live here.
 Grok spawn bodies also live under `.grok/agents/` (same names).
 
+Vault purpose (see root `AGENTS.md`): personal **bug bounty → architect → first
+principles**. Not a university term setup. `agriculture/` is a one-off favor only.
+
 Upstream skill source: [AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish)
 (ASD-STE100).
 

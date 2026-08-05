@@ -1,7 +1,10 @@
 # 2-HOUR CRAM — Computer Apps / ICT in Agriculture
 
-**Source PDF:** agri input automation → models → apps → GIS/RS/GPS → DSS → expert systems 
-**Exam map:** SVU-style 2nd year (1 / 3 / 6 mark tags). 
+> **Vault note:** one-off favor (SVU agri help for someone close). Not the
+> operator’s core curriculum — see root `AGENTS.md` and `agriculture/README.md`.
+
+**Source PDF:** agri input automation → models → apps → GIS/RS/GPS → DSS → expert systems  
+**Exam map:** SVU-style 2nd year (1 / 3 / 6 mark tags) — for the intended student only.  
 **How to use (120 min):** 0–15 mark legend + unit map · 15–70 units A–C · 70–100 units D–F · 100–120 write 2× 6-mark skeletons + flash gotchas.
 
 **Mark legend**

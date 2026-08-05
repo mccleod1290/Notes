@@ -3,13 +3,16 @@
 Single source of truth for this vault. **AGENTS.md** points here and hardcodes
 agent names. Do not invent a parallel pipeline.
 
+**Purpose reminder:** operator vault for bug bounty / architect / first
+principles — not a university semester setup. See root `AGENTS.md`.
+
 | File | Job |
 |------|-----|
 | [ship-pipeline-mandatory.md](./ship-pipeline-mandatory.md) | Full order: research → writer → frugal-eval → content_eval → git → mail |
 | [writer-mandatory.md](./writer-mandatory.md) | **writer** agent + simple-english **1×** pragmatic |
 | [frugal-eval-mandatory.md](./frugal-eval-mandatory.md) | **frugal-eval** agent + simple-english **3×** hardcore |
 | [content-eval-mandatory.md](./content-eval-mandatory.md) | **content_eval** structure 3× (after STE) |
-| [study-sources-mandatory.md](./study-sources-mandatory.md) | official docs + gold-mine blogs on study topics |
+| [study-sources-mandatory.md](./study-sources-mandatory.md) | official docs + gold-mine blogs (security / operator learning) |
 
 ## Agents + skills (hardcoded paths)
 

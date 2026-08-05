@@ -5,14 +5,17 @@ Part of ship pipeline: `rules/ship-pipeline-mandatory.md`.
 
 ## When
 
-Notes, guides, checklists, templates, study docs, operator batches, cram cards,
-teaching READMEs, first-principles explainers — any prose the user will learn from.
+Notes, guides, checklists, templates, study docs, operator batches, teaching
+READMEs, first-principles explainers — any prose that builds **operator /
+architect** skill (bug bounty path). Default audience is the vault owner, not
+a university exam board.
 
 ## Must
 
 1. Use agent **writer** (not a free-form draft with no STE).
-2. Write the draft **on disk** (topic folders: `AI/`, `api/`, `agriculture/`, …).
-3. Study/course topics: finish **study research pack** first
+2. Write the draft **on disk** (core folders: `AI/`, `api/`, `IIS/`, `AEM/`,
+   `web-app-testing/`, `Checklists/`, … — see `AGENTS.md` purpose).
+3. Learning topics: finish **study research pack** first
    (`rules/study-sources-mandatory.md`).
 4. Load and apply skill **simple-english** exactly **once**:
    - path: `.agents/skills/simple-english/SKILL.md`

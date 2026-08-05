@@ -1,5 +1,8 @@
 # Notes — build todo
 
+**Vault purpose:** personal bug bounty → security architect → first principles  
+(see `AGENTS.md`). Not a university term plan. `agriculture/` is a one-off favor.
+
 Track for this vault. Update status when you extend a file.
 
 | # | Deliverable | Path | Status |

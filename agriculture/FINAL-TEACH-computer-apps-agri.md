@@ -1,7 +1,10 @@
 # Computer Applications in Agriculture — Teach + Exam Notes
 
-**Who this is for:** You are learning this unit for the **first time**.  
-**Source:** Your syllabus PDF (computer-controlled devices → models → apps → GIS/RS/GPS → DSS → expert systems).  
+> **Vault note:** one-off favor (SVU agri help for someone close). Not the
+> operator’s core curriculum — see `agriculture/README.md` and root `AGENTS.md`.
+
+**Who this is for:** The intended student learning this unit for the **first time**.  
+**Source:** Their syllabus PDF (computer-controlled devices → models → apps → GIS/RS/GPS → DSS → expert systems).  
 **Style:** Each idea is explained in plain language first. Exam tags come after.
 
 | Tag | Exam job | How much to write |

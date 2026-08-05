@@ -1,7 +1,8 @@
 # CRAM-2h eval report (6 passes)
 
 **Path:** `agriculture/CRAM-2h-computer-apps-agri.md`  
-**Intent:** 2-hour SVU 2nd year agri ICT / computer apps cram from user PDF.
+**Intent:** 2-hour SVU 2nd year agri ICT / computer apps cram from user PDF.  
+**Vault scope:** one-off favor for someone close — not the operator’s BB/architect curriculum.
 
 ## STE / writer (pass 1 — pragmatic)
 

@@ -1,7 +1,8 @@
 # Operator suggestions (Grok) — survive, go deep, stay agile
 
-**Audience:** you — goal = **best operator**: faster than chaos, deeper than checklists, **before bad guys own the story**.  
-**Not** a CTF cheat sheet. **Not** folder-specific (API / IIS / AEM live elsewhere).  
+**Audience:** you — path = **bug bounty → security architect → first principles**.  
+Goal = **best operator**: faster than chaos, deeper than checklists, **before bad guys own the story**.  
+**Not** a CTF cheat sheet. **Not** a university semester plan. **Not** folder-specific (API / IIS / AEM live elsewhere).  
 **Use:** re-read before engagements; after messy sessions; when tired and tempted to spray.
 
 ---

@@ -1,6 +1,9 @@
 # Computer Applications in Agriculture  
 ## Super simple notes (first time learner)
 
+> **Vault note:** one-off favor (SVU agri help for someone close). Not the
+> operator’s core curriculum — see `agriculture/README.md` and root `AGENTS.md`.
+
 Read slowly. Every idea is explained like you never heard it before.  
 At the end of each part you get **easy exam points** to remember.
 

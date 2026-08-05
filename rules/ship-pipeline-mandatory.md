@@ -2,10 +2,14 @@
 
 **Non-negotiable** default for every keepable deliverable in this vault.
 
+Vault purpose (see `AGENTS.md`): personal **bug bounty → architect → first
+principles** learning. Not a university term track. Side folders such as
+`agriculture/` (one-off SVU help) do not change this pipeline’s defaults.
+
 ## Pipeline (order fixed — do not reorder)
 
 ```text
-0. STUDY RESEARCH  (study topics)  rules/study-sources-mandatory.md
+0. STUDY RESEARCH  (learning topics)  rules/study-sources-mandatory.md
 1. WRITER          draft on disk + simple-english 1× pragmatic
 2. FRUGAL-EVAL     simple-english 3× hardcore (strict + checklist)
 3. CONTENT_EVAL    slop_chop → first_principles → core_questions
@@ -42,7 +46,7 @@ See `rules/study-sources-mandatory.md`. Then continue at step 1.
 See `rules/writer-mandatory.md`.
 
 - Prefer `subagent_type: writer` (contract: `.agents/writer.yaml`).
-- Write real files (topic folders: `AI/`, `api/`, `agriculture/`, etc.).
+- Write real files (core folders: `AI/`, `api/`, `IIS/`, `AEM/`, `web-app-testing/`, etc.).
 - Must run **simple-english** once in **pragmatic** mode before handoff.
 
 ### 2 — frugal-eval (STE hardcore 3×)
