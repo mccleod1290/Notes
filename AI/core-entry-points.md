@@ -349,7 +349,7 @@ Before you type:
 | Web search vs extended thinking vs Research | https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research |
 | Projects home | https://claude.ai/projects |
 
-## Blogs & practical writeups
+## Blogs & practical writeups (Claude-adjacent)
 
 | Piece | Why read it |
 |-------|-------------|
@@ -358,9 +358,26 @@ Before you type:
 | [Claude Projects tutorial — working knowledge base (Enterprise DNA)](https://enterprisedna.co/resources/guides/guide-claude-projects-tutorial/) | Production-minded instructions and document ingestion |
 | [Northeastern — class Q&A Project](https://learning.northeastern.edu/ai-student-guides-claude-project-to-answer-questions-about-class/) | Learning-focused knowledge + instruction setup |
 | [Extended thinking vs web search vs Research (Waboom)](https://www.waboom.ai/blog/claude-extended-thinking-web-search-research) | Clear mode comparison with pointer to official support article |
-| [Addy Osmani — AI coding workflow 2026](https://addyosmani.com/blog/ai-coding-workflow/) | How Projects/context fit a durable engineering workflow (adjacent to claude.ai Projects) |
+| [Addy Osmani — AI coding workflow 2026](https://addyosmani.com/blog/ai-coding-workflow/) | How Projects/context fit a durable engineering workflow |
 
-Re-check official help when UI labels move; product surfaces change faster than blog posts.
+---
+
+## Gold-mine blogs (outside Claude product docs)
+
+First principles that survive UI renames. These are not “how to click Claude”; they explain *why* entry points and sticky context exist.
+
+| Source | Why it is gold |
+|--------|----------------|
+| [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | Context engineering vs prompt engineering: curating what enters the window (the real skill behind Projects + Memory) |
+| [Firecrawl — Context engineering vs prompt engineering](https://www.firecrawl.dev/blog/context-engineering) | Sharp split: prompt = instructions *inside* the window; context eng = *what* fills it every turn |
+| [Addy Osmani — How to write a good spec for AI agents](https://addyo.substack.com/p/how-to-write-a-good-spec-for-ai-agents) | Specs, RAG, subagents — durable workstreams without re-explaining |
+| [Addy Osmani — AI coding workflow 2026](https://addyosmani.com/blog/ai-coding-workflow/) | Production pair-programming patterns; context as a first-class asset |
+| [Simon Willison](https://simonwillison.net/) | Trusted independent writing on tools, evals, and agent reality (search “projects”, “tools”, “evals”) |
+| [HackerNoon — Stop prompting, start engineering (15 principles)](https://hackernoon.com/stop-prompting-start-engineering-15-principles-to-deliver-your-ai-agent-to-production) | State outside the agent; external memory; why chat-only resets fail |
+| [Miguel Fierro — Prompt vs Skill vs Agent](https://www.linkedin.com/posts/miguelgfierro_a-prompt-is-not-a-skill-a-skill-is-not-an-activity-7457298865029885952-hjfi) | Ladder from one-off prompt → reusable skill → multi-step agent |
+| [Lee Han Chung — Agent Skills first-principles](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/) | Procedure packaging (pairs with capability-layer Skills; useful when designing Project instructions too) |
+
+Re-check official help when UI labels move; product surfaces change faster than blogs. Gold-mine pieces age slower because they teach mechanisms.
 
 ---
 
