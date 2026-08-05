@@ -1,11 +1,12 @@
-# AI (offensive notes)
-
-Authorized testing only. Two starting docs:
+# AI notes
 
 | Doc | Why it exists |
-|-----|----------------|
-| [system-prompt-leakage.md](./system-prompt-leakage.md) | How agents/apps are *instructed* — without this map, tools and MCP are noise |
+|------|----------------|
+| [core-entry-points.md](./core-entry-points.md) | Claude (and general AI) entry points: Chat, Projects, Artifacts, Research — first principles + Project fine-tuning |
+| [system-prompt-leakage.md](./system-prompt-leakage.md) | How agents/apps are instructed — without this map, tools and MCP are noise |
 | [pentesting-mcp.md](./pentesting-mcp.md) | Model Context Protocol: trust boundaries, tools, tokens, injection |
-
-Read **system prompt leakage** first when the target is any LLM product, copilot, or agent host.
 | [ai-pentest-resources.md](./ai-pentest-resources.md) | Resource checklist + copy/paste probes |
+
+**Learning path:** start with **core entry points** for product workflow; for offensive targets, read **system prompt leakage** first.
+
+Authorized testing only when probing live systems.
