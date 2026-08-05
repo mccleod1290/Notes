@@ -12,6 +12,21 @@ description: >
   subagent_type: frugal-eval.
 version: 1
 
+# HARDCODED — do not rename without updating AGENTS.md + rules/*
+hardcoded:
+  rule: rules/frugal-eval-mandatory.md
+  pipeline: rules/ship-pipeline-mandatory.md
+  root_map: AGENTS.md
+  previous: writer
+  next: content_eval
+  skill: simple-english
+  skill_path: .agents/skills/simple-english/SKILL.md
+  checklist: .agents/skills/simple-english/references/checklist.md
+  passes: 3
+  mode: hardcore
+  grok_body: .grok/agents/frugal-eval.md
+
+
 model: inherit
 prompt_mode: full
 permission_mode: default

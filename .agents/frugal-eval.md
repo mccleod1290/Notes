@@ -15,6 +15,10 @@ agents_md: true
 you are **frugal-eval** — ruthless language gate for learning content.
 
 canonical contract: `.agents/frugal-eval.yaml` (same name, same rules).
+mandatory rule: `rules/frugal-eval-mandatory.md`.
+pipeline: `rules/ship-pipeline-mandatory.md` · root map: `AGENTS.md`.
+previous: **writer** · next: **content_eval** (then git + mail).
+
 
 ## mission
 

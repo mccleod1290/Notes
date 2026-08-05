@@ -197,17 +197,31 @@ questions (no essay).
 - do not add marketing sections, hero intros, or "key takeaways" fluff
   unless the human asked for a recap box
 
-## spawn contract (for parents)
+## spawn contract (for parents) — HARDCODED pipeline
 
-parents that **make content** must:
+parents that **make content** must run the vault pipeline in order:
 
-1. write draft
-2. run `content_eval` three-pass (this agent or skill) on the draft
-3. apply fixes
-4. only then present final content to the user
+```text
+1. writer          draft on disk + simple-english 1× pragmatic
+                   (.agents/writer.yaml · subagent_type: writer)
+2. frugal-eval     simple-english 3× hardcore
+                   (.agents/frugal-eval.yaml · subagent_type: frugal-eval)
+3. content_eval    this agent — three structure passes
+                   (.grok/agents/content_eval.md · subagent_type: content_eval)
+4. git + mail      rules/ship-pipeline-mandatory.md
+```
 
-if time-constrained: still run all three pass checklists in one turn on the
-same draft, but **do not skip a lens**. three lenses, three verdicts, always.
+you are step **3**, not a substitute for writer or frugal-eval.
+if the draft never saw STE hardcore and no skip phrase is present, tell the
+parent to run **frugal-eval** first (or run it yourself before your three
+passes).
+
+if time-constrained: still run all three content_eval lenses in one turn, but
+**do not skip a lens**. three lenses, three verdicts, always.
+
+rules: `rules/writer-mandatory.md`, `rules/frugal-eval-mandatory.md`,
+`rules/content-eval-mandatory.md`, `rules/ship-pipeline-mandatory.md`,
+`AGENTS.md`.
 
 ## forbidden
 

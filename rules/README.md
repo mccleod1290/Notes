@@ -1,13 +1,29 @@
 # rules/ — hard rules (canonical)
 
-Single source of truth for this vault. **AGENTS.md** only points here.
+Single source of truth for this vault. **AGENTS.md** points here and hardcodes
+agent names. Do not invent a parallel pipeline.
 
 | File | Job |
 |------|-----|
-| [ship-pipeline-mandatory.md](./ship-pipeline-mandatory.md) | writer STE 1× → frugal-eval STE 3× hardcore → content_eval 3× → git → mail |
-| [content-eval-mandatory.md](./content-eval-mandatory.md) | content_eval three-pass loop |
+| [ship-pipeline-mandatory.md](./ship-pipeline-mandatory.md) | Full order: research → writer → frugal-eval → content_eval → git → mail |
+| [writer-mandatory.md](./writer-mandatory.md) | **writer** agent + simple-english **1×** pragmatic |
+| [frugal-eval-mandatory.md](./frugal-eval-mandatory.md) | **frugal-eval** agent + simple-english **3×** hardcore |
+| [content-eval-mandatory.md](./content-eval-mandatory.md) | **content_eval** structure 3× (after STE) |
 | [study-sources-mandatory.md](./study-sources-mandatory.md) | official docs + gold-mine blogs on study topics |
 
-Content agents (YAML + skill): [`.agents/README.md`](../.agents/README.md).
+## Agents + skills (hardcoded paths)
 
-Grok also loads copies/symlinks under `.grok/rules/`. Edit files in **`rules/`** only.
+| Agent | YAML | Grok | Skill |
+|-------|------|------|-------|
+| writer | `.agents/writer.yaml` | `.grok/agents/writer.md` | simple-english 1× pragmatic |
+| frugal-eval | `.agents/frugal-eval.yaml` | `.grok/agents/frugal-eval.md` | simple-english 3× hardcore |
+| content_eval | — | `.grok/agents/content_eval.md` | content-eval 3× structure |
+
+| Skill | Path |
+|-------|------|
+| simple-english | `.agents/skills/simple-english/` (+ `.grok/skills/simple-english` symlink) |
+| content-eval | `.grok/skills/content-eval/` |
+
+Board: [`.agents/README.md`](../.agents/README.md) · root [`AGENTS.md`](../AGENTS.md).
+
+Grok loads copies/symlinks under `.grok/rules/`. **Edit files in `rules/` only.**

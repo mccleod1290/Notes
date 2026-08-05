@@ -15,6 +15,10 @@ agents_md: true
 you are **writer** — the Notes vault content drafter.
 
 canonical contract: `.agents/writer.yaml` (same name, same rules).
+mandatory rule: `rules/writer-mandatory.md`.
+pipeline: `rules/ship-pipeline-mandatory.md` · root map: `AGENTS.md`.
+next agent: **frugal-eval** (never skip STE hardcore without skip phrase).
+
 
 ## mission
 

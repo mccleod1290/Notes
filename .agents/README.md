@@ -1,28 +1,48 @@
-# `.agents/` — writer + frugal-eval + Simple English
+# `.agents/` — HARDCODED content agents + Simple English
 
-Content pipeline for this vault. Source of Simple English skill:
-[AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish) (ASD-STE100).
+Canonical agent **YAML** contracts and the **simple-english** skill live here.
+Grok spawn bodies also live under `.grok/agents/` (same names).
 
-## Layout
+Upstream skill source: [AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish)
+(ASD-STE100).
+
+## Layout (do not invent alternate names)
 
 | Path | Role |
 |------|------|
-| [`skills/simple-english/`](./skills/simple-english/) | STE skill (pragmatic + strict rules) |
 | [`writer.yaml`](./writer.yaml) | Agent **writer** — draft + STE **1×** pragmatic |
+| [`writer.md`](./writer.md) | Same contract (markdown body) |
 | [`frugal-eval.yaml`](./frugal-eval.yaml) | Agent **frugal-eval** — STE **3×** hardcore |
+| [`frugal-eval.md`](./frugal-eval.md) | Same contract (markdown body) |
+| [`skills/simple-english/`](./skills/simple-english/) | STE skill + checklist + use-cases |
 
-Grok also loads twins under [`.grok/agents/`](../.grok/agents/) so spawn works:
+Grok twins (required for `spawn_subagent`):
 
-- `subagent_type: writer`
-- `subagent_type: frugal-eval`
+| Spawn | Path |
+|-------|------|
+| `writer` | `.grok/agents/writer.md` |
+| `frugal-eval` | `.grok/agents/frugal-eval.md` |
+| `content_eval` | `.grok/agents/content_eval.md` |
 
-## Pipeline
+Rules (mandatory):
+
+| Rule | Path |
+|------|------|
+| ship pipeline | `rules/ship-pipeline-mandatory.md` |
+| writer | `rules/writer-mandatory.md` |
+| frugal-eval | `rules/frugal-eval-mandatory.md` |
+| content_eval | `rules/content-eval-mandatory.md` |
+| Root map | `AGENTS.md` |
+
+## Pipeline (fixed order)
 
 ```text
-1. writer          draft on disk → simple-english 1× (pragmatic)
-2. frugal-eval     same file     → simple-english 3× (hardcore / strict)
-3. (optional)      content_eval  → learning structure (slop / first principles / core Qs)
-4. ship            git push + mail per rules/ship-pipeline-mandatory.md
+0. study research     (when study topic)
+1. writer             draft + simple-english 1× pragmatic
+2. frugal-eval        simple-english 3× hardcore
+3. content_eval       structure 3×
+4. git push
+5. mail
 ```
 
 ## Modes
@@ -31,21 +51,20 @@ Grok also loads twins under [`.grok/agents/`](../.grok/agents/) so spawn works:
 |-------|--------|------|--------|
 | writer | simple-english | pragmatic | **1** |
 | frugal-eval | simple-english | **hardcore** (strict + full checklist + fail-closed) | **3** |
+| content_eval | content-eval | slop / first_principles / core_questions | **3** |
 
 ## Invoke
 
 ```text
-# draft
-spawn writer → topic + path
-
-# gate
-spawn frugal-eval → path of draft
+spawn writer        → topic + path
+spawn frugal-eval   → path of draft
+spawn content_eval  → path of draft
 ```
 
-Or ask the main agent: "use writer then frugal-eval on `path`".
+Or ask the main agent: "use writer then frugal-eval then content_eval on `path`".
 
 ## Skip
 
-Only with explicit phrases from `rules/ship-pipeline-mandatory.md`
-(e.g. `skip content-eval`, `raw dump ok`). Prefer not to skip STE hardcore
-on keepable learning notes.
+Only phrases in `rules/ship-pipeline-mandatory.md`
+(`skip ste`, `skip frugal-eval`, `skip content-eval`, …). Prefer full chain on
+keepable learning notes.

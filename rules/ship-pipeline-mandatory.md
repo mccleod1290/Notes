@@ -2,12 +2,13 @@
 
 **Non-negotiable** default for every keepable deliverable in this vault.
 
-## Pipeline
+## Pipeline (order fixed — do not reorder)
 
 ```text
-1. CONTENT GEN     writer agent → draft on disk → simple-english 1× pragmatic
-2. FRUGAL STE      frugal-eval agent → simple-english 3× hardcore (strict)
-3. CONTENT EVAL    content_eval agent/skill — three sequential learning passes
+0. STUDY RESEARCH  (study topics)  rules/study-sources-mandatory.md
+1. WRITER          draft on disk + simple-english 1× pragmatic
+2. FRUGAL-EVAL     simple-english 3× hardcore (strict + checklist)
+3. CONTENT_EVAL    slop_chop → first_principles → core_questions
 4. GIT             commit + push to origin (never force-add logs/ or secrets)
 5. MAIL            email markdown + PDF to study inbox (pwnjournal SMTP)
 ```
@@ -15,42 +16,52 @@
 A task is **not done** until applicable steps finish. Chat-only delivery without
 git + mail is incomplete (unless skip phrases below).
 
-Agents / skill:
+## Hardcoded map (agents + skills + rules)
 
-| Piece | Path |
-|-------|------|
-| writer (YAML) | `.agents/writer.yaml` |
-| frugal-eval (YAML) | `.agents/frugal-eval.yaml` |
-| simple-english skill | `.agents/skills/simple-english/` |
-| Grok twins | `.grok/agents/writer.md`, `.grok/agents/frugal-eval.md` |
-| content_eval | `.grok/agents/content_eval.md` + `.grok/skills/content-eval/` |
+| Step | Agent name | Spawn | YAML / body | Skill | Passes | Mode | Rule file |
+|------|------------|-------|-------------|-------|--------|------|-----------|
+| 1 | **writer** | `writer` | `.agents/writer.yaml` · `.grok/agents/writer.md` | simple-english | 1 | pragmatic | `rules/writer-mandatory.md` |
+| 2 | **frugal-eval** | `frugal-eval` | `.agents/frugal-eval.yaml` · `.grok/agents/frugal-eval.md` | simple-english | 3 | hardcore | `rules/frugal-eval-mandatory.md` |
+| 3 | **content_eval** | `content_eval` | `.grok/agents/content_eval.md` | content-eval | 3 | structure | `rules/content-eval-mandatory.md` |
+
+| Skill | Canonical path | Grok path |
+|-------|----------------|-----------|
+| simple-english | `.agents/skills/simple-english/` | `.grok/skills/simple-english/` (symlink) |
+| content-eval | `.grok/skills/content-eval/` | same |
+
+Index: `.agents/README.md` · `AGENTS.md` · `rules/README.md`.
 
 ## Step detail
 
-### 1 — Content gen (writer + STE 1×)
+### 0 — Study research (when applicable)
+
+See `rules/study-sources-mandatory.md`. Then continue at step 1.
+
+### 1 — writer (draft + STE 1×)
+
+See `rules/writer-mandatory.md`.
 
 - Prefer `subagent_type: writer` (contract: `.agents/writer.yaml`).
-- Write real files (prefer topic folders: `AI/`, `agriculture/`, etc.).
-- Study/course topics: complete **study research pack** first
-  (`rules/study-sources-mandatory.md`), then draft.
-- Writer must run **simple-english** once in **pragmatic** mode before handoff.
+- Write real files (topic folders: `AI/`, `api/`, `agriculture/`, etc.).
+- Must run **simple-english** once in **pragmatic** mode before handoff.
 
-### 2 — frugal-eval STE hardcore 3×
+### 2 — frugal-eval (STE hardcore 3×)
+
+See `rules/frugal-eval-mandatory.md`.
 
 - Prefer `subagent_type: frugal-eval` (contract: `.agents/frugal-eval.yaml`).
 - Load `.agents/skills/simple-english/SKILL.md` + `references/checklist.md`.
-- Mode: **hardcore** (strict STE + full checklist + fail-closed).
-- Three sequential passes; FAIL → rewrite (max 2 per pass).
+- Mode: **hardcore** only. Three sequential passes; max 2 rewrites each.
 - Overall **SHIP** | **REVISE** | **BLOCKED**.
 
-### 3 — content_eval 3× agent loop
+### 3 — content_eval (learning structure 3×)
 
 See `rules/content-eval-mandatory.md`.
 
 After STE-clean draft on disk:
 
 1. Load content_eval skill/agent (`/content-eval` or `subagent_type: content_eval`).
-2. Three passes in order: `slop_chop` → `first_principles` → `core_questions`.
+2. Three passes: `slop_chop` → `first_principles` → `core_questions`.
 3. FAIL → rewrite (max 2 per pass) → re-check that pass.
 4. Overall **SHIP** or **BLOCKED** (≤5 human questions). Report all three verdicts.
 
@@ -80,12 +91,12 @@ On mail failure: keep files + git; report error (do not pretend mailed).
 
 | Phrase | Skips |
 |--------|--------|
-| `skip ste` / `skip simple-english` / `skip writer ste` | writer STE 1× and/or frugal-eval (step 1 STE + step 2) |
+| `skip ste` / `skip simple-english` / `skip writer ste` | step 1 STE + step 2 |
 | `skip frugal-eval` / `no hardcore ste` | step 2 only |
 | `skip content-eval` / `raw dump ok` / `no eval` | step 3 |
 | `skip git` / `no push` / `local only` | step 4 |
 | `skip mail` / `no email` / `don't mail` | step 5 |
-| `skip research` / `course text only` | study research pack |
+| `skip research` / `course text only` | step 0 |
 | `ship pipeline off` | steps 2–5 for that turn only |
 
 No phrase → full pipeline.

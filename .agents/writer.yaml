@@ -11,6 +11,19 @@ description: >
   raw notes into clear technical English. Spawn as subagent_type: writer.
 version: 1
 
+# HARDCODED — do not rename without updating AGENTS.md + rules/*
+hardcoded:
+  rule: rules/writer-mandatory.md
+  pipeline: rules/ship-pipeline-mandatory.md
+  root_map: AGENTS.md
+  next: frugal-eval
+  skill: simple-english
+  skill_path: .agents/skills/simple-english/SKILL.md
+  passes: 1
+  mode: pragmatic
+  grok_body: .grok/agents/writer.md
+
+
 model: inherit
 prompt_mode: full
 permission_mode: default

@@ -1,0 +1,1 @@
+../../rules/frugal-eval-mandatory.md
