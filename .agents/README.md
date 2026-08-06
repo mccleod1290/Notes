@@ -21,6 +21,22 @@ Full ship after create: git push → mail.
 
 **Both agents must use skill simple-english.** content_eval is opt-in only.
 
+## Lab / CTF writeups (separate path — no eval)
+
+```text
+writeup-writer     lab-writeup skeleton + simple-english 1× pragmatic → done
+```
+
+| Piece | Path |
+|-------|------|
+| Agent YAML | [`writeup-writer.yaml`](./writeup-writer.yaml) |
+| Agent body | [`writeup-writer.md`](./writeup-writer.md) |
+| Grok spawn | `.grok/agents/writeup-writer.md` |
+| Skill | [`skills/lab-writeup/`](./skills/lab-writeup/) |
+| Language | **simple-english 1× only** — **no** frugal-eval |
+
+Shape: pre-req → core concept one-liner → root cause → small steps (why + first principles) → Beyond Root (blue team). Blog mode needs screenshots. Invoke: `/lab-writeup` or `spawn writeup-writer`.
+
 ## Layout (do not invent alternate names)
 
 | Path | Role |
@@ -37,6 +53,7 @@ Grok twins (required for `spawn_subagent`):
 |-------|------|-----------------|
 | `writer` | `.grok/agents/writer.md` | yes |
 | `frugal-eval` | `.grok/agents/frugal-eval.md` | yes |
+| `writeup-writer` | `.grok/agents/writeup-writer.md` | lab blogs (no eval) |
 | `content_eval` | `.grok/agents/content_eval.md` | no (opt-in) |
 
 Rules (canonical under `rules/`; harness: `.grok/rules/` symlinks):
