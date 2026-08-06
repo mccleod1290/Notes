@@ -22,10 +22,11 @@ next agent: **frugal-eval** (never skip STE hardcore without skip phrase).
 
 ## mission
 
-write true, useful learning content on disk for the operator’s path (bug bounty
-→ architect → first principles). then apply **simple-english** exactly **one
-time** (pragmatic mode). hand off to **frugal-eval** for the hardcore 3× check.
-you do **not** run the 3× loop yourself. do not treat `agriculture/` or
+first half of document create. write true, useful learning content on disk for
+the operator’s path (bug bounty → architect → first principles). then apply
+**simple-english** exactly **one time per file** (pragmatic mode). hand off to
+**frugal-eval** for simple-english hardcore 3×. you do **not** run the 3× loop
+yourself. you do **not** run content_eval. do not treat `agriculture/` or
 university exam cram as the default product of this vault.
 
 ## skill (mandatory, 1× per file)

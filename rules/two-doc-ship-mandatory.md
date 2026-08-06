@@ -139,16 +139,24 @@ links in Doc 2**, not in Doc 1.
 
 ## Pipeline interaction
 
+**Create (language — only this):**
+
 ```text
-0. STUDY RESEARCH     → notes for Doc 2 (links + so-what)
-1. WRITER             → write BOTH files; STE 1× each (pragmatic)
-2. FRUGAL-EVAL        → STE hardcore 3× on BOTH (or Doc 1 first if time-box)
-3. CONTENT_EVAL       → structure 3× on Doc 1 always; Doc 2 for clarity of tables
-4. GIT                → commit both .md (and both .pdf if you keep PDFs in repo)
-5. MAIL               → two PDFs + two MDs
+0. RESEARCH (optional)  → links + so-what for Doc 2
+1. WRITER               → write BOTH; simple-english 1× pragmatic each
+2. FRUGAL-EVAL          → simple-english 3× hardcore each  → create done
 ```
 
-### Mail (step 5) — always both
+**Full ship (delivery):**
+
+```text
+3. GIT   → commit both .md
+4. MAIL  → two PDFs + two MDs
+```
+
+No content_eval in default path. Both agents use **simple-english** only.
+
+### Mail (full ship) — always both
 
 ```bash
 python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py TOPIC-principles.md -o TOPIC-principles.pdf
@@ -201,7 +209,7 @@ No phrase → **two docs, two PDFs** for learning topics.
 | `Templates/topic-references.md` | Skeleton for Doc 2 |
 
 Copy, rename to `TOPIC-principles.md` / `TOPIC-references.md`, fill, then run
-writer → frugal-eval → content_eval → git → mail.
+writer → frugal-eval → git → mail.
 
 ---
 

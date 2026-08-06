@@ -18,42 +18,62 @@ default product of this repo.
 
 Learning / operator notes vault (not a live attack tree).
 
-**Every keepable markdown deliverable uses the pipeline below.**  
-No phrase → full pipeline. Skip only with phrases in
-[`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md).
+**Document create uses the two-agent workflow below.**  
+No phrase → writer + frugal-eval (both **simple-english**). Full ship adds git + mail.
+Skip phrases: [`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md).
+
+---
+
+## Document create workflow (core)
+
+```text
+1. WRITER        write once + simple-english 1× pragmatic
+2. FRUGAL-EVAL   simple-english 3× hardcore (filter)
+                 → create done
+```
+
+| Agent | Skill (required) | Passes | Mode |
+|-------|------------------|--------|------|
+| **writer** | **simple-english** | 1 | pragmatic |
+| **frugal-eval** | **simple-english** | 3 | hardcore |
+
+**Only language skill in the default path: simple-english.**  
+Both agents **must** load `.agents/skills/simple-english/SKILL.md`.  
+frugal-eval also loads `references/checklist.md`.
+
+**content_eval is off by default** (optional: `run content-eval` / `structure eval`).
 
 ---
 
 ## Hard rules (canonical under `rules/`)
 
-**Do not invent a shorter pipeline.** Read and obey:
+**Do not invent a longer create chain.** Read and obey:
 
 | Rule | Path |
 |------|------|
-| **Ship pipeline** (full order) | [`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md) |
-| **Two-doc ship** (principles PDF + references PDF) | [`rules/two-doc-ship-mandatory.md`](rules/two-doc-ship-mandatory.md) |
+| **Ship pipeline** (create + delivery) | [`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md) |
 | **writer** (draft + STE 1× pragmatic) | [`rules/writer-mandatory.md`](rules/writer-mandatory.md) |
 | **frugal-eval** (STE hardcore 3×) | [`rules/frugal-eval-mandatory.md`](rules/frugal-eval-mandatory.md) |
-| **content_eval** (learning structure 3×) | [`rules/content-eval-mandatory.md`](rules/content-eval-mandatory.md) |
-| **Study research pack** | [`rules/study-sources-mandatory.md`](rules/study-sources-mandatory.md) |
+| **Two-doc ship** (principles PDF + references PDF) | [`rules/two-doc-ship-mandatory.md`](rules/two-doc-ship-mandatory.md) |
+| **Study research** (optional facts) | [`rules/study-sources-mandatory.md`](rules/study-sources-mandatory.md) |
+| **content_eval** (optional only) | [`rules/content-eval-mandatory.md`](rules/content-eval-mandatory.md) |
 | Index | [`rules/README.md`](rules/README.md) |
 
 Harness auto-loads the same files via `.grok/rules/` (symlinks → `rules/`).
 
 ---
 
-## HARDCODED content pipeline
+## Full ship (after create)
 
 ```text
-0. STUDY RESEARCH   rules/study-sources-mandatory.md   (when expanding a learning topic)
-1. WRITER           draft on disk + simple-english 1× pragmatic
-2. FRUGAL-EVAL      simple-english 3× hardcore (strict + checklist)
-3. CONTENT_EVAL     slop_chop → first_principles → core_questions
-4. GIT              commit + push origin
-5. MAIL             PDF + MD to study inbox
+0. RESEARCH (optional)   do not invent vendor facts
+1. WRITER                simple-english 1× pragmatic
+2. FRUGAL-EVAL           simple-english 3× hardcore
+3. GIT                   commit + push origin
+4. MAIL                  PDF + MD to study inbox
 ```
 
-### Learning topics always ship as two PDFs
+### Learning topics: two PDFs (shape only — still writer + frugal-eval)
 
 | PDF | File | Job |
 |-----|------|-----|
@@ -64,21 +84,18 @@ Rule: [`rules/two-doc-ship-mandatory.md`](rules/two-doc-ship-mandatory.md).
 Templates: [`Templates/topic-principles.md`](Templates/topic-principles.md),
 [`Templates/topic-references.md`](Templates/topic-references.md).
 
-Do not mix long link dumps into the principles explanation. Cap critical tips
-(do not pad). Operator execution batches stay single cards (optional pointer to
-topic references).
-
-Chat-only delivery without git + mail is **incomplete** (unless skip phrases).
+Chat-only delivery without git + mail is **incomplete** for full ship (unless
+skip phrases / `create only`).
 
 ---
 
 ## HARDCODED agents (must use these names)
 
-| Agent | Spawn | Contract (YAML) | Grok body | Skill | Passes | Mode |
-|-------|-------|-----------------|-----------|-------|--------|------|
-| **writer** | `subagent_type: writer` | [`.agents/writer.yaml`](.agents/writer.yaml) | [`.grok/agents/writer.md`](.grok/agents/writer.md) | simple-english | **1** | pragmatic |
-| **frugal-eval** | `subagent_type: frugal-eval` | [`.agents/frugal-eval.yaml`](.agents/frugal-eval.yaml) | [`.grok/agents/frugal-eval.md`](.grok/agents/frugal-eval.md) | simple-english | **3** | **hardcore** |
-| **content_eval** | `subagent_type: content_eval` | — | [`.grok/agents/content_eval.md`](.grok/agents/content_eval.md) | content-eval | **3** | structure lenses |
+| Agent | Spawn | Contract (YAML) | Grok body | Skill | Passes | Mode | Default? |
+|-------|-------|-----------------|-----------|-------|--------|------|----------|
+| **writer** | `subagent_type: writer` | [`.agents/writer.yaml`](.agents/writer.yaml) | [`.grok/agents/writer.md`](.grok/agents/writer.md) | **simple-english** | **1** | pragmatic | **yes** |
+| **frugal-eval** | `subagent_type: frugal-eval` | [`.agents/frugal-eval.yaml`](.agents/frugal-eval.yaml) | [`.grok/agents/frugal-eval.md`](.grok/agents/frugal-eval.md) | **simple-english** | **3** | **hardcore** | **yes** |
+| content_eval | `subagent_type: content_eval` | — | [`.grok/agents/content_eval.md`](.grok/agents/content_eval.md) | content-eval | 3 | structure | **no** (opt-in) |
 
 Also under `.agents/` as `.md` twins of the YAML contracts:
 [`.agents/writer.md`](.agents/writer.md), [`.agents/frugal-eval.md`](.agents/frugal-eval.md).
@@ -87,21 +104,22 @@ Board: [`.agents/README.md`](.agents/README.md).
 
 ### Order is fixed
 
-1. **writer** first (creates/edits draft; STE once).
-2. **frugal-eval** second (same path; STE hardcore three times). Do not skip to content_eval while STE hardcore is open.
-3. **content_eval** third (learning structure only — not a substitute for STE).
-4. Then git, then mail.
+1. **writer** first (creates draft; **must** run simple-english once per file).
+2. **frugal-eval** second (**must** run simple-english hardcore three times). Create done.
+3. Git + mail for full ship.
+4. content_eval only if operator explicitly asks.
 
-Parent agents that write learning content **must** run this chain (in-process or via spawn) before claiming done.
+Parent agents that write learning content **must** run writer → frugal-eval
+(in-process or via spawn) before claiming create done.
 
 ---
 
 ## HARDCODED skills
 
-| Skill | Path (canonical) | Also |
-|-------|------------------|------|
-| **simple-english** | [`.agents/skills/simple-english/`](.agents/skills/simple-english/) | [`.grok/skills/simple-english/`](.grok/skills/simple-english/) (symlink) |
-| **content-eval** | [`.grok/skills/content-eval/`](.grok/skills/content-eval/) → `/content-eval` | — |
+| Skill | Path (canonical) | Also | Default create? |
+|-------|------------------|------|-----------------|
+| **simple-english** | [`.agents/skills/simple-english/`](.agents/skills/simple-english/) | [`.grok/skills/simple-english/`](.grok/skills/simple-english/) (symlink) | **yes — only language skill** |
+| content-eval | [`.grok/skills/content-eval/`](.grok/skills/content-eval/) | `/content-eval` | no |
 
 Source of simple-english: [AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish) (ASD-STE100).
 
@@ -149,18 +167,19 @@ core curriculum path. Do not use it as the default example for agents or rules.
   agents/
     writer.md              # spawn: writer
     frugal-eval.md         # spawn: frugal-eval
-    content_eval.md        # spawn: content_eval
+    content_eval.md        # spawn: content_eval (opt-in only)
   skills/
     simple-english/        # → ../../.agents/skills/simple-english
-    content-eval/
+    content-eval/          # optional
   rules/                   # → ../../rules/*.md
 
 rules/
   ship-pipeline-mandatory.md
   writer-mandatory.md
   frugal-eval-mandatory.md
-  content-eval-mandatory.md
+  two-doc-ship-mandatory.md
   study-sources-mandatory.md
+  content-eval-mandatory.md   # optional
   README.md
 ```
 

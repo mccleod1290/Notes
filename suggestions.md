@@ -61,11 +61,10 @@ Re-use rate of a note = how operator it is. If you can’t run it on a new host 
 [ ] Proved impact in business or security language
 [ ] Edges / IF-THEN updated if you learned a gotcha
 [ ] writer        — draft + simple-english 1× pragmatic
-[ ] frugal-eval   — simple-english 3× hardcore
-[ ] content_eval  — structure 3× (slop / first principles / core Qs)
-[ ] 3× eval note (academy / beyond / operator path) when claiming section done
+[ ] frugal-eval   — simple-english 3× hardcore (create done)
 [ ] git push when clean
 [ ] mail study inbox when keepable
+[ ] content_eval only if you asked for structure eval
 [ ] STOP — do not open next section same hour if quality slipped
 ```
 

@@ -1,7 +1,17 @@
-# HARD RULE: writer agent (draft + STE 1×)
+# HARD RULE: writer agent (draft + simple-english 1×)
 
-**Non-negotiable** when creating or substantially expanding learning content.
-Part of ship pipeline: `rules/ship-pipeline-mandatory.md`.
+**Non-negotiable** first half of document create.
+Pair: **frugal-eval** (simple-english 3× hardcore) — see
+`rules/frugal-eval-mandatory.md`. Pipeline: `rules/ship-pipeline-mandatory.md`.
+
+## Create workflow (only this + frugal-eval)
+
+```text
+writer  →  simple-english 1× pragmatic  →  handoff frugal-eval
+```
+
+**Skill is mandatory.** Every writer run **must** load and apply
+`.agents/skills/simple-english/SKILL.md`. No draft handoff without that pass.
 
 ## When
 
@@ -15,8 +25,8 @@ a university exam board.
 1. Use agent **writer** (not a free-form draft with no STE).
 2. Write the draft **on disk** (core folders: `AI/`, `api/`, `IIS/`, `AEM/`,
    `web-app-testing/`, `Checklists/`, … — see `AGENTS.md` purpose).
-3. Learning topics: finish **study research pack** first
-   (`rules/study-sources-mandatory.md`).
+3. Facts: do not invent caps/APIs — research when needed
+   (`rules/study-sources-mandatory.md`); mark `gap` otherwise.
 4. **Learning topics: write two files** (see `rules/two-doc-ship-mandatory.md`):
    - `TOPIC-principles.md` — first principles, gotchas, **critical** tips only
    - `TOPIC-references.md` — official + gold-mine links with so-what / extra tips
@@ -26,7 +36,7 @@ a university exam board.
    - path: `.agents/skills/simple-english/SKILL.md`
    - mode: **pragmatic**
    - passes: **1** per file
-6. Hand off to **frugal-eval** on **both** paths (do not claim final ship).
+6. Hand off to **frugal-eval** on every path written (do not claim create done).
 
 ## How
 
@@ -35,7 +45,7 @@ a university exam board.
 | YAML contract | `.agents/writer.yaml` |
 | agent body (`.agents`) | `.agents/writer.md` |
 | Grok spawn body | `.grok/agents/writer.md` |
-| skill | `.agents/skills/simple-english/` (also `.grok/skills/simple-english/`) |
+| skill (**required**) | `.agents/skills/simple-english/` (also `.grok/skills/simple-english/`) |
 
 Prefer `spawn_subagent` with `subagent_type: writer`, or in-process with the
 same contract loaded.
@@ -53,7 +63,7 @@ FILL IN → GOAL → TIME → YOU NEED → WHY → DO THIS → IF/THEN → NEXT.
 
 Copy from `Templates/topic-principles.md` and `Templates/topic-references.md`.
 
-### STE pragmatic (1×)
+### STE pragmatic (1×) — skill-backed
 
 - Procedural: imperative, ≤20 words/sentence, one instruction per sentence
 - Descriptive: simple tenses, ≤25 words/sentence
@@ -63,8 +73,11 @@ Copy from `Templates/topic-principles.md` and `Templates/topic-references.md`.
 
 ## After writer
 
-Always: **frugal-eval** (`rules/frugal-eval-mandatory.md`) → then content_eval
-→ git → mail unless skip phrases.
+Always: **frugal-eval** with **simple-english 3× hardcore**
+(`rules/frugal-eval-mandatory.md`). That finishes create. Then git + mail for
+full ship unless skip phrases (`create only`, `skip git`, `skip mail`, …).
+
+**content_eval is not next.** Optional only if operator asks (`run content-eval`).
 
 ## Skip only if
 
@@ -74,5 +87,7 @@ Always: **frugal-eval** (`rules/frugal-eval-mandatory.md`) → then content_eval
 ## Do not
 
 - Run frugal-eval’s 3× loop yourself (that is frugal-eval)
+- Hand off without loading simple-english skill
 - Ship first draft without STE 1× (unless skip phrase)
 - Invent domain facts — mark `gap`
+- Add content_eval as a required step after yourself

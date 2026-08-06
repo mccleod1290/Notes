@@ -69,18 +69,19 @@ you work, also put a short tip (no URL required) in Doc 1 critical tips.
 See `rules/two-doc-ship-mandatory.md`. Do not paste research URLs into Doc 1
 explanations.
 
-## Then (hardcoded pipeline)
+## Then (hardcoded create + ship)
 
 ```text
 writer (simple-english 1× pragmatic)
-  → frugal-eval (simple-english 3× hardcore)
-  → content_eval 3×
-  → git push
-  → mail
+  → frugal-eval (simple-english 3× hardcore)   ← create done
+  → git push → mail                            ← full ship
 ```
 
+**Only skill for language agents: simple-english.** content_eval is optional
+on request only — not in this path.
+
 See: `rules/writer-mandatory.md`, `rules/frugal-eval-mandatory.md`,
-`rules/content-eval-mandatory.md`, `rules/ship-pipeline-mandatory.md`.
+`rules/ship-pipeline-mandatory.md`.
 
 ## Skip only if
 

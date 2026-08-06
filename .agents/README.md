@@ -9,6 +9,18 @@ principles**. Not a university term setup. `agriculture/` is a one-off favor onl
 Upstream skill source: [AminBlg/SimpleEnglish](https://github.com/AminBlg/SimpleEnglish)
 (ASD-STE100).
 
+## Document create (default — only this)
+
+```text
+writer             draft + simple-english 1× pragmatic
+  → frugal-eval    simple-english 3× hardcore
+  → create done
+```
+
+Full ship after create: git push → mail.
+
+**Both agents must use skill simple-english.** content_eval is opt-in only.
+
 ## Layout (do not invent alternate names)
 
 | Path | Role |
@@ -21,11 +33,11 @@ Upstream skill source: [AminBlg/SimpleEnglish](https://github.com/AminBlg/Simple
 
 Grok twins (required for `spawn_subagent`):
 
-| Spawn | Path |
-|-------|------|
-| `writer` | `.grok/agents/writer.md` |
-| `frugal-eval` | `.grok/agents/frugal-eval.md` |
-| `content_eval` | `.grok/agents/content_eval.md` |
+| Spawn | Path | Default create? |
+|-------|------|-----------------|
+| `writer` | `.grok/agents/writer.md` | yes |
+| `frugal-eval` | `.grok/agents/frugal-eval.md` | yes |
+| `content_eval` | `.grok/agents/content_eval.md` | no (opt-in) |
 
 Rules (mandatory):
 
@@ -34,43 +46,31 @@ Rules (mandatory):
 | ship pipeline | `rules/ship-pipeline-mandatory.md` |
 | writer | `rules/writer-mandatory.md` |
 | frugal-eval | `rules/frugal-eval-mandatory.md` |
-| content_eval | `rules/content-eval-mandatory.md` |
+| content_eval | `rules/content-eval-mandatory.md` (optional) |
 | Root map | `AGENTS.md` |
-
-## Pipeline (fixed order)
-
-```text
-0. study research     (when study topic)
-1. writer             draft + simple-english 1× pragmatic
-2. frugal-eval        simple-english 3× hardcore
-3. content_eval       structure 3×
-4. git push
-5. mail
-```
-
-Learning topics: **two files / two PDFs** — `TOPIC-principles.md` +
-`TOPIC-references.md` (`rules/two-doc-ship-mandatory.md`).
 
 ## Modes
 
-| Agent | Skill | Mode | Passes |
-|-------|--------|------|--------|
-| writer | simple-english | pragmatic | **1** |
-| frugal-eval | simple-english | **hardcore** (strict + full checklist + fail-closed) | **3** |
-| content_eval | content-eval | slop / first_principles / core_questions | **3** |
+| Agent | Skill | Mode | Passes | Default? |
+|-------|--------|------|--------|----------|
+| writer | **simple-english** | pragmatic | **1** | yes |
+| frugal-eval | **simple-english** | **hardcore** (strict + full checklist + fail-closed) | **3** | yes |
+| content_eval | content-eval | structure | 3 | no |
 
 ## Invoke
 
 ```text
 spawn writer        → topic + path
 spawn frugal-eval   → path of draft
-spawn content_eval  → path of draft
 ```
 
-Or ask the main agent: "use writer then frugal-eval then content_eval on `path`".
+Or: "use writer then frugal-eval on `path`".
+
+Learning topics: **two files** — `TOPIC-principles.md` + `TOPIC-references.md`
+(`rules/two-doc-ship-mandatory.md`). Still only writer + frugal-eval.
 
 ## Skip
 
-Only phrases in `rules/ship-pipeline-mandatory.md`
-(`skip ste`, `skip frugal-eval`, `skip content-eval`, …). Prefer full chain on
-keepable learning notes.
+Phrases in `rules/ship-pipeline-mandatory.md`
+(`skip ste`, `skip frugal-eval`, `create only`, …). Prefer full create chain
+on keepable learning notes.

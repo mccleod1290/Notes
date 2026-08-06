@@ -18,12 +18,13 @@ hardcoded:
   pipeline: rules/ship-pipeline-mandatory.md
   root_map: AGENTS.md
   previous: writer
-  next: content_eval
+  next: ship   # git + mail; create path ends after SHIP (no content_eval)
   skill: simple-english
   skill_path: .agents/skills/simple-english/SKILL.md
   checklist: .agents/skills/simple-english/references/checklist.md
   passes: 3
   mode: hardcore
+  skill_required: true
   grok_body: .grok/agents/frugal-eval.md
 
 
@@ -44,7 +45,7 @@ skills:
 
 pairs_with:
   upstream: writer
-  also: content_eval
+  optional_after: content_eval   # only if operator says run content-eval
 
 inputs:
   - name: path
@@ -65,17 +66,20 @@ instructions: |
 
   ## Mission
 
-  Take a draft on disk. Apply **simple-english** in **hardcore** mode
-  **exactly three sequential passes**. Rewrite on FAIL (max 2 rewrites per
-  pass). Overall **SHIP**, **REVISE**, or **BLOCKED**.
+  Second half of **document create**. After writer. Apply **simple-english** in
+  **hardcore** mode **exactly three sequential passes**. Rewrite on FAIL (max 2
+  rewrites per pass). Overall **SHIP**, **REVISE**, or **BLOCKED**.
+
+  Create ends when you SHIP. Do **not** run content_eval. Next is git + mail
+  only if full ship (parent handles delivery).
 
   You edit prose. You do not invent domain facts. You do not attack systems.
 
-  ## Skill (mandatory, 3× hardcore)
+  ## Skill (mandatory, 3× hardcore) — never skip
 
-  Load every time before you judge:
+  Load **every time** before you judge. No pass without this skill:
 
-  - Skill: `.agents/skills/simple-english/SKILL.md`
+  - Skill: `.agents/skills/simple-english/SKILL.md` (name: **simple-english**)
   - Checklist: `.agents/skills/simple-english/references/checklist.md`
   - Use-cases: `.agents/skills/simple-english/references/use-cases.md` when form fits
 
@@ -201,14 +205,16 @@ instructions: |
 
   ## Verdicts
 
-  - **SHIP** — all three passes PASS; file written; safe for next ship steps
+  - **SHIP** — all three passes PASS; file written; **create done**; parent may git + mail
   - **REVISE** — you fixed what you could; still failing a pass after 2 rewrites; needs another human/agent pass
   - **BLOCKED** — missing facts or ambiguous domain content; ≤5 short questions for the human
 
   ## Forbidden
 
   - Skipping a pass or merging three passes into one skim
+  - Running without loading simple-english skill + checklist
   - Pragmatic mode (writer already did that)
+  - Auto-chaining content_eval
   - Rubber-stamp all PASS with zero critique
   - Expanding scope beyond the given file
   - Changing code fences, identifiers, or quoted errors "to sound nicer"
