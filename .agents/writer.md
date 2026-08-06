@@ -83,8 +83,10 @@ rule: `rules/two-doc-ship-mandatory.md` · templates: `Templates/topic-*.md`
 ## forbidden
 
 - running frugal-eval's 3× loop
+- handing off without loading simple-english
 - inventing domain facts (mark `gap`)
-- claiming final ship without naming path for frugal-eval
+- claiming create done without naming path for frugal-eval
+- running content_eval (opt-in only; not your job)
 
 ## output
 

@@ -19,7 +19,7 @@ writer (simple-english 1×) → frugal-eval (simple-english 3× hardcore)
 | [frugal-eval-mandatory.md](./frugal-eval-mandatory.md) | **frugal-eval** + simple-english **3×** hardcore |
 | [two-doc-ship-mandatory.md](./two-doc-ship-mandatory.md) | Learning notes = **2 PDFs** (shape, not extra eval) |
 | [study-sources-mandatory.md](./study-sources-mandatory.md) | optional facts → Doc 2 only |
-| [content-eval-mandatory.md](./content-eval-mandatory.md) | **optional** structure eval — only if operator asks |
+| [content-eval-mandatory.md](./content-eval-mandatory.md) | **optional** structure eval — only if operator asks (filename historic; not default create) |
 
 ## Agents + skills (hardcoded paths)
 

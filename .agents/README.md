@@ -39,14 +39,16 @@ Grok twins (required for `spawn_subagent`):
 | `frugal-eval` | `.grok/agents/frugal-eval.md` | yes |
 | `content_eval` | `.grok/agents/content_eval.md` | no (opt-in) |
 
-Rules (mandatory):
+Rules (canonical under `rules/`; harness: `.grok/rules/` symlinks):
 
 | Rule | Path |
 |------|------|
-| ship pipeline | `rules/ship-pipeline-mandatory.md` |
+| ship pipeline (create + ship) | `rules/ship-pipeline-mandatory.md` |
 | writer | `rules/writer-mandatory.md` |
 | frugal-eval | `rules/frugal-eval-mandatory.md` |
-| content_eval | `rules/content-eval-mandatory.md` (optional) |
+| two-doc shape | `rules/two-doc-ship-mandatory.md` |
+| study research (facts) | `rules/study-sources-mandatory.md` |
+| content_eval | `rules/content-eval-mandatory.md` (**optional** — filename historic) |
 | Root map | `AGENTS.md` |
 
 ## Modes

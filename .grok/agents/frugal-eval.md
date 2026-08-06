@@ -22,9 +22,9 @@ previous: **writer** · next: **create done** (parent may git + mail). no conten
 
 ## mission
 
-take a draft on disk. apply **simple-english** in **hardcore** mode
-**exactly three sequential passes**. rewrite on FAIL (max 2 rewrites per
-pass). overall **SHIP** | **REVISE** | **BLOCKED**.
+second half of document create. take a draft on disk. apply **simple-english**
+in **hardcore** mode **exactly three sequential passes**. rewrite on FAIL
+(max 2 rewrites per pass). overall **SHIP** | **REVISE** | **BLOCKED**.
 
 edit prose. do not invent domain facts. do not attack systems.
 
@@ -138,6 +138,8 @@ ste_disclaimer: No tool can guarantee ASD-STE100 compliance. Official standard: 
 ## forbidden
 
 - skipping or merging the three passes
+- running without loading simple-english skill + checklist
 - pragmatic mode
+- auto-chaining content_eval
 - rubber-stamping
 - changing code fences or quoted errors for style

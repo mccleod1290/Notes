@@ -1,20 +1,32 @@
-# HARD RULE: study research pack
+# Study research pack (facts — not a language agent)
 
-**Non-negotiable** when creating or expanding learning notes for this vault’s
-purpose: **bug bounty / authorized pentest → security architect → first principles**.
-Then run full ship pipeline (`rules/ship-pipeline-mandatory.md`).
+**Not** a third create agent. Default create stays:
 
-This is **not** a university term / semester pack. One-off exam cram (e.g.
-`agriculture/` SVU help) is exceptional; do not treat agri syllabus research as
-the default research shape for the whole vault.
+```text
+writer (simple-english 1×) → frugal-eval (simple-english 3× hardcore)
+```
 
-## When
+Research supports **truth** so writer does not invent caps, APIs, or vendor
+limits. Pipeline: `rules/ship-pipeline-mandatory.md`. Two-doc landing:
+`rules/two-doc-ship-mandatory.md`.
 
-HTB / Academy modules, vendor platforms (Claude, cloud, API frameworks), OWASP
-and framework docs, AI/MCP surfaces, IIS/AEM/web operator packs — any learning
-unit that builds **operator or architect** skill.
+Vault purpose: **bug bounty / authorized pentest → security architect → first
+principles**. Not a university term track. `agriculture/` is exceptional.
 
-## Must fetch
+## When to research
+
+| Situation | Research? |
+|-----------|-----------|
+| Learning topic with vendor/product limits, APIs, plan caps | **Yes** — fetch; do not invent |
+| Operator batch that only restates known DO THIS | Optional |
+| Pure typo / path fix | No |
+| Operator says `skip research` / `course text only` | Skip fetch |
+
+Prefer research for HTB / Academy modules, vendor platforms (Claude, cloud,
+API frameworks), OWASP, AI/MCP, IIS/AEM/web operator packs when the note
+claims product truth.
+
+## Must fetch (when researching)
 
 ### 1. Official product / standard docs
 
@@ -42,7 +54,7 @@ Reputable first-principles sources (not click-path UI tutorials).
 | Primary papers + writeups with repro steps | Undated “tips” with no evidence |
 
 **Land gold-mine links in Doc 2 only.** Required section in
-`TOPIC-references.md`:
+`TOPIC-references.md` when you researched:
 
 ```markdown
 ## Gold-mine first-principles sources
@@ -69,7 +81,7 @@ you work, also put a short tip (no URL required) in Doc 1 critical tips.
 See `rules/two-doc-ship-mandatory.md`. Do not paste research URLs into Doc 1
 explanations.
 
-## Then (hardcoded create + ship)
+## Then (create + ship)
 
 ```text
 writer (simple-english 1× pragmatic)

@@ -138,6 +138,8 @@ ste_disclaimer: No tool can guarantee ASD-STE100 compliance. Official standard: 
 ## forbidden
 
 - skipping or merging the three passes
+- running without loading simple-english skill + checklist
 - pragmatic mode
+- auto-chaining content_eval
 - rubber-stamping
 - changing code fences or quoted errors for style
