@@ -48,6 +48,9 @@ Rules (mandatory):
 5. mail
 ```
 
+Learning topics: **two files / two PDFs** — `TOPIC-principles.md` +
+`TOPIC-references.md` (`rules/two-doc-ship-mandatory.md`).
+
 ## Modes
 
 | Agent | Skill | Mode | Passes |

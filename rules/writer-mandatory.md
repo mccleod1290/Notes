@@ -17,11 +17,16 @@ a university exam board.
    `web-app-testing/`, `Checklists/`, … — see `AGENTS.md` purpose).
 3. Learning topics: finish **study research pack** first
    (`rules/study-sources-mandatory.md`).
-4. Load and apply skill **simple-english** exactly **once**:
+4. **Learning topics: write two files** (see `rules/two-doc-ship-mandatory.md`):
+   - `TOPIC-principles.md` — first principles, gotchas, **critical** tips only
+   - `TOPIC-references.md` — official + gold-mine links with so-what / extra tips
+   - Templates: `Templates/topic-principles.md`, `Templates/topic-references.md`
+   - Do not mix URL tables into Doc 1. Cap critical tips (3–7 per list).
+5. Load and apply skill **simple-english** exactly **once per file** written:
    - path: `.agents/skills/simple-english/SKILL.md`
    - mode: **pragmatic**
-   - passes: **1**
-5. Hand off to **frugal-eval** on the same path (do not claim final ship).
+   - passes: **1** per file
+6. Hand off to **frugal-eval** on **both** paths (do not claim final ship).
 
 ## How
 
@@ -35,9 +40,18 @@ a university exam board.
 Prefer `spawn_subagent` with `subagent_type: writer`, or in-process with the
 same contract loaded.
 
-### Card shape (default operator / cram)
+### Card shape (default operator / cram — single file OK)
 
 FILL IN → GOAL → TIME → YOU NEED → WHY → DO THIS → IF/THEN → NEXT.
+
+### Learning topic shape (two files — default)
+
+| File | Shape |
+|------|--------|
+| `TOPIC-principles.md` | definition → why → mechanism → map → critical misses → gotchas → critical tips → IF/THEN → do this |
+| `TOPIC-references.md` | how to use → official table → gold-mine table → cross-stack → read order → gaps |
+
+Copy from `Templates/topic-principles.md` and `Templates/topic-references.md`.
 
 ### STE pragmatic (1×)
 

@@ -31,6 +31,7 @@ No phrase → full pipeline. Skip only with phrases in
 | Rule | Path |
 |------|------|
 | **Ship pipeline** (full order) | [`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md) |
+| **Two-doc ship** (principles PDF + references PDF) | [`rules/two-doc-ship-mandatory.md`](rules/two-doc-ship-mandatory.md) |
 | **writer** (draft + STE 1× pragmatic) | [`rules/writer-mandatory.md`](rules/writer-mandatory.md) |
 | **frugal-eval** (STE hardcore 3×) | [`rules/frugal-eval-mandatory.md`](rules/frugal-eval-mandatory.md) |
 | **content_eval** (learning structure 3×) | [`rules/content-eval-mandatory.md`](rules/content-eval-mandatory.md) |
@@ -51,6 +52,21 @@ Harness auto-loads the same files via `.grok/rules/` (symlinks → `rules/`).
 4. GIT              commit + push origin
 5. MAIL             PDF + MD to study inbox
 ```
+
+### Learning topics always ship as two PDFs
+
+| PDF | File | Job |
+|-----|------|-----|
+| **1** | `TOPIC-principles.md` | First principles, gotchas, **critical** tips (almost no URLs) |
+| **2** | `TOPIC-references.md` | Official docs + gold-mine sources + so-what / extra tips |
+
+Rule: [`rules/two-doc-ship-mandatory.md`](rules/two-doc-ship-mandatory.md).  
+Templates: [`Templates/topic-principles.md`](Templates/topic-principles.md),
+[`Templates/topic-references.md`](Templates/topic-references.md).
+
+Do not mix long link dumps into the principles explanation. Cap critical tips
+(do not pad). Operator execution batches stay single cards (optional pointer to
+topic references).
 
 Chat-only delivery without git + mail is **incomplete** (unless skip phrases).
 

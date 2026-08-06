@@ -26,7 +26,9 @@ Prefer:
   `docs.anthropic.com`, `anthropic.com/engineering`, `anthropic.com/news`
 
 Re-fetch plan/UI limits (they change). Never invent caps.
-Record links + one-line so-what under **Official … references**.
+
+**Land every official link in Doc 2 only** (`TOPIC-references.md`), not inside
+principles prose. Each row: link + what it teaches + operator so-what.
 
 ### 2. Gold-mine blogs outside official docs
 
@@ -39,19 +41,33 @@ Reputable first-principles sources (not click-path UI tutorials).
 | Context eng / memory / tools explainers | Undated affiliate posts |
 | Primary papers + writeups with repro steps | Undated “tips” with no evidence |
 
-Every study note must include:
+**Land gold-mine links in Doc 2 only.** Required section in
+`TOPIC-references.md`:
 
 ```markdown
-## Gold-mine blogs (outside official product docs)
+## Gold-mine first-principles sources
 ```
 
-(or outside that vendor’s / body’s official docs). Each row: link + why gold.
+Each row: link + why gold + **extra tip from that source** (not a bare URL).
 
 ### 3. Cross-vendor / cross-stack map
 
 Map principles to ChatGPT / Gemini / Grok / local agents when they transfer
 (for tool/agent courses). For app security: map the same class across stacks
 (e.g. BOLA on REST vs GraphQL). Skip if the domain has no transfer map.
+
+Put the map table in **Doc 2**. If one transfer insight is **critical** to how
+you work, also put a short tip (no URL required) in Doc 1 critical tips.
+
+### Split (hard)
+
+| Content | File |
+|---------|------|
+| Mechanism, gotchas, critical operator tips | `TOPIC-principles.md` |
+| All external URLs + source so-whats | `TOPIC-references.md` |
+
+See `rules/two-doc-ship-mandatory.md`. Do not paste research URLs into Doc 1
+explanations.
 
 ## Then (hardcoded pipeline)
 

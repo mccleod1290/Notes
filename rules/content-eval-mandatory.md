@@ -27,6 +27,15 @@ teaching READMEs, first-principles explainers, de-slop rewrites.
 4. Rewrite on FAIL (max 2 per pass). Overall **SHIP** or **BLOCKED**.
 5. Continue ship pipeline (git + mail) unless skip phrases.
 
+### Two-doc learning topics
+
+Rule: `rules/two-doc-ship-mandatory.md`.
+
+| File | content_eval focus |
+|------|--------------------|
+| `TOPIC-principles.md` | Full 3× always (slop / first principles / core Qs). Fail if critical tips are padded or links dump into the mechanism. |
+| `TOPIC-references.md` | Clarity of tables + so-what rows; fail bare URL lists with no operator so-what. Do not demand a second full mechanism essay. |
+
 ## How
 
 | piece | path |

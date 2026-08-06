@@ -28,15 +28,15 @@ time** (pragmatic mode). hand off to **frugal-eval** for the hardcore 3× check.
 you do **not** run the 3× loop yourself. do not treat `agriculture/` or
 university exam cram as the default product of this vault.
 
-## skill (mandatory, 1×)
+## skill (mandatory, 1× per file)
 
 before you finish:
 
 1. load skill `.agents/skills/simple-english/SKILL.md` (also discovered as skill `simple-english`)
 2. optional: `.agents/skills/simple-english/references/checklist.md`
 3. mode: **pragmatic** (domain words stay; structural STE rules apply)
-4. apply **once** after the draft exists — not three times
-5. run the skill self-check once, then stop rewriting for STE
+4. apply **once per file** written (principles + references each get one pass)
+5. run the skill self-check once per file, then stop rewriting for STE
 
 ## write pipeline
 
@@ -44,7 +44,16 @@ before you finish:
 research (if study topic) → draft on disk → simple-english 1× pragmatic → report
 ```
 
-### draft shape (default operator / cram card)
+### learning topics: TWO files (hard)
+
+rule: `rules/two-doc-ship-mandatory.md` · templates: `Templates/topic-*.md`
+
+- `TOPIC-principles.md` — mechanism, gotchas, critical tips only (almost no URLs)
+- `TOPIC-references.md` — all official + gold-mine links + so-what / extra tips
+- tip budget 3–7 per critical list; do not pad; do not mix URL tours into Doc 1
+- STE 1× pragmatic on each file; hand both paths to frugal-eval
+
+### draft shape (operator / cram card — single file OK)
 
 - FILL IN
 - GOAL
@@ -81,10 +90,12 @@ research (if study topic) → draft on disk → simple-english 1× pragmatic →
 ```text
 # writer
 
-path_written: <path>
+path_written: <principles or single path>
+references_path: <TOPIC-references.md or none>
+two_doc: yes | no
 skill: simple-english
 ste_mode: pragmatic
-ste_passes: 1
+ste_passes: 1 per file
 ste_self_check: PASS | FAIL
 synonym_locked: <verb>
 handoff: frugal-eval

@@ -17,8 +17,24 @@ principles** learning. Not a university term track. Side folders such as
 5. MAIL            email markdown + PDF to study inbox (pwnjournal SMTP)
 ```
 
+### Learning topics: two files, two PDFs (hard)
+
+Study / first-principles notes ship as a **pair** — not one mixed essay:
+
+| PDF | File | Content |
+|-----|------|---------|
+| **1** | `TOPIC-principles.md` | Mechanism, gotchas, critical tips (almost no URLs) |
+| **2** | `TOPIC-references.md` | Official docs + gold-mine sources + so-what tips |
+
+Full rule: [`rules/two-doc-ship-mandatory.md`](./two-doc-ship-mandatory.md).  
+Templates: `Templates/topic-principles.md`, `Templates/topic-references.md`.
+
+Do **not** mix long link tables into Doc 1. Do **not** re-teach full mechanism
+inside Doc 2 rows. Tip budget on Doc 1 is small (critical only).
+
 A task is **not done** until applicable steps finish. Chat-only delivery without
-git + mail is incomplete (unless skip phrases below).
+git + mail is incomplete (unless skip phrases below). Learning topics without
+both PDFs are incomplete (unless two-doc skip phrases).
 
 ## Hardcoded map (agents + skills + rules)
 
@@ -80,6 +96,20 @@ Never `git add -f logs/`. Never commit SMTP secrets or live credentials.
 
 ### 5 — Mail (always for keepable artifacts)
 
+**Learning topics (default — two PDFs):**
+
+```bash
+python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py TOPIC-principles.md -o TOPIC-principles.pdf
+python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py TOPIC-references.md -o TOPIC-references.pdf
+python3 /home/kali/HTB/PwnJournal/scripts/send_report_email.py \
+  --subject "[Notes] <topic> — principles + references" \
+  --body "Doc1: first principles + critical tips. Doc2: official + gold-mine refs." \
+  TOPIC-principles.pdf TOPIC-principles.md \
+  TOPIC-references.pdf TOPIC-references.md
+```
+
+**Single-file deliverables only** (batches, pure checklists, or skip phrase):
+
 ```bash
 python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py PATH.md -o PATH.pdf
 python3 /home/kali/HTB/PwnJournal/scripts/send_report_email.py \
@@ -101,6 +131,10 @@ On mail failure: keep files + git; report error (do not pretend mailed).
 | `skip git` / `no push` / `local only` | step 4 |
 | `skip mail` / `no email` / `don't mail` | step 5 |
 | `skip research` / `course text only` | step 0 |
+| `single doc ok` / `one pdf only` | two-doc pair (allow one combined file) |
+| `skip references` / `principles only` | Doc 2 only |
+| `skip principles` / `refs only` | Doc 1 only |
 | `ship pipeline off` | steps 2–5 for that turn only |
 
-No phrase → full pipeline.
+No phrase → full pipeline + **two-doc pair** for learning topics
+(`rules/two-doc-ship-mandatory.md`).

@@ -50,19 +50,21 @@ inputs:
     description: What to write (title, section, batch, or learning unit)
   - name: path
     required: false
-    description: Target markdown path (create or overwrite draft)
+    description: Target markdown path (create or overwrite draft). For learning topics, base slug for TOPIC-principles.md + TOPIC-references.md
   - name: sources
     required: false
-    description: Official docs / gold-mine links already researched
+    description: Official docs / gold-mine links already researched (land in TOPIC-references.md only)
   - name: card_shape
     required: false
-    description: "If operator batch: FILL IN / GOAL / WHY / DO THIS / IF-THEN / NEXT"
+    description: "If operator batch: FILL IN / GOAL / WHY / DO THIS / IF-THEN / NEXT. Learning topics use two-doc templates."
 
 outputs:
   - name: draft_path
-    description: Path of the written markdown
+    description: Path of principles draft (and references path when two-doc)
+  - name: references_path
+    description: Path of TOPIC-references.md when learning topic (empty for single-card batches)
   - name: ste_pass_report
-    description: One-line result of the single pragmatic STE self-check
+    description: One-line result of the single pragmatic STE self-check per file
 
 instructions: |
   You are **writer** — the Notes vault content drafter.
@@ -87,7 +89,20 @@ instructions: |
   research (if study topic) → draft on disk → simple-english 1× pragmatic → report
   ```
 
-  ### Draft shape (default for operator / cram cards)
+  ### Learning topics: TWO files (hard)
+
+  Rule: `rules/two-doc-ship-mandatory.md`. Templates under `Templates/`.
+
+  | File | Content | Links |
+  |------|---------|-------|
+  | `TOPIC-principles.md` | definition, why, mechanism, map, critical misses, gotchas, critical tips (3–7 each), IF/THEN, do this | almost zero external URLs |
+  | `TOPIC-references.md` | official table + gold-mine table + so-what + extra tips from sources | all research URLs land here |
+
+  Goals for Doc 1 tips: bug bounty, audit, AI-as-operator, architect judgment.
+  Do **not** pad tips. Do **not** mix website tours into Doc 1 prose.
+  STE 1× pragmatic on **each** file. Hand both paths to frugal-eval.
+
+  ### Draft shape (operator / cram cards — single file OK)
 
   Prefer:
 
@@ -100,7 +115,7 @@ instructions: |
   - IF / THEN (edges)
   - NEXT (one next card only)
 
-  For other learning notes: plain definition → mechanism → map → worked example.
+  Optional one-line pointer to topic `*-references.md` — no long link dumps in cards.
   Prefer core folders in AGENTS.md (AI, api, IIS, AEM, web-app-testing, …).
   Do not treat agriculture/ as default curriculum (one-off favor only).
 
@@ -133,10 +148,12 @@ instructions: |
   ```text
   # writer
 
-  path_written: <path>
+  path_written: <principles or single path>
+  references_path: <TOPIC-references.md or none>
+  two_doc: yes | no
   skill: simple-english
   ste_mode: pragmatic
-  ste_passes: 1
+  ste_passes: 1 per file
   ste_self_check: PASS | FAIL
   synonym_locked: <verb you locked for check/verify/…>
   handoff: frugal-eval
