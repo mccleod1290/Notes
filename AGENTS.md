@@ -22,6 +22,16 @@ Learning / operator notes vault (not a live attack tree).
 No phrase → writer + frugal-eval (both **simple-english**). Full ship adds git + mail.
 Skip phrases: [`rules/ship-pipeline-mandatory.md`](rules/ship-pipeline-mandatory.md).
 
+**Invoke (preferred):**
+
+| How | What |
+|-----|------|
+| `/notes-ship` | Skill: create + PDF + git + mail |
+| `/notes-create` | Skill: create only |
+| `/workflow notes-ship {...}` | Orchestrated phases in `/workflows` |
+
+Details: root [`README.md`](./README.md) · skill [`.grok/skills/notes-ship/SKILL.md`](.grok/skills/notes-ship/SKILL.md) · workflow [`.grok/workflows/notes-ship.rhai`](.grok/workflows/notes-ship.rhai).
+
 ---
 
 ## Document create workflow (core)

@@ -12,6 +12,9 @@ principles** learning. Not a university term track. Side folders such as
 
 **Only two agents. Only one skill for language: simple-english.**
 
+**Invoke:** `/notes-ship` (full) · `/notes-create` (create only) ·  
+`/workflow notes-ship {...}` — see root `README.md` and `.grok/skills/notes-ship/`.
+
 ```text
 1. WRITER        write once on disk + simple-english 1× pragmatic
 2. FRUGAL-EVAL   simple-english 3× hardcore (filter / rewrite)
@@ -118,12 +121,12 @@ Never `git add -f logs/`. Never commit SMTP secrets or live credentials.
 
 ### 4 — Mail (full ship)
 
-**Learning topics (default — two PDFs):**
+**Learning topics (default — two PDFs).** Prefer vault helpers:
 
 ```bash
-python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py TOPIC-principles.md -o TOPIC-principles.pdf
-python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py TOPIC-references.md -o TOPIC-references.pdf
-python3 /home/kali/HTB/PwnJournal/scripts/send_report_email.py \
+python3 scripts/md_to_pdf.py TOPIC-principles.md -o TOPIC-principles.pdf
+python3 scripts/md_to_pdf.py TOPIC-references.md -o TOPIC-references.pdf
+python3 scripts/send_notes_email.py \
   --subject "[Notes] <topic> — principles + references" \
   --body "Doc1: first principles + critical tips. Doc2: official + gold-mine refs." \
   TOPIC-principles.pdf TOPIC-principles.md \
@@ -133,8 +136,8 @@ python3 /home/kali/HTB/PwnJournal/scripts/send_report_email.py \
 **Single-file deliverables only** (batches, pure checklists, or skip phrase):
 
 ```bash
-python3 /home/kali/HTB/PwnJournal/scripts/md_to_pdf.py PATH.md -o PATH.pdf
-python3 /home/kali/HTB/PwnJournal/scripts/send_report_email.py \
+python3 scripts/md_to_pdf.py PATH.md -o PATH.pdf
+python3 scripts/send_notes_email.py \
   --subject "[Notes] <short title>" \
   --body "<one-line what shipped>" \
   PATH.pdf PATH.md

@@ -62,14 +62,20 @@ Rules (canonical under `rules/`; harness: `.grok/rules/` symlinks):
 ## Invoke
 
 ```text
-spawn writer        → topic + path
-spawn frugal-eval   → path of draft
+/notes-ship          → skill: writer → frugal-eval → PDF → git → mail
+/notes-create        → skill: writer → frugal-eval only
+/workflow notes-ship → orchestrated Rhai (.grok/workflows/notes-ship.rhai)
+
+spawn writer         → topic + path
+spawn frugal-eval    → path of draft
 ```
 
 Or: "use writer then frugal-eval on `path`".
 
 Learning topics: **two files** — `TOPIC-principles.md` + `TOPIC-references.md`
 (`rules/two-doc-ship-mandatory.md`). Still only writer + frugal-eval.
+
+See root `README.md`.
 
 ## Skip
 
