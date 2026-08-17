@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ocado OSP — OAuth / open-redirect lab notes</title>
+  <style>
+    :root {
+      --bg: #101410; --card: #1a211c; --ink: #e7eee8; --muted: #8b9a8e;
+      --line: #2c382f; --good: #3dba7a; --bad: #e85d4c; --warn: #e0b34a;
+      --accent: #6fd3a0; --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+      --sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); }
+    header { padding: 2rem 1.4rem 1.2rem; border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #1c2a22, var(--bg)); }
+    header h1 { margin: 0 0 .4rem; font-size: 1.5rem; letter-spacing: -.02em; }
+    header p { margin: 0; color: var(--muted); max-width: 46rem; }
+    .badge { display: inline-block; margin-bottom: .7rem; padding: .2rem .6rem;
+      border-radius: 999px; background: #2a2110; color: var(--warn); font: 600 12px var(--mono); }
+    main { max-width: 880px; margin: 0 auto; padding: 1.3rem 1.2rem 3rem; }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 1.05rem 1.15rem; margin: 0 0 1rem; }
+    h2 { margin: 0 0 .6rem; font-size: 1.08rem; }
+    h3 { margin: 1rem 0 .4rem; font-size: .95rem; color: var(--accent); }
+    p { margin: .4rem 0 .55rem; }
+    ul, ol { margin: .3rem 0 .6rem; padding-left: 1.2rem; }
+    li { margin: .25rem 0; }
+    code, .mono { font-family: var(--mono); font-size: .86em; }
+    pre { background: #101612; border-radius: 8px; padding: .75rem .85rem; overflow-x: auto;
+      font: 12.5px/1.45 var(--mono); }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th, td { text-align: left; padding: .4rem .35rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); }
+    .ok { color: var(--good); } .no { color: var(--bad); } .muted { color: var(--muted); }
+    .q { margin: .55rem 0; padding: .55rem .7rem; background: #101612; border-radius: 8px; }
+    .q strong { display: block; margin-bottom: .2rem; }
+    footer { color: var(--muted); font-size: .82rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="badge">LAB NOTES — not a bounty submission</span>
+    <h1>Ocado OSP: OAuth chain vs open redirect</h1>
+    <p>What we actually measured on www.ocado.com / sso.ocado.com (Intigriti, 2026-08-17).
+      Verdict: <strong class="ok">no confirmed open redirect</strong> and no stolen authorization code.</p>
+  </header>
+  <main>
+
+    <section>
+      <h2>1. What these words mean</h2>
+      <p><strong>Open redirect:</strong> the server (or a script it shipped) sends the browser to a host the attacker picked. Proof is a <code>Location</code> header or <code>window.location</code> whose host is not Ocado.</p>
+      <p><strong>OAuth authorization code:</strong> a one-time string Salesforce puts on <code>https://www.ocado.com/sso-login?code=…</code> after you log in. If that <code>code</code> lands on attacker.com, they can try to finish login as you.</p>
+      <p><strong>Why they pair:</strong> textbook steal is <code>redirect_uri</code> = an open redirect on a trusted host. The code follows the bounce.</p>
+      <p><strong>Need:</strong> HTTP status + Location, or a browser URL. Seeing <code>example.com</code> in a JS file is not a redirect.</p>
+    </section>
+
+    <section>
+      <h2>2. Map of this login</h2>
+<pre>browser
+  → www.ocado.com/login?destination=/path
+      cookies: sso.state, sso.codeVerifier, sso.nonce (HttpOnly)
+  → sso.ocado.com/services/oauth2/authorize
+      redirect_uri is always https://www.ocado.com/sso-login
+  → /ocado/login  (Google / Facebook / PayPal / Apple)
+      JS may copy startURL into sessionStorage and social links
+  → www.ocado.com/sso-login?code=…&amp;state=…
+  → /sso-login/auth
+  → 302 Location: decoded destination (path only)</pre>
+      <p>Two different “where next?” values:</p>
+      <ul>
+        <li><code>destination</code> on <strong>www</strong> — encoded into OAuth <code>state</code> as <code>web_&lt;base64url&gt;_&lt;uuid&gt;</code>, replayed after code exchange.</li>
+        <li><code>startURL</code> on <strong>Salesforce</strong> — where Salesforce thinks you should go after <em>its</em> login. Not the same filter.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. “JS had example.com” — what that actually was</h2>
+      <p>The first HTML of <code>/ocado/login?startURL=https://example.com</code> (<code>~61 KB</code>) contains <strong>zero</strong> <code>example.com</code> and zero <code>startURL</code> strings. The payload is not baked into the shell page.</p>
+      <p>The Lightning Web Runtime view (<code>login_view</code>, <code>~663 KB</code>) contains <code>example.com</code> <strong>nine</strong> times. Every hit is a <em>placeholder email</em>, not our redirect:</p>
+      <pre>emailPlaceHolder: "john.smith@example.com"
+ssot__EmailAddress__c: "howard.jones@example.com"
+… alice.smith / bob.wilson / …</pre>
+      <p>That is demo data inside Salesforce Data Cloud sample objects. It does not navigate the browser.</p>
+      <p>The same view <em>does</em> implement <code>startURL</code>:</p>
+      <pre>getStartUrlFromQueryParams() {
+  return new URLSearchParams(location.search).get("startURL")
+}
+// social buttons:
+sessionStorage.setItem("oauth_startURL", btoa(t))
+location.href = origin + "/ocado/services/auth/sso/Google?startURL=" + encodeURIComponent(t)</pre>
+      <p>So: the client <strong>forwards</strong> the query to Salesforce social endpoints. It does <strong>not</strong> <code>location.assign("https://example.com")</code>. We requested those social URLs with <code>startURL=https://example.com</code>: <code>401</code> or <code>500</code>, <strong>no</strong> <code>Location: https://example.com</code>.</p>
+      <p>Password login would send <code>startUrl</code> to a Salesforce Apex action. We did not submit a password to complete that path; the GET of the login page still does not bounce.</p>
+    </section>
+
+    <section>
+      <h2>4. What we tried (and the result)</h2>
+      <h3>www.ocado.com <code>destination</code></h3>
+      <table>
+        <tr><th>Input</th><th>Encoded dest</th><th>After-login Location / browser</th></tr>
+        <tr><td><code>/webshop</code></td><td>same</td><td class="ok">same-origin</td></tr>
+        <tr><td><code>https://example.com</code> / <code>//example.com</code></td><td>empty / <code>/</code></td><td class="ok">stripped</td></tr>
+        <tr><td><code>/%2f%2fexample.com</code></td><td>kept as path</td><td class="ok">stays on www.ocado.com</td></tr>
+        <tr><td>CRLF, <code>%00</code>, tabs, <code>/@example.com</code>, encoded <code>\</code></td><td>stored as path</td><td class="ok">no second Location header</td></tr>
+        <tr><td><code>javascript:</code></td><td>—</td><td class="ok">403 / no OAuth start</td></tr>
+      </table>
+      <p>30 extra encodings × 6 endpoints (180 requests): <strong>0 external Location</strong>. Skills used: <code>open-redirect</code>, <code>oauth-attacks</code>, Caido HTTPQL, pinchtab.</p>
+
+      <h3>www <code>redirect_uri</code> / register</h3>
+      <ul>
+        <li><code>/login?redirect_uri=https://example.com</code> — ignored; Salesforce still gets the registered callback.</li>
+        <li><code>/register?redirect_uri=https://example.com</code> — <code>400</code>.</li>
+      </ul>
+
+      <h3>sso.ocado.com (in scope after Intigriti add)</h3>
+      <ul>
+        <li>Evil OAuth <code>redirect_uri</code> → <code>400 redirect_uri_mismatch</code>.</li>
+        <li>Registered URI + PKCE → 302 to Salesforce’s own authorize page.</li>
+        <li><code>http://</code> or extra <code>?x=1</code> on the registered URI → still same-site 302, code not sent to example.com.</li>
+        <li><code>startURL</code> GET → 200 login HTML, payload not in page.</li>
+        <li>OIDC logout <code>post_logout_redirect_uri=https://example.com</code> → JS hardcodes <code>https://www.ocado.com/sso-logout</code>.</li>
+      </ul>
+
+      <h3>accounts.ocado.com</h3>
+      <p>Shop errors link to <code>https://accounts.ocado.com/auth-service/sso/error-warn</code>. That hostname has <strong>no DNS</strong>. Not an open redirect. <code>ocodo.com</code> (typo) is a parked 403 — not Ocado, not tested.</p>
+
+      <h3>Leftovers (hail-mary, GET only, no scanner)</h3>
+      <p>Intigriti forbids ZAP/Nessus and caps custom scripts at 3 req/s. Hail Mary here means leftover <em>vectors</em>, not ffuf floods.</p>
+      <ul>
+        <li><code>/ocado/s/login/</code> 404; <code>/s/login/</code> 401; community login 200; OIDC logout ignores attacker URI.</li>
+        <li><code>POST /logout</code> on www: visitor 403/500. JSON <code>logoutUrl</code> never seen (needs a logged-in shop session). Logout CSRF is program-excluded anyway.</li>
+        <li><code>?confirmRedirect=</code> does nothing unless a CMS nav <code>href</code> contains it. Homepage had 0 such links.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Skills used</h2>
+      <ul>
+        <li><code>oauth-attacks</code> — code flow, PKCE, state, <code>redirect_uri</code>, scope, reuse.</li>
+        <li><code>open-redirect</code> — dest params, encoding, protocol-relative, CRLF, <code>@</code>, JS URIs, OAuth chain.</li>
+        <li><code>hail-mary</code> — leftover community/OIDC/logout paths. <strong>No ffuf</strong> (program: no automated scanners; 3 req/s).</li>
+        <li>Caido HTTPQL + pinchtab for WAF and DOM. JS audit on <code>index-CUKvZ17T.js</code> and <code>login_view</code>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>6. Core questions</h2>
+      <div class="q"><strong>Did HTML/JS contain example.com?</strong> Login shell: no. View bundle: yes, only as <code>@example.com</code> placeholder emails. Our <code>startURL=https://example.com</code> string was not in either file.</div>
+      <div class="q"><strong>Does the client still redirect?</strong> It only copies <code>startURL</code> to Salesforce or social <code>?startURL=</code>. Server must emit a 3xx or <code>location =</code> to leave Ocado. It did not.</div>
+      <div class="q"><strong>When is dest an open redirect?</strong> Only if after <code>/sso-login/auth</code> the browser’s host is not Ocado. Encoded slashes stayed on www.</div>
+      <div class="q"><strong>Can we steal the code via redirect_uri?</strong> Not with this client_id. Mismatch is 400. Loose http/query match still redeemed to the registered HTTPS URI.</div>
+      <div class="q"><strong>What failed first?</strong> AWS WAF <code>202</code> without <code>aws-waf-token</code>. Refresh from the Caido browser. Completing Google login leaves www for <code>sso.ocado.com</code> (now in scope if you continue).</div>
+    </section>
+
+    <section>
+      <h2>7. What to take away</h2>
+      <ol>
+        <li>Filter the <em>string the server will put in Location</em>, not the string sitting in a bundle as sample email data.</li>
+        <li>Two hops (shop dest vs Salesforce startURL) means two filters. Killing one hop is not the whole chain.</li>
+        <li><code>Location: /%2f%2fexample.com</code> is still same-origin. Confirm in a real browser.</li>
+        <li>A 302 to SSO is not an open redirect. Read the <em>next</em> Location after login.</li>
+        <li>Dead hostnames in error URLs (<code>accounts.ocado.com</code> NXDOMAIN) are not takeovers under the parent zone.</li>
+      </ol>
+    </section>
+
+    <footer>
+      Authorized Intigriti OSP work, researcher grace_pwn, 2026-08-17.
+      Header used: <code>X-intigriti-username:grace_pwn</code>.
+      Evidence also under the bb-agentic-setupv2 notes tree (gitignored).
+    </footer>
+  </main>
+</body>
+</html>
