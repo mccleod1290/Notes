@@ -40,6 +40,7 @@ Templates: [`Templates/topic-principles.md`](./Templates/topic-principles.md), [
 |---------|----------------|
 | **`/notes-ship`** | Full process: research (as needed) → writer → frugal-eval → PDF → git push → mail |
 | **`/notes-create`** | Create only (writer + frugal-eval). No git/mail |
+| **`/first-principles-blog`** | 3-part keyword blocks: definition, adjacent terms, grounded variations |
 
 Skill body: [`.grok/skills/notes-ship/SKILL.md`](./.grok/skills/notes-ship/SKILL.md)  
 Legacy command stubs: [`.grok/commands/notes-ship.md`](./.grok/commands/notes-ship.md), [`.grok/commands/notes-create.md`](./.grok/commands/notes-create.md)

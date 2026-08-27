@@ -43,10 +43,10 @@ Canonical STE skill: `.agents/skills/simple-english/SKILL.md`
 
 | Target | Path habit |
 |--------|------------|
-| Live brain | `~/llm-wiki/boxes/<slug>.md` or `concepts/` for portable bugs |
-| Blog site | `mccleod1290.github.io` repo when present; else stage under Notes `web-app-testing/writeups/` or box folder |
-| Notes git | learning folders or `web-app-testing/writeups/<slug>.md` |
-| PwnJournal seed | `wiki/boxes/` or engagement `STUDY_NOTES.md` |
+| PwnJournal progressive writeups | `wiki/red/HTB-CJCA/...` (or path user names under `wiki/red/`) |
+| Notes git | `web-app-testing/writeups/<slug>.md` or folder user names |
+| Blog site | `mccleod1290.github.io` only when that repo exists and user asks |
+| Portable idea (optional) | short pointer only — do not invent wiki “cheatsheet” shelves |
 
 If the user names a target, use it. If silent, write:
 
@@ -77,7 +77,7 @@ https://medium.com/@zabedullahpoyel/intigriti-july-2026-ctf-write-up-exploiting-
 | **Pre-req knowledge** at the very start | reader knows what to study first |
 | **Core concept** one-liner | sticky mental model |
 | **Why this step** after each step | no cargo-cult commands |
-| **First principles of the command** | what each flag/tool does |
+| **First principles of the command** | load `first-principles-blog`: 3-part block + every flag |
 | **Beyond Root** after flag/root | path study + patch + detect + document |
 | **Screenshots** for blog mode only | blogs need proof; short notes do not |
 
@@ -141,11 +141,16 @@ For **every** step use this shape. Small steps. One job per step.
 # exact command; placeholders in ANGLE_BRACKETS or YOUR_*
 \`\`\`
 
-**First principles (this command)**
+**First principles (this command / this keyword)**
+
+Load skill **`first-principles-blog`**. Every new keyword, technique, OS
+object, **and every flag** gets the 3-part block: (1) one-sentence
+definition (2) adjacent terms (3) variations **grounded to the same
+primitive**. Do not dump a glossary at the end.
 
 | Piece | Meaning |
 |-------|---------|
-| tool / flag | what it does at the protocol/OS layer |
+| tool / flag | what extra question this flag asks |
 
 **What you should see**
 
@@ -276,3 +281,4 @@ beyond_root: full | short | n/a
 - `templates/blog-writeup.md` — full paste skeleton
 - `templates/obsidian-short.md` — vault-short skeleton
 - simple-english skill (required)
+- **first-principles-blog** — 3-part keyword/command blocks (required for blogs)
