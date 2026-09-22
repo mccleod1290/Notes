@@ -1,0 +1,90 @@
+Writing observation plan
+Saved from the chat on 2026-09-23. No corpus files were moved.
+
+Year folders would add friction. The date is already on every row in corpus/INDEX.md. The cut that matters is not 1 January.
+
+Nothing in the corpus was moved for this plan.
+
+WHAT THE FOLDERS WOULD MIX
+
+The posts do not change author on New Year's Day. They change on 19 Dec 2024, when 965 starts the web-pentest series.
+
+Year 2023
+Your TryHackMe writeups, 480, 596, Pilgrimage (694), and the VIT CTF post 658.
+
+Year 2024
+825 (yours), 835 (your ideas, mixed wording), six HTB writeups in the first half of December (yours), then 965 and 966 (the collab).
+
+Year 2025
+The rest of the series, plus 1329, which you have not claimed.
+
+Year 2026
+1470 and 1630, both yours, and 1630 is where the three models are named.
+
+A 2024/ folder would put your GoodGames writeup and the HTTP collab post in the same bucket. That is the split the skills just learned not to make. Moving the files would also break the paths those skills already use.
+
+A second file of "patterns by year" would restate the same rules that already live in the voice spec and the approach spec. Two homes for one fact drift apart. The next check then has to guess which file is current.
+
+WHAT TO DO INSTEAD
+
+Keep the four shelves. Use the date column when you want time. If a timeline is ever useful, it is one short section in INDEX.md that points at those shelves. It does not become a new rule file, and it does not move posts.
+
+HOW YOU OBSERVE A PIECE
+
+After you write, stay on one paragraph. Answer three questions.
+
+1. What parts does this result depend on, and where did you stop at the tool?
+2. Which lines are your narration, and which lines are a catalog, a pasted install block, or a paraphrase of a complex sentence?
+3. Is this a habit, or is it only this post?
+
+491 is the shape of a good answer to the first question. You name the encoding from its marks, then you stop at CyberChef. That stop is the observation. "This feels early" is not.
+
+978 is the shape of a good answer to the second. The CTF lab is yours. The second-order section in the same file is not, and it has no White box heading. You mark the boundary. You do not re-read the whole year.
+
+The third question keeps a one-off out of the permanent rule. One sentence you dislike does not become a ban.
+
+HOW YOU HAND ME PROSE
+
+Paste the paragraph, or name the post id and the heading. Then one line, in your words:
+
+- learn this
+  It is a general habit. I update the spec.
+
+- this post only
+  I use it for the task and I do not store it.
+
+- not my sentence
+  The idea can stay and the wording cannot.
+
+- early try
+  The attempt counts and it is not the best statement of the model.
+
+That is enough. A year folder does not make the handoff clearer. Your label does.
+
+QUESTIONS THAT STILL NEED YOU
+
+Answer any of these in your own words. A post id and a heading is enough. Skip any question you do not care about.
+
+1. 658, the VIT CTF post. The steps sound like your early writeups, and you also break a command down in a textbook way. You did not claim it. Is the wording yours, mixed, or not yours?
+
+2. 1329, the Azure post from Nov 2025. Is this yours, mixed, or not yours? If it is mixed, which part is the idea and which part is the sentence?
+
+3. 835. I kept the ideas as yours and early, including the wrong expansion of NTLM, and I kept the opener, the Kerberos overview, and the close out of your sound. Does that match what you remember, or did you write those parts too?
+
+4. 949, 2million. The steps match your other HTB writeups. The first paragraph is smoother, and you say you used ChatGPT to read inviteapi.min.js. Did you write that first paragraph, or was it helped?
+
+5. The other December 2024 HTB writeups are 951, 958, 959, and 962. I read 949 and 957 and treated all six as yours. Should I read each one before that stays, or is the set yours as a group?
+
+6. Initial blogs. I used 480, 596, and 825. Is 825 still "initial" to you, or only 480 and 596? Is any other post in that set?
+
+7. Black box, "here and there AI." 978 has a type list, an X-Forwarded paragraph, and a second-order section with no White box heading. Are those the kind of inserts you mean? Point at one more insert, and one lab stretch that is fully yours, so the boundary is from you and not only from me.
+
+8. Paraphrase. Point at one white-box paragraph you rewrote because the wording was too complex, and one you left as the model wrote it. I cannot see that difference from the file alone.
+
+9. 1470. You already said the voice is yours. Is any section of that course review the model's wording?
+
+10. Series posts 1037, 1039, 1041, and 1123. I have not claimed the intros. For each one, is the idea yours, the wording yours, or both mixed?
+
+11. When you next hand me prose, do you want the four labels (learn this, this post only, not my sentence, early try), or do you want different words?
+
+12. The hook note from the earlier turn is still only on disk: Mindset/hooks-saved-the-cut-session.md and the PDF next to it. It was not part of this commit. Should that note be committed later, or left out of git?
