@@ -1,0 +1,64 @@
+Old patterns and new patterns
+Saved from the chat on 2026-09-23. The corpus was not moved. The skills were not edited.
+
+The new blogs in this note are 1470 (24 Mar 2026) and 1630 (13 Sep 2026). Both are yours. 1630 says the writing was done by hand, and ChatGPT was used only for images.
+
+WHAT THE NEW BLOGS DO
+
+1470 and 1630 are essays. They are not room logs.
+
+The shape, in both:
+
+1. You open on a situation you were in. 1470 is the course you were given. 1630 is the months you spent lost in AI.
+2. You say what the piece is not. 1470 is not a buy-this review and not five-minute hacks. 1630 is not a niche prompt, not a secret method, and not the one right way.
+3. You state the point, then you say it in simpler words. 1630 does this with diligence, and again with the three models.
+4. You answer the objection you expect. 1470 answers "I cannot pay" and "why not PortSwigger." 1630 answers "why not start with agents."
+5. You close on one or two ideas. 1470 closes on one vulnerability, in depth, and a free path beside the paid one. 1630 closes on two takes: try the features, and use the model as a sparring partner, not as the person who does the work.
+6. You mark the limit. 1470 says "I might be wrong" and "I cannot say I have improved." 1630 says the account is enough if you keep diligence and discernment, and that the rest of the tips can go.
+7. You credit a person. FC for the course. Jason Haddix for the class. Karpathy for the line you cannot outsource understanding.
+
+The idea change is the part that is actually new.
+
+In the old writeups you tried first principles and often stopped at the tool. In 1630 you name the three models and you give the question for each one.
+
+- First principles: how does this work, what conditions does it need, and when is it N/A?
+- Second-order: what happens next when that happens?
+- Invariant: what remains true when a required condition changes?
+
+You use all three on one SQL-injection question. That is an example in that post. It is not a template that every note must repeat.
+
+What did not change. You still use "Now", "Note that", "IMHO", and "we". You still have the spoken miss and the short correction. 1630 still has typos. Cleaner grammar is not the new pattern. The new pattern is the essay shape and the named models.
+
+Two things in 1630 stay off the rule list. Numbered "pro tip" headings appear in that post and not as a habit across posts. A short "right?" after a claim is the spoken rhythm, not a phrase to paste.
+
+HOW OLD AND NEW ARE KEPT
+
+Old and new are two shelves. One does not replace the other.
+
+Old stays. The TryHackMe writeups, the HTB writeups, and 480, 596, and 825 keep their job. They are your wording, your early ideas, and the room-log sound. A later essay does not delete that sound. When the piece is a room, that sound is still the one to use.
+
+New is added as a dated line, and only when you label it. The line says what changed: the sentence, the idea, or both. 1630 is the clean statement of the three models. 491 remains the proof that you were already trying, and that the try was early.
+
+A conflict is not an average. If a new essay says "name the model" and an old room says "the room will not carry the long explanation," both stay. The room keeps the short log. The essay keeps the named model. The task picks which shelf.
+
+Do not make a third file that restates this every year. The voice spec holds the sentences. The approach spec holds the ideas. A new post gets one dated line there, after you say "learn this."
+
+THE DATASET AND THE SCORE
+
+Do not paste all of the writings back in as a fresh dataset. They are already the dataset. Sixty-one posts are on disk, with a date on each row.
+
+Do not run a long vibe prompt and ask me to pick up signals. That is how 835 was almost filed as fully yours. The opener and the close are a different cadence. A vibe pass feels the mix and calls it one voice. A label from you stops that.
+
+Do not keep scores on the writings or on the ideas. You did not name a score as one of your models. A number will drift, and the next session will treat the number as a rule. 1630 does mention a confidence score. That score is for a model that is citing a page. It is not a grade of your prose.
+
+What works is smaller.
+
+When a new post, or a new paragraph, should change the spec, send three things:
+
+1. The post id, or the paragraph.
+2. One label: learn this, this post only, not my sentence, or early try.
+3. One line on what changed: the wording, the idea, or both.
+
+If you do not send the label, I use the piece for that task and I do not store a new rule.
+
+Old patterns stay on the shelf they are already on. New patterns enter only through that label. No year folder. No score. No second copy of the corpus in the chat.
