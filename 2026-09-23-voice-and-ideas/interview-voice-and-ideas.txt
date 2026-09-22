@@ -1,0 +1,44 @@
+Interview: your sound, and how you think
+Answer in your own words. A post id and a heading is enough when you want to point. Skip any question you do not care about.
+
+The open authorship calls from writing-observation-plan.txt are questions 1 to 11 there. This interview does not repeat them. Answer those first if you only have a few minutes.
+
+SOUND
+
+1. Read one paragraph of 626 and one paragraph of 1630 out loud. Which one sounds like the note you want next, and which one is only for that kind of piece?
+
+2. Which of these do you still want in a new essay, and which are old costume?
+   Now
+   Note that
+   do note that
+   in a nutshell
+   simply put
+   for sure
+   IMHO
+   why you ask
+
+3. Name one sentence you wrote that you still like. Paste it, or give the post id and the heading.
+
+4. Name one sentence that is in your corpus and is not your sound. Paste it, or give the post id and the heading.
+
+5. When the wording of a model is too complex and you paraphrase it, what do you change, and what do you leave?
+
+6. Is a typo part of the sound you want kept, or only a mark that the draft was yours?
+
+IDEAS
+
+7. In a room, you often name the thing from its marks and then stop at the tool. 491 does this with the encodings. Is that still the right stop, or do you now want the condition and the N/A line in the room too?
+
+8. 1630 uses all three models on one SQL-injection question. You said that is an example, not a template. Name a topic where second-order thinking is a waste, and a topic where leaving it out would make the note wrong.
+
+9. Name a topic where the invariant question matters, and a topic where nothing about the conditions is changing.
+
+10. Your early ideas were premature, and you still tried. When a future note is an early try, do you want it labeled "early try" in the file, or only in the message you send me?
+
+11. Diligence and discernment are named in 1630. Should they stay as takeaways of that post, or become part of how every learning note is ordered?
+
+12. White box: you pick the sink, the payload shape, and the missing check. Is there a fourth step you always want in that order, or is three the whole move?
+
+A NEW POST, IF YOU HAVE ONE
+
+13. If you wrote anything after 1630, paste the id or the link, and say whether the wording is yours, the idea is yours, or both are mixed.

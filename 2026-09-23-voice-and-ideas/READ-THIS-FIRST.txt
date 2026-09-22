@@ -30,9 +30,11 @@ Do not paste the 61 posts back in as a new dataset. Do not keep scores. A new ru
 
 WHAT YOU SHOULD GIVE
 
-Open writing-observation-plan.txt and answer questions 1 to 11. Skip any you do not care about. Question 12 is closed.
+1. writing-observation-plan.txt, questions 1 to 11. Question 12 is closed.
+2. questions-managing-new-blogs.txt. How a new blog changes an old pattern.
+3. interview-voice-and-ideas.txt. Your sound, and how you think.
 
-A useful answer is a post id, a heading, and one of these words: yours, mixed, or not yours. For a new paragraph later, use one label: learn this, this post only, not my sentence, or early try.
+Skip any question you do not care about. A useful answer is a post id, a heading, and one of these words: yours, mixed, or not yours. For a new paragraph later, use one label: learn this, this post only, not my sentence, or early try.
 
 FILES IN THIS FOLDER
 
@@ -47,6 +49,15 @@ FILES IN THIS FOLDER
 
 4. hooks-saved-the-cut-session.md
    Why the session ledger kept the task when the chat died. The PDF is the same note.
+
+5. questions-managing-new-blogs.txt
+   Questions on how a new blog sits next to an old pattern.
+
+6. interview-voice-and-ideas.txt
+   Questions on your sound and on how you think. The authorship calls in the observation plan are not repeated here.
+
+7. settled-rules-next-session.txt
+   Rules that are already decided. A later session should read this before it changes the skills.
 
 WHERE THE LIVE RULES ARE
 

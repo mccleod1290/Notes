@@ -1,0 +1,59 @@
+Settled rules for the next session
+Read this before changing the skills or the corpus. Do not reopen a line that is already settled here unless the writer says it is wrong.
+
+LIVE SKILLS
+
+Voice, the sentences: .grok/skills/writer-skill/
+Ideas, the order: .grok/skills/ideas-skill/
+Posts: .grok/skills/writer-skill/corpus/
+Shelf map: .grok/skills/writer-skill/references/sources.md
+
+The old pipeline is in archive/. It is not live. Do not revive notes-ship, frugal-eval, or simple-english as the default path.
+
+AUTHORSHIP
+
+Web pentest series: ideas and structure are his in both halves. Black-box lab narration is mostly his, with some model lines, including blocks that have no White box heading. White-box wording is the model's. A paraphrase of a complex sentence is not his voice. Checked against 978 and 989.
+
+Old TryHackMe writeups, HTB writeups 694, 949, 951, 957, 958, 959, and 962, and blogs 480, 596, and 825: fully his. No model. He tried first principles. The ideas were premature. The attempt counts. 1630 is the clean statement of the three models, not these posts.
+
+835: ideas are his and early, including a wrong expansion of NTLM. Do not repeat that expansion. The opener, the Kerberos overview, and the close are not his sound.
+
+1470 and 1630: his essays. 1630 says the writing was by hand and the images were from ChatGPT.
+
+658 and 1329 are unlabeled. Do not treat them as his sound or as a new model until he says.
+
+DO NOT
+
+Do not move the corpus into year folders. The date is already on each row of corpus/INDEX.md. The author cut is 19 Dec 2024, post 965, not 1 January.
+
+Do not paste the 61 posts back into chat as a new dataset.
+
+Do not score the writings or the ideas.
+
+Do not add a fourth named model. Diligence and discernment stay takeaways of 1630 until he says otherwise.
+
+Do not average an old room and a new essay into one voice. The task picks the shelf.
+
+HOW A NEW RULE ENTERS
+
+He sends the post id or the paragraph, one label, and one line on what changed.
+
+Labels: learn this, this post only, not my sentence, early try.
+
+learn this, and it is a general habit: add one dated line to the voice spec or the approach spec. Not both, unless wording and idea both changed.
+
+this post only: use it for the task. Do not store it.
+
+not my sentence: keep the idea. Do not keep the wording.
+
+early try: count the attempt. Do not treat it as the best statement of the model.
+
+Without a label, do not store a new rule.
+
+INPUT STILL OPEN
+
+Answer questions 1 to 11 in writing-observation-plan.txt.
+Answer questions-managing-new-blogs.txt.
+Answer interview-voice-and-ideas.txt.
+
+Question 12 in the observation plan is closed. The hook note is in this folder.
