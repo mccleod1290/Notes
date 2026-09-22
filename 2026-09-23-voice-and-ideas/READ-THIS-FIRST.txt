@@ -1,0 +1,57 @@
+Morning note, 2026-09-23
+Read this first. Then give the input in writing-observation-plan.txt.
+
+Two text files were pushed earlier, not three. They are in this folder now. The third document from the session is the hook note. It was emailed and left on disk. It is in this folder too.
+
+WHAT YOU WERE DOING
+
+You split how you sound from how you think.
+
+- Voice: .grok/skills/writer-skill/
+- Ideas: .grok/skills/ideas-skill/
+- The 61 posts: .grok/skills/writer-skill/corpus/
+- The map: corpus/INDEX.md and references/sources.md
+
+The old create path (writer agent, frugal-eval, notes-ship) is in archive/. It is not live.
+
+WHAT IS ALREADY DECIDED
+
+Web pentest series: your ideas and your structure. Black-box wording is mostly yours, with some model lines. White-box wording is the model's. A paraphrase of a complex sentence is not your voice.
+
+Old TryHackMe writeups, the HTB writeups (694, 949, 951, 957, 958, 959, 962), and blogs 480, 596, and 825: fully yours. No model. You tried first principles. The ideas were early.
+
+835: the ideas are yours and early, including a wrong expansion of NTLM. The opener, the Kerberos overview, and the close are not your sound.
+
+1470 and 1630: the new essay shape. 1630 names the three models. The old room log stays the room log. A later essay does not delete it.
+
+Do not sort the corpus into year folders. The real cut is 19 Dec 2024, when 965 starts the series, not 1 January.
+
+Do not paste the 61 posts back in as a new dataset. Do not keep scores. A new rule enters only when you label it.
+
+WHAT YOU SHOULD GIVE
+
+Open writing-observation-plan.txt and answer questions 1 to 11. Skip any you do not care about. Question 12 is closed.
+
+A useful answer is a post id, a heading, and one of these words: yours, mixed, or not yours. For a new paragraph later, use one label: learn this, this post only, not my sentence, or early try.
+
+FILES IN THIS FOLDER
+
+1. READ-THIS-FIRST.txt
+   This page.
+
+2. writing-observation-plan.txt
+   Why year folders add friction, how to observe one paragraph, and the open questions.
+
+3. writing-old-and-new-patterns.txt
+   What 1470 and 1630 changed, and how an old pattern stays while a new one is added.
+
+4. hooks-saved-the-cut-session.md
+   Why the session ledger kept the task when the chat died. The PDF is the same note.
+
+WHERE THE LIVE RULES ARE
+
+Voice sentences: .grok/skills/writer-skill/references/PERSONAL_LANGUAGE_SKILL.md
+Ideas: .grok/skills/ideas-skill/references/APPROACH.md
+Shelf map: .grok/skills/writer-skill/references/sources.md
+
+Latest commit before this folder move: 3bad423

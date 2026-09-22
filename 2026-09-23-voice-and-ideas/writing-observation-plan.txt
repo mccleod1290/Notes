@@ -87,4 +87,4 @@ Answer any of these in your own words. A post id and a heading is enough. Skip a
 
 11. When you next hand me prose, do you want the four labels (learn this, this post only, not my sentence, early try), or do you want different words?
 
-12. The hook note from the earlier turn is still only on disk: Mindset/hooks-saved-the-cut-session.md and the PDF next to it. It was not part of this commit. Should that note be committed later, or left out of git?
+12. Closed. The hook note is in this same folder: hooks-saved-the-cut-session.md and the PDF next to it. It is in git with the morning packet. You do not need to answer this one.
