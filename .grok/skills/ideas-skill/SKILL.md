@@ -18,7 +18,11 @@ Wording lives in `writer-skill` (`~/.grok/skills/writer-skill/references/PERSONA
 
 Read `references/APPROACH.md` before a teaching or learning answer if it is not already in context.
 
-Blog evidence is the writer corpus: `../writer-skill/corpus/`. Authorship of each shelf is `../writer-skill/references/sources.md`. White-box sections are his idea and the model's sentences. Use the move. Do not treat those sentences as his thinking style.
+Blog evidence is the writer corpus: `../writer-skill/corpus/`. Authorship of each shelf is `../writer-skill/references/sources.md`.
+
+On the web pentest series, ideas and structure are his in the black box and in the white box. Black-box wording is mostly his, with some AI lines. White-box wording is fully the model's. Where that wording was too complex, he paraphrased it. A paraphrase is not his sound, and it is not his thinking style. Use the move and the structure. Do not use those sentences.
+
+The old TryHackMe writeups, the HTB writeups, and the initial blogs 480, 596, and 825 are fully his. No AI. The ideas there are his, and they are premature. He tried first principles. The explanation is not always the best one. Count the attempt. Do not drop it because it is early, and do not use it as a cleaner definition than 1630. 835's ideas are his and premature. Do not use its opener, Kerberos overview, or close as his sound, and do not repeat its wrong expansion of NTLM.
 
 ## When this skill applies
 

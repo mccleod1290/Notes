@@ -12,20 +12,21 @@ Two different facts. Do not collapse them.
 
 **Sound.** Prose he wrote:
 
-- Most TryHackMe posts in `old-tryhackme/`. His voice and his idea. He said "most," not all. Do not guess which minority is not his.
-- Pilgrimage, `walkthroughs-htb-ctf/694-hackthebox-pilgrimage-walkthrough.md`. His voice and his idea.
-- Latest post, `longer-explainers/1630-a-comprehensive-guide-on-using-chatbots-for-learning-and-skill-development.md`. His voice and his idea. He also said 480 and 1470 were his voice.
-- Web-pentest series: collab. The idea is his. The **black-box walkthrough** is his voice. The **white-box writeup** is his idea and the model's execution.
+- Old TryHackMe writeups in `old-tryhackme/`. Fully his. No AI. Wording and idea are his.
+- HTB writeups in `walkthroughs-htb-ctf/`: 694, 949, 951, 957, 958, 959, 962. Fully his. No AI. Wording and idea are his. 949's first paragraph is smoother than the steps, and in that post he says he used ChatGPT to read one script. The steps after that are still his. 658 is not one of these.
+- Initial blogs 480, 596, and 825. Fully his. No AI. Wording and idea are his. Install commands pasted from a tool page are not his sentences. 835 is not in this set: the ideas are his and premature, but the opener, the Kerberos overview, and the close are a different cadence. 1470 and 1630 are later posts he also wrote. 1329 is not in this set.
+- On those writeups and initial blogs he tried first principles. The ideas were premature, so the explanation is not always the best one. The wording is still his. The attempt is still his. Do not treat a rough early explanation as proof that first principles was missing, and do not treat it as the best statement of the model.
+- Web-pentest series: a human and AI collab. **Ideas and structure are his** in both halves. **Black-box wording is mostly his**, with some AI lines here and there. **White-box wording is fully the model's.** Where that wording was too complex, he paraphrased it. A paraphrase is not his voice.
 
-**Depth is not voice.** Old rooms are do-this-get-that, and they are still how he sounds. The series is where the mechanism lessons are. Sentence style for those lessons still comes from the list above, not from white-box wording. Which model to use is the ideas skill.
+**Depth is not voice.** Old rooms are still often a task log, and they are still how he sounds. Inside that log he tried first principles. The ideas were premature. Sentence style for a mechanism lesson still comes from the list above, not from white-box wording. Which model to use is the ideas skill. The clean names of the models are in 1630, not in the early posts.
 
-White-box sections are labeled `White box`, `Whitebox`, or `Source code analysis`. Do not copy their sentences, headings, or cadence.
+White-box sections are labeled `White box`, `Whitebox`, or `Source code analysis`. Full reliance on the model. Do not copy those sentences, that cadence, or a paraphrase of a sentence that was too complex. The decision that the section exists, and where it sits, is his structure. That decision is the ideas skill, not a voice sample.
 
-Black-box sections are labeled `Black box`, `Blackbox`, or a lab walkthrough with no source. Those sentences are fair evidence of his sound when they are the lab narration: what he tried, what came back, and why the miss mattered.
+Black-box sections are labeled `Black box`, `Blackbox`, or a lab walkthrough with no source. The lab narration is mostly his sound: what he tried, what came back, and why the miss mattered. Some lines in those sections are AI. One smooth sentence is not enough to call a habit his. A pattern still needs two posts, and it still has to be the lab narration, not a catalog.
 
 A series file can mix in another cadence with no `White box` heading. A definition list, a tool catalog, or a fix cookbook in the same file is not his sound. 965's curl and wget catalog, the type lists in 974 and 978, 998's directive catalog and remediation section, and 1059's opening stack are that cadence. 998's lab-setup aside is his: he tried Docker, then installed bee-box on VMware.
 
-He said this on 2026-09-23. It replaces the rule that the whole series was the voice, and the rule that TryHackMe and Pilgrimage were not.
+He said the collab split on 2026-09-23, and he tightened it the same day. Black box is mostly human, not purely human. White box is fully the model, including a paraphrase of wording that was too complex. Ideas and structure stay his. This replaces the rule that the whole series was the voice, the rule that every black-box sentence is his, and the rule that TryHackMe and Pilgrimage were not.
 
 Reasoning wins over catchphrases. Do not paste lines from the corpus to sound like him.
 
@@ -78,7 +79,7 @@ Shape: task heading, one or two lines of gloss, command, what came back, the mis
 
 ## Things to avoid
 
-- Learning sentence style from white-box or source-code sections. The idea can stay. The wording cannot.
+- Learning sentence style from white-box or source-code sections. The idea and the structure can stay. The wording cannot, including a paraphrase of wording that was too complex.
 - Learning sentence style from a tool catalog, a type list, or a fix cookbook inside a series post. Same ban, even with no `White box` heading.
 - Copying typos, missing articles, or a wrong definition from a post.
 - Pasting lab secrets, flags, or hashes from the corpus into new writing.
@@ -91,23 +92,24 @@ Shape: task heading, one or two lines of gloss, command, what came back, the mis
 
 Not lines to reuse.
 
-- 626 and the other TryHackMe rooms: his sound. Task, command, what came back. Less mechanism than the series. Still his.
-- 694 Pilgrimage: his sound and his idea. Same walkthrough shape.
-- 989 black box: his sound inside the series. One parameter at a time, the character that worked, the reason the failed try mattered, then the payload.
-- 989 white box, from `Source code analysis` on: his choice to show `system` / `exec` / `eval`. The commentary under those headings is not the sound to copy.
+- 626 and the other old TryHackMe rooms: his sound and his idea. No AI. Task, command, what came back. He tried first principles there. The try is early.
+- 694 and the other HTB writeups listed above: his sound and his idea. No AI. Same walkthrough shape. Same early try.
+- 989 black box: mostly his sound inside the series. One parameter at a time, the character that worked, the reason the failed try mattered, then the payload. A single smooth line in that lab can still be one of the AI lines.
+- 989 white box, from `Source code analysis` on: his structure and his choice to show `system` / `exec` / `eval`. The commentary under those headings is the model's, even where a complex sentence was only paraphrased.
 - 1470 and 1630: what the piece is not, principle then simpler words, the objection answered, one or two takeaways.
 
 ## Uncertain — not rules
 
-- Which TryHackMe posts are the minority he did not claim. He said most.
-- Line-by-line authorship of series intros, case-study posts (1037, 1039, 1041), 825, 835, 966–969, 1123, 1329, and the HTB logs other than Pilgrimage. Do not promote or reject them as his sound until he says.
+- 658, the VIT CTF post. He claimed the HTB writeups, not this file.
+- 1329. It is later than the initial blogs, and he has not claimed it. Do not use it as his sound.
+- Line-by-line authorship of series intros and case-study posts (1037, 1039, 1041, 966–969, 1123). Those sit in the collab series. Do not promote a catalog inside them into his sound.
 - Punchy series titles. They exist. They are not required on notes.
 - Smoother closing paragraphs with a GuidedHacking link, after his own "we are done" close, on 540, 626, and 627. The grammar is cleaner than the body. Do not copy that cadence. Do not treat it as proven to be someone else.
 - 1329's body uses mnemonics, a stacked analogy, and a hype close. That conflicts with the essay sound. The post is still unlabeled. Do not use it as sound.
 
 ## Learned from corrections
 
-- 2026-09-23: Old TryHackMe posts are do-xyz-get-abc and less first-principles. The series and the newer long posts are where he teaches the mechanism. Full corpus is under `corpus/`.
-- 2026-09-23, later: Web pentest was a collab. Idea is his. Black-box walkthrough is his voice. White-box execution is the model's. TryHackMe, most of them, is his voice and his idea. Pilgrimage is his voice and his idea. The latest post (1630) is his voice and his idea.
 - 2026-09-23, split: Voice stays in this file. How he approaches a topic moved to `ideas-skill`. First principles is the default there. Invariant and second-order thinking are only when the topic needs them.
 - 2026-09-23, corpus pass: Lab narration is the series voice. Catalogs and cookbooks in the same file are not, even with no `White box` heading. Room moves added here: the "why this?" in the sentence, the wrong first guess, the sign the reader's run worked, an optional side path, the fenced room answer, and a close on the task done plus one lesson.
+- 2026-09-23, collab checked: Web pentest is a human and AI collab. In 978 the CTF labs are his narration, and the type list, the X-Forwarded paragraph, and the second-order section are the other cadence, with no White box heading. 989 from `Source code analysis` on stays in that other cadence, and the sentences stay complex. A paraphrase did not turn that block into his room voice. Ideas and structure stay his.
+- 2026-09-23, early posts, checked: Old TryHackMe writeups, the HTB writeups, and initial blogs 480, 596, and 825 match one writer. His typos, his misses, his task log. No second cadence. He tried first principles. The ideas were premature. 835 does not pass that check. 949's opener is smoother than its steps. This replaces the rule that those rooms are only do-this-get-that, and the rule that HTB posts other than Pilgrimage were unconfirmed.

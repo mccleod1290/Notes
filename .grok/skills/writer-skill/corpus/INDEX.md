@@ -6,11 +6,11 @@ These files are language evidence. Do not paste lab credentials, flags, or hashe
 
 Voice rules: `../references/PERSONAL_LANGUAGE_SKILL.md`. Approach (first principles, second-order, invariant): `../../ideas-skill/references/APPROACH.md`.
 
-Short version: most TryHackMe posts, Pilgrimage, and 1630 are his voice. In the web-pentest series the idea is his, the black-box walkthrough is his voice, and the white-box wording is the model's.
+Short version: old TryHackMe writeups, the HTB writeups, and the initial blogs 480, 596, and 825 are fully his, no AI. Wording and idea are his. He tried first principles there. The ideas were premature. 835's ideas are his and early. Its opener and close are not his sound. 1470 and 1630 are later posts he wrote. In the web-pentest series the ideas and the structure are his. Black-box wording is mostly his, with some AI lines. White-box wording is fully the model's. A paraphrase of a complex sentence did not turn that block into his room voice.
 
 ## old-tryhackme
 
-Most of these are his voice and his idea. Shape is do this, get that. Less mechanism than the series.
+Fully his. No AI. Wording and idea are his. He tried first principles. The ideas were premature, so the explanation is not always the best one. The shape is often still a task log.
 
 | date | id | words | title |
 |------|----|------:|-------|
@@ -33,7 +33,7 @@ Most of these are his voice and his idea. Shape is do this, get that. Less mecha
 
 ## walkthroughs-htb-ctf
 
-Pilgrimage (694) is his voice and his idea. He has not said the same for the other files here.
+The HTB writeups (694, 949, 951, 957, 958, 959, 962) are fully his. No AI. Same early first-principles try as the old TryHackMe writeups. 658 is a CTF post, not an HTB writeup, and he has not claimed it.
 
 | date | id | words | title |
 |------|----|------:|-------|
@@ -48,7 +48,7 @@ Pilgrimage (694) is his voice and his idea. He has not said the same for the oth
 
 ## web-pentest-series
 
-Collab. His idea. Black-box walkthrough is his voice. White-box execution is the model's. Do not learn sentence style from the white-box sections.
+Human and AI collab. Ideas and structure are his in both halves. Black-box wording is mostly his, with some AI lines. White-box wording is fully the model's. A paraphrase of wording that was too complex is not his voice.
 
 | date | id | words | title |
 |------|----|------:|-------|
@@ -85,7 +85,7 @@ Collab. His idea. Black-box walkthrough is his voice. White-box execution is the
 
 ## longer-explainers
 
-1630 is his latest post, his voice and his idea. He also named 480 and 1470 as his. He has not labeled 596, 825, 835, or 1329.
+480, 596, and 825 are initial blogs. Fully his. No AI. The ideas were premature. 835's ideas are his and premature. The opener, the Kerberos overview, and the close are not his sound. 1470 and 1630 are later posts he wrote. 1329 is not in that set. He has not claimed it.
 
 | date | id | words | title |
 |------|----|------:|-------|
