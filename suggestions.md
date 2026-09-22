@@ -27,7 +27,7 @@ Goal = **best operator**: faster than chaos, deeper than checklists, **before ba
 ```text
 1 section / session (or 1 hard section / day):
   open target → run batch DO THIS → evidence → FINDINGS
-  → writer (simple-english 1×) → frugal-eval (simple-english 3×) → push → stop
+  → ideas-skill (order) → writer-skill (sentences) → push → stop
 ```
 
 If a section is huge (BOPLA = EDE + mass assign), still **one section**, two **parts** — close both before next chapter.

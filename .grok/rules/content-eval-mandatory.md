@@ -1,1 +1,0 @@
-../../rules/content-eval-mandatory.md

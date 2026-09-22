@@ -20,7 +20,7 @@ How he approaches a topic lives in `ideas-skill` (`../ideas-skill/references/APP
 
 Local copies of all 61 Hacklido posts are in `corpus/`. The map is `corpus/INDEX.md`. Checked against the live profile on 2026-09-23: 61 posts, none missing. Do not load the whole corpus for an ordinary draft. Open one or two files from the matching shelf only if a wording choice is actually in doubt.
 
-Sound comes from posts he actually wrote: most of `corpus/old-tryhackme/`, Pilgrimage (`694`), `1630`, and the black-box walkthroughs in `corpus/web-pentest-series/`. White-box sections in that series are his idea and the model's wording. Do not imitate those sentences.
+Sound comes from posts he actually wrote: most of `corpus/old-tryhackme/`, Pilgrimage (`694`), `1630`, and the lab narration in `corpus/web-pentest-series/` (what he tried, what came back, why the miss mattered). White-box sections are not that sound. Neither is a tool catalog, a type list, or a fix cookbook in the same file, even with no `White box` heading. Do not imitate those sentences.
 
 If the spec marks a behavior as uncertain, do not treat it as a rule.
 

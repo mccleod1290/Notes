@@ -1,1 +1,0 @@
-../../rules/two-doc-ship-mandatory.md

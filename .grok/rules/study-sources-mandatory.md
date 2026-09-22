@@ -1,1 +1,0 @@
-../../rules/study-sources-mandatory.md

@@ -3,88 +3,38 @@
 Personal learning vault: **bug bounty → security architect → first principles**.  
 Not a university term track. Authorized study and authorized testing only.
 
-Canonical agent rules: [`AGENTS.md`](./AGENTS.md) · hard rules: [`rules/`](./rules/)
+Live skills are only under [`.grok/skills/`](./.grok/skills/). The old rules, commands, agents, and ship workflow are in [`archive/`](./archive/).
 
 ---
 
-## Document process (default)
+## Live skills
+
+| Skill | What it owns |
+|-------|----------------|
+| [`writer-skill`](./.grok/skills/writer-skill/SKILL.md) | How the sentences sound. Room-log sound and black-box narration. |
+| [`ideas-skill`](./.grok/skills/ideas-skill/SKILL.md) | How a topic is broken down. First principles by default. Second-order or invariant only when that model is needed. |
+
+Explain a concept with both: ideas-skill picks the order, writer-skill writes the sentences.
 
 ```text
-writer        → simple-english 1× pragmatic
-frugal-eval   → simple-english 3× hardcore
-              → CREATE DONE
-git + PDF + mail  → FULL SHIP
+/writer-skill
+/ideas-skill
 ```
-
-| Piece | Role |
-|-------|------|
-| **writer** | Draft on disk. Must load **simple-english** once (pragmatic). |
-| **frugal-eval** | Filter 3×. Must load **simple-english** hardcore + checklist. |
-| **two-doc shape** | Learning topics → `TOPIC-principles.md` + `TOPIC-references.md` |
-| **content_eval** | **Off** by default (say `run content-eval` only if you want it) |
-
-Rules:
-
-- [`rules/ship-pipeline-mandatory.md`](./rules/ship-pipeline-mandatory.md)
-- [`rules/two-doc-ship-mandatory.md`](./rules/two-doc-ship-mandatory.md)
-- [`rules/writer-mandatory.md`](./rules/writer-mandatory.md)
-- [`rules/frugal-eval-mandatory.md`](./rules/frugal-eval-mandatory.md)
-
-Templates: [`Templates/topic-principles.md`](./Templates/topic-principles.md), [`Templates/topic-references.md`](./Templates/topic-references.md)
 
 ---
 
-## Slash commands (this vault)
+## Archive
 
-| Command | What it does |
-|---------|----------------|
-| **`/notes-ship`** | Full process: research (as needed) → writer → frugal-eval → PDF → git push → mail |
-| **`/notes-create`** | Create only (writer + frugal-eval). No git/mail |
-| **`/first-principles-blog`** | 3-part keyword blocks: definition, adjacent terms, grounded variations |
+The old create path (writer agent, frugal-eval, simple-english, notes-ship, lab-writeup) is not live.
 
-Skill body: [`.grok/skills/notes-ship/SKILL.md`](./.grok/skills/notes-ship/SKILL.md)  
-Legacy command stubs: [`.grok/commands/notes-ship.md`](./.grok/commands/notes-ship.md), [`.grok/commands/notes-create.md`](./.grok/commands/notes-create.md)
-
-### Examples
-
-```text
-/notes-ship topic=Module 3 X path=claude/prepcourses/foundations/module3 slug=module3-x
-
-/notes-create topic=BOLA operator tips path=api slug=bola
-
-/notes-ship topic=capability layer path=AI slug=capability-layer single_doc
-```
-
-After you type `/`, fuzzy-find `notes-ship` if the menu is slow to refresh (reload session if a brand-new skill does not appear).
-
----
-
-## Workflow (orchestrated)
-
-| Workflow | Path | Run |
-|----------|------|-----|
-| **notes-ship** | [`.grok/workflows/notes-ship.rhai`](./.grok/workflows/notes-ship.rhai) | `/workflow notes-ship {...}` or `/notes-ship` via skill |
-
-```text
-/workflow notes-ship {"topic":"Module 2 prompting","path":"claude/prepcourses/foundations/module2","slug":"prompting-task-execution"}
-```
-
-```text
-/workflow notes-ship {"topic":"BOLA","path":"api","slug":"bola","create_only":true}
-```
-
-| Arg | Required | Meaning |
-|-----|----------|---------|
-| `topic` | yes | What to write |
-| `path` / `folder` | no | Folder under vault |
-| `slug` | no | Basename (kebab) |
-| `create_only` | no | Skip PDF/git/mail |
-| `single_doc` | no | One file instead of two-doc |
-| `skip_research` | no | Skip source fetch |
-| `skip_git` / `skip_mail` | no | Partial ship |
-
-Phases: **Resolve → Research → Writer → FrugalEval → Ship**  
-Watch live runs: `/workflows`
+| What | Where |
+|------|--------|
+| Map | [`archive/README.md`](./archive/README.md) |
+| Older skills | [`archive/skills/`](./archive/skills/) |
+| Rules | [`archive/rules/`](./archive/rules/) |
+| Commands | [`archive/commands/`](./archive/commands/) |
+| Agents | [`archive/agents/`](./archive/agents/) |
+| notes-ship workflow | [`archive/workflows/notes-ship.rhai`](./archive/workflows/notes-ship.rhai) |
 
 ---
 
@@ -123,15 +73,13 @@ Checklists/         session + bug-class questions
 Templates/          engagement + two-doc skeletons
 ```
 
-Agents: [`.agents/`](./.agents/) · Grok bodies: [`.grok/agents/`](./.grok/agents/)
-
 ---
 
 ## Related
 
 | Doc | Purpose |
 |-----|---------|
-| [`AGENTS.md`](./AGENTS.md) | Hardcoded agents, skills, pipeline |
+| [`archive/README.md`](./archive/README.md) | Where the old pipeline went |
 | [`suggestions.md`](./suggestions.md) | Operator cadence |
 | [`todo.md`](./todo.md) | Build todo |
-| Example ship | [`claude/prepcourses/foundations/module2/`](./claude/prepcourses/foundations/module2/) |
+| Example notes | [`claude/prepcourses/foundations/module2/`](./claude/prepcourses/foundations/module2/) |

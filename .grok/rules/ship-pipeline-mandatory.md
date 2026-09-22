@@ -1,1 +1,0 @@
-../../rules/ship-pipeline-mandatory.md

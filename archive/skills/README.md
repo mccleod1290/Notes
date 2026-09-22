@@ -7,7 +7,7 @@ Live skills stay in `.grok/skills/` only:
 - `writer-skill` — how the writing sounds
 - `ideas-skill` — how a topic is approached (first principles by default; second-order and invariant only when that model is needed)
 
-Nothing in `.agents/skills/` is live. That folder was removed. Agent files (`.agents/*.md`, `.agents/*.yaml`) were not archived. They still point at the old skill paths.
+Nothing in `.agents/skills/` is live. That folder was removed.
 
 ## from-grok
 
@@ -34,6 +34,6 @@ These used to live in `.agents/skills/`.
 
 `first-principles-blog` and `lab-writeup` were byte-identical in both places. Both copies are here so each old path still has a folder.
 
-## Not updated
+## Also archived (same day, later)
 
-Rules, workflows, and agent files still name the old paths (`.grok/skills/lab-writeup`, `.agents/skills/simple-english`, and the others). Those references were left as they were. Opening a live skill means `.grok/skills/writer-skill` or `.grok/skills/ideas-skill` only.
+Rules, commands, agents, the root `AGENTS.md`, and the notes-ship workflow moved under `archive/`. The map is [`../README.md`](../README.md). Files inside this folder still mention the old paths. Those mentions are historical. Opening a live skill means `.grok/skills/writer-skill` or `.grok/skills/ideas-skill` only.

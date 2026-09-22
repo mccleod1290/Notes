@@ -1,1 +1,0 @@
-../../rules/writer-mandatory.md

@@ -20,7 +20,7 @@ Track for this vault. Update status when you extend a file.
 - [Heat Mapping/heat-mapping.md](./Heat%20Mapping/heat-mapping.md)
 - [Understanding App/](./Understanding%20App/)
 - [Mindset/10-minute-unstuck.md](./Mindset/10-minute-unstuck.md)
-- Content agents (hardcoded): [AGENTS.md](./AGENTS.md) · [.agents/](./.agents/) · **writer + frugal-eval** (simple-english); content_eval opt-in only
+- Live skills: [writer-skill](./.grok/skills/writer-skill/SKILL.md) and [ideas-skill](./.grok/skills/ideas-skill/SKILL.md). The old writer / frugal-eval pipeline is in [archive/](./archive/).
 
 ## Next (optional)
 
