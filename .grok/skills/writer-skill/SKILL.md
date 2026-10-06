@@ -1,11 +1,13 @@
 ---
 name: writer-skill
-description: >
-  Write and rewrite in mccleod1290's voice, learned from his Hacklido posts.
-  Controls wording only: tone, sentence shape, room-log sound, and the
-  black-box narration. Does not choose the thinking model. For first
-  principles, second-order, or invariant approach, use ideas-skill. Use
-  when the user runs /writer-skill or asks to write in their voice.
+description: >-
+  write and rewrite in mccleod1290's voice, from his Hacklido posts.
+  wording only: tone, sentence shape, room-log sound, black-box narration.
+  does not choose the thinking model. for first principles or second-order,
+  use ideas-skill. use when the user says writer, his voice, rewrite this,
+  or /writer-skill.
+model: inherit
+effort: high
 ---
 
 # Writer skill
@@ -72,3 +74,12 @@ Never claim a habit is his unless the spec or the sources support it.
 
 - If he asks for Simplified Technical English, follow that wording constraint. Still use his explanation order.
 - If a lab-writeup skill fixes the document shape (sections, screenshots, beyond-root), keep that shape. Use this skill for the prose inside it.
+
+## output
+
+sentences in his voice, after the order is chosen. do not deliver a new thinking model. a phase 2 page is `phase_2/output/<slug>/PAGE.md`. the voice spec stays `references/PERSONAL_LANGUAGE_SKILL.md`.
+
+## model
+
+model: inherit. no pinned model id.
+effort: high. the failure is a clean vendor paragraph that is not his, or a true claim rewritten until it is false.

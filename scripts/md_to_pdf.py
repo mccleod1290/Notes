@@ -25,30 +25,44 @@ a { color: #0645ad; }
 """
 
 
-def convert(md_path: Path, pdf_path: Path) -> None:
+def render(md_path: Path):
     body = markdown.markdown(
         md_path.read_text(encoding="utf-8"),
         extensions=["tables", "fenced_code", "nl2br"],
     )
-    doc = (
+    html = (
         "<!DOCTYPE html><html><head><meta charset='utf-8'>"
         f"<style>{CSS}</style></head><body>{body}</body></html>"
     )
-    HTML(string=doc, base_url=str(md_path.resolve().parent)).write_pdf(str(pdf_path))
+    document = HTML(string=html, base_url=str(md_path.resolve().parent)).render()
+    return html, document
+
+
+def convert(md_path: Path, pdf_path: Path, html_path: Path | None = None) -> int:
+    html, document = render(md_path)
+    if html_path is not None:
+        html_path.parent.mkdir(parents=True, exist_ok=True)
+        html_path.write_text(html, encoding="utf-8")
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
+    document.write_pdf(str(pdf_path))
+    return len(document.pages)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("input")
     ap.add_argument("-o", "--output", required=True)
+    ap.add_argument("--html", default=None, help="also write the HTML page")
     args = ap.parse_args()
     md_path = Path(args.input)
     pdf_path = Path(args.output)
+    html_path = Path(args.html) if args.html else None
     if not md_path.is_file():
         print(f"missing: {md_path}", file=sys.stderr)
         return 1
-    convert(md_path, pdf_path)
+    pages = convert(md_path, pdf_path, html_path)
     print(pdf_path)
+    print(f"pages: {pages}")
     return 0
 
 

@@ -1,13 +1,13 @@
 ---
 name: ideas-skill
-description: >
-  Break a topic the way mccleod1290 approaches it: first principles by
-  default, and second-order or invariant thinking only when that model is
-  needed to learn the topic. Use for explain, teach, learn, study notes,
-  security concepts, and "how I would think about this." Not his sentence
-  style. Use when the user runs /ideas-skill or asks how he approaches,
-  reasons, or learns a topic. Pair with writer-skill when the output must
-  also sound like him.
+description: >-
+  break a topic the way mccleod1290 approaches it. first principles by
+  default. second-order or invariant only when that model is needed.
+  not his sentence style. use when the user says ideas, first principles,
+  second-order, how he thinks, or /ideas-skill. pair with writer-skill
+  when the sentences must also sound like him.
+model: inherit
+effort: high
 ---
 
 # Ideas skill
@@ -42,3 +42,12 @@ If he also wants the prose to sound like him, apply writer-skill to the sentence
 - Invent a mental model he did not name.
 - Change a technical claim so a model fits. If the source is thin or wrong, say so.
 - Learn phrasing from white-box or source-code sections.
+
+## output
+
+the order of the explanation: parts, conditions, when it is N/A, then how. second-order only when the next event is the lesson. do not deliver his sentences. writer-skill owns those. a phase 2 page is `phase_2/output/<slug>/PAGE.md`.
+
+## model
+
+model: inherit. no pinned model id.
+effort: high. the failure is a procedure with no parts, or all three models pasted on one small fact.

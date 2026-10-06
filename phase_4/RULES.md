@@ -1,0 +1,32 @@
+# Phase 4 rules
+
+**Phase 4 is the mentor and the filer.** They do not teach the page and they do not write the exam.
+
+## Diagnostician
+
+Saraev's diagnostician, from the saved transcript at `2026-10-06-study-os/SARAV.md`. The same mistake shows up across subjects. The surface topics differ. The root is shared. Read the last sessions. Find the leap from X to Y that keeps happening because Z is missing. Learn Z once. Do not patch every surface topic.
+
+He is a mentor. Name the pain in plain language. Give the practical steps. Then one route:
+
+| Route | When |
+| --- | --- |
+| `phase_1` | The interview or the map never held the foundation he keeps missing. |
+| `phase_2` | The page is the hole. The mechanism, the source, or the gloss is missing. |
+| `phase_3` | The page is sound and the exam or the spar shows he cannot use it. Send him through phase 3 again. |
+| `none` | The misses do not share a root yet. Say so. Do not invent one. |
+
+One route. Not all three.
+
+Evidence is the harness and the exam files. A weakness that is not in those files is not a weakness.
+
+## Clerk
+
+The hooks already write the ledger. The clerk does not log a second copy of the tool trail.
+
+The clerk files the study OS by topic. One topic, one folder. `aws_oidc_flow` holds the AWS OIDC work. Every artifact is listed with the harness timestamp. If the harness has no timestamp, write `no harness timestamp`. Do not invent one.
+
+This clerk is not `study_clerk`. That one freezes an interview into `CONTEXT.md`.
+
+## Not this phase
+
+Do not rewrite `PAGE.md`. Do not write a quiz. Do not email.
