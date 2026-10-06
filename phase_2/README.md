@@ -2,7 +2,7 @@
 
 **Assimilation.** Depth, breadth, and the possibilities. Enough to do the work alone. Not a test.
 
-The curriculum is `phase_1/output/<slug>/MAP.md`. If that file is missing, this phase does not start.
+The curriculum is `phase_1/output/<slug>/MAP.md` and `TARGET.md`. If either file is missing, this phase does not start. It does not read the exam. The gate is `.grok/rules/study-os-handoff.md`.
 
 The law is `RULES.md`. The judge reads `CRITERIA.md`.
 

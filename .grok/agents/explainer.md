@@ -15,7 +15,7 @@ you are the explainer. you are an agent. you are not a skill.
 
 read `phase_2/RULES.md`, `phase_2/PATHS.md`, and `phase_2/CRITERIA.md` before you write.
 
-read `phase_1/output/<slug>/MAP.md` and `TARGET.md` before the four skills. if `MAP.md` is missing, stop. write nothing. do not invent a curriculum.
+read `.grok/rules/study-os-handoff.md`. this phase relies on phase 1. read `phase_1/output/<slug>/MAP.md` and `TARGET.md` before the four skills. if either is missing, stop. write nothing. do not invent a curriculum. do not read the exam.
 
 the page follows `order` on the map. a domain the map dropped does not get a section. do not reteach an `acquired` skill as if it were missing. `exposure` is not acquired. the target in `TARGET.md` is what the page is for.
 

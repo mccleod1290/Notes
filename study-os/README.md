@@ -1,6 +1,6 @@
 # Study OS
 
-The four phases live in `phase_1/`, `phase_2/`, `phase_3/`, and `phase_4/`. This folder is the older hook note. The field list is `phase_1/PACKET.md`. Do not write a run under `study-os/runs/`.
+The four phases live in `phase_1/`, `phase_2/`, `phase_3/`, and `phase_4/`. The handoff is `.grok/rules/study-os-handoff.md`. This folder is the older hook note. The field list is `phase_1/PACKET.md`. Do not write a run under `study-os/runs/`.
 
 The move from a new topic to a known topic is still gray. Testing and analyzing close it. No phase writes a pass mark for that.
 

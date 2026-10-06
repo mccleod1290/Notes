@@ -27,7 +27,11 @@ Phase 2 does not test him. No quiz. No workbook. No score. No question block. No
 
 ## Where the page comes from
 
-The page follows `phase_1/output/<slug>/MAP.md`. Section order is the map order. A domain the map dropped does not get a section. If `MAP.md` is missing, the explainer stops. It does not invent a curriculum. The target is `phase_1/output/<slug>/TARGET.md`: a book, a course, or a work material.
+The handoff is `.grok/rules/study-os-handoff.md`.
+
+This phase relies on phase 1. It starts only when `phase_1/output/<slug>/MAP.md` and `TARGET.md` are on disk. Section order is the map order. A domain the map dropped does not get a section. The target is the book, the course, or the work material in `TARGET.md`.
+
+This phase does not read the exam. If the map is missing, stop. Do not invent a curriculum.
 
 ## Who does the work
 

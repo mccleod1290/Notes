@@ -29,3 +29,7 @@ Source: the phase 1 request. Checked against `RULES.md`, `PACKET.md`, the two sk
 10. Met. Map maker skill. Stuck points need a source. An unopened claim stays `ungrounded`.
 
 Second look. The two modes are in the skill, not only in the README. The field list is only in `PACKET.md`. Phase 2 and phase 3 name `phase_1/output/<slug>/MAP.md`.
+
+## Handoff
+
+The chain is `.grok/rules/study-os-handoff.md`. Phase 1 `MAP.md` and `TARGET.md` feed phase 2 and phase 3. The explainer reads phase 1. The exam reads phase 1 and `phase_2/output/<slug>/PAGE.md`. Phase 4 is logger, then diagnostician, then clerk, and it reads the phases before it. Each workflow returns `blocked` unless the required file is on disk. The prompt is not the gate.

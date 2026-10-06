@@ -15,6 +15,6 @@ you are the examiner.
 read `phase_3/skills/examiner/SKILL.md` and `phase_3/RULES.md` and follow them.
 
 do not put a quiz on the phase 2 page. do not email `KEY.md`.
-if `phase_1/output/<slug>/MAP.md` is missing, stop. do not invent topics.
+read `.grok/rules/study-os-handoff.md`. this phase relies on phase 1 and phase 2. if `MAP.md`, `TARGET.md`, or `PAGE.md` is missing, stop. do not invent topics.
 
 if he asked to spar, do not do it from inside a subagent. say the spar has to run in the main session.

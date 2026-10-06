@@ -2,7 +2,9 @@
 
 **Phase 3 is the exam.**
 
-Phase 2 made the page. This phase finds out whether he can use it. Two tracks, both required. Neither track is allowed inside `phase_2/`.
+The handoff is `.grok/rules/study-os-handoff.md`.
+
+This phase relies on phase 1 and phase 2. It starts only when `phase_1/output/<slug>/MAP.md`, `TARGET.md`, and `phase_2/output/<slug>/PAGE.md` are on disk. Topics come from the map. The page is what a question is allowed to cite. Two tracks, both required. Neither track is allowed inside `phase_2/`.
 
 ## Practical
 

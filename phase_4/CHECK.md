@@ -40,6 +40,10 @@ Checked against the files after the build. All 14 lines from pass 1 are in the s
 
 Second look, same list. No line was only in the README. The route table is in `RULES.md`. The file shape is in `PATHS.md`. The agents only point at those skills.
 
+## Handoff
+
+The order is logger, then diagnostician, then clerk. The workflow is `.grok/workflows/phase-4.rhai`. The script stops unless the logger read `logs/sessions/LATEST.md` and `phase_1/output/<slug>/MAP.md`. Phase 2 and phase 3 are read when they exist. The chain for all four phases is `.grok/rules/study-os-handoff.md`.
+
 ## Path correction
 
 Phase 1 originals are `phase_1/output/<slug>/`. Item 10 still holds: symlinks, and the original stays in the phase folder that wrote it. The earlier line that named `study-os/runs/` is retired.

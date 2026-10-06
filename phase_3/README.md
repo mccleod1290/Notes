@@ -2,7 +2,7 @@
 
 **The exam.** Practical build, plus three academic papers. The spar looks for the hole. Phase 2 does not do this.
 
-Topics come from `phase_1/output/<slug>/MAP.md`. A domain that map dropped is not on the paper and not in the build.
+Topics come from `phase_1/output/<slug>/MAP.md`. The question has to be supported by `phase_2/output/<slug>/PAGE.md`. If either file is missing, this phase does not start. A domain the map dropped is not on the paper and not in the build. The gate is `.grok/rules/study-os-handoff.md`.
 
 ```text
 phase 1 map

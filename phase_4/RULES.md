@@ -1,6 +1,12 @@
 # Phase 4 rules
 
-**Phase 4 is the mentor and the filer.** They do not teach the page and they do not write the exam.
+**Phase 4 is the logger, then the mentor, then the filer.** They do not teach the page and they do not write the exam.
+
+The handoff is `.grok/rules/study-os-handoff.md`.
+
+This phase relies on the phases before it. The logger reads `logs/sessions/LATEST.md` and `phase_1/output/<slug>/MAP.md` before anyone else runs. It writes nothing. It reports whether the phase 2 page and the phase 3 exam files are on disk. A missing page or a missing exam is a fact. It is not a file to create, and it is not a score to invent.
+
+The diagnostician runs after that report. The clerk runs after `DIAGNOSIS.md` exists and files the artifacts that are actually there.
 
 ## Diagnostician
 

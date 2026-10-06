@@ -17,8 +17,9 @@ study_clerk  ->  CONTEXT.md     adds nothing
 map_maker    ->  MAP.md         parts, dependencies, stuck points
         |
         v
-phase 2 explainer reads the map
-phase 3 exam takes topics from the map
+phase 2 explainer reads MAP.md and TARGET.md
+phase 3 exam reads that same map and the phase 2 page
+phase 4 logger, then diagnostician, then clerk, reads the phases before it
 ```
 
 | Path | Job |

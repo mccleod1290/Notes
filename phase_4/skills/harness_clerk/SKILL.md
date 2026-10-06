@@ -18,7 +18,11 @@ the hooks already write `logs/sessions/`. you do not append a second tool ledger
 
 this is not `study_clerk`. that skill writes `CONTEXT.md` from an interview.
 
-read `phase_4/RULES.md` and `phase_4/PATHS.md`.
+read `.grok/rules/study-os-handoff.md`, `phase_4/RULES.md`, and `phase_4/PATHS.md`.
+
+you run after the diagnostician. if `study_os/topics/<slug>/phase_4/DIAGNOSIS.md` is missing, stop. do not invent the diagnosis.
+
+file the phase 1, phase 2, and phase 3 artifacts that exist. a phase with no files is `none`. do not create those files.
 
 ## one topic
 
@@ -26,7 +30,7 @@ read `phase_4/RULES.md` and `phase_4/PATHS.md`.
 
 create `study_os/topics/<slug>/` and the four phase directories.
 
-symlink each existing artifact into the matching phase directory. relative links. do not move the original. do not copy the body into `INDEX.md`.
+symlink each phase 1, phase 2, and phase 3 artifact into the matching phase directory. relative links. do not move the original. do not copy the body into `INDEX.md`. `DIAGNOSIS.md` already sits in `phase_4/`. do not symlink it onto itself.
 
 if a phase has no files, leave the directory and write `none` in the index. do not invent an artifact.
 

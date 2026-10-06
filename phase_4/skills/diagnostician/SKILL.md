@@ -12,17 +12,20 @@ effort: high
 
 # diagnostician
 
-read `phase_4/RULES.md` and `phase_4/PATHS.md`. the Saraev note is `2026-10-06-study-os/SARAV.md` under Diagnostician. do not restate it as a new theory.
+read `.grok/rules/study-os-handoff.md`, `phase_4/RULES.md`, and `phase_4/PATHS.md`. the Saraev note is `2026-10-06-study-os/SARAV.md` under Diagnostician. do not restate it as a new theory.
+
+the logger runs first. if `logs/sessions/LATEST.md` or `phase_1/output/<slug>/MAP.md` is missing, stop. do not diagnose from memory.
 
 ## evidence
 
-read only these. stop if a file is missing. do not fill the gap with a guess.
+read the files that are on disk. a missing file stays missing. do not fill it.
 
-- `model/DECISIONS.md` in the sessions that touched this topic. his prompts are the record of what he asked.
-- `tools/ACTIONS.md` for what actually ran.
+- `logs/sessions/LATEST.md`, then that session's `model/DECISIONS.md` and `tools/ACTIONS.md`. his prompts are the record of what he asked.
+- `phase_1/output/<slug>/MAP.md` and `TARGET.md`. exposure in the interview is not competency.
+- `phase_2/output/<slug>/PAGE.md` when it exists, as what he was shown, not as proof he knows it.
 - `phase_3/output/<slug>/MARK.md`, `VERDICT.md`, `SPAR.md` when they exist.
-- `phase_2/output/<slug>/PAGE.md` as what he was shown, not as proof he knows it.
-- `phase_1/output/<slug>/` when the hole is the foundation. `MAP.md` and `TARGET.md` are the record. exposure in the interview is not competency.
+
+if the page is absent, the route can be `phase_2`. if the exam is absent, do not send him to sit it again.
 
 use the last sessions that are actually on disk. Saraev said 5, 10, 20, or 100. take the ones that exist. do not invent sessions to reach a number.
 

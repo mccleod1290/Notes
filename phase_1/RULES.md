@@ -20,6 +20,10 @@ Drill until the competency is visible. The map may list as acquired only what he
 
 ## After the map
 
-Phase 2, the explainer, reads this map and does not invent a curriculum. Phase 3, the exam, takes its topics from this map. A domain that is not on the map is not on the paper and not in the build.
+The handoff is `.grok/rules/study-os-handoff.md`.
+
+`MAP.md` and `TARGET.md` are the phase 1 artifact. Phase 2 reads them and does not invent a curriculum. Phase 3 reads them for its topics, and also reads the phase 2 page. A domain that is not on the map is not on the paper and not in the build.
+
+This phase does not read phase 2, phase 3, or phase 4.
 
 `<slug>` is shared. Underscores. `AWS OIDC flow` is `aws_oidc_flow`.

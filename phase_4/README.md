@@ -3,11 +3,16 @@
 Two roles. They do not share a job.
 
 ```text
-harness logs  +  phase 1, 2, 3 files
+phase 1 map, phase 2 page, phase 3 exam
         |
-        +-- harness_clerk     one topic folder, timestamps from the log
+        v
+logger            reads the harness. writes nothing
         |
-        +-- diagnostician     shared root, mentor, one route back
+        v
+diagnostician     shared root, mentor, one route back
+        |
+        v
+harness_clerk     files the artifacts that exist
 ```
 
 | Path | Job |
@@ -20,8 +25,7 @@ harness logs  +  phase 1, 2, 3 files
 | `study_os/topics/<slug>/` | The topic folder the clerk keeps |
 
 ```text
-/diagnostician
-/harness_clerk
+/workflow phase-4 {"slug":"aws_oidc_flow"}
 ```
 
 `CHECK.md` is the request, split into parts, checked twice.
